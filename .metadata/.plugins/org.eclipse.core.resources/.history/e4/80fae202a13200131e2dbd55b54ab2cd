@@ -41,6 +41,8 @@ public class Crust extends Person {
 		tension = setRandomTrait();
 	}
 	
+	//Function gives a random base value between -100 and 100 to temporary PTrait, then
+	//returns that randomly edited trait
 	/************************************************
 	 * Function creates random base value between -100 and 100 for PTrait
 	 * @author Anthony and Michael
