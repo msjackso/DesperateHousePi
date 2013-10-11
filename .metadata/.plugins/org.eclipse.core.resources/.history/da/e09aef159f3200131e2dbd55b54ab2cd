@@ -43,11 +43,6 @@ public class Crust extends Person {
 	
 	//Function gives a random base value between -100 and 100 to temporary PTrait, then
 	//returns that randomly edited trait
-	/************************************************
-	 * Function creates random base value between -100 and 100 for PTrait
-	 * @author Anthony and Michael
-	 * @return PTrait with base value randomly set
-	 ************************************************/
 	private PTrait setRandomTrait(){
 		PTrait trait = new PTrait(0);
 		Random rand = new Random();

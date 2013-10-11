@@ -31,28 +31,18 @@ public class PTrait {
 		int x = modVal+adjVal+baseVal;
 		
 		//Bound the total by -100 and 100
-		if(x > 100)  x = 100;
-		if(x <- 100) x = -100;
+		if(x>100)x=100;
+		if(x<100)x=-100;
 		
 		//Return to caller with calculated total
 		return x;
 	}
 	/***************************************
-	 * Setter for Trait Base Value
+	 * Setter for Base Value
 	 * @author Anthony and Michael
 	 * @param value
 	 ***************************************/
 	public void setBase(int value){ this.baseVal = value; }
-	/***************************************
-	 * Setter for Trait Modifier Value
-	 * @author Anthony and Michael
-	 * @param value
-	 ***************************************/
 	public void setMod(int value){ this.modVal = value; }
-	/***************************************
-	 * Setter for temporary Adjusted Trait Value
-	 * @author Anthony and Michael
-	 * @param value
-	 ***************************************/
 	public void setAdj(int value){ this.adjVal = value; }
 }

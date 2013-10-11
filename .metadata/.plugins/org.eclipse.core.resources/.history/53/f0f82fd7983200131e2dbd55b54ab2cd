@@ -11,12 +11,14 @@ public class PTrait {
 	int baseVal;
 	int modVal;
 	int adjVal;
+	int key;//key for identifying traits by integers as well as names
 	
 	//PTrait Constructor
-	PTrait(int base){
+	PTrait(int base, int k){
 		baseVal = base;	
 		modVal = 0;
 		adjVal = 0;
+		key = k;
 	}
 	
 	/************************************
@@ -31,8 +33,8 @@ public class PTrait {
 		int x = modVal+adjVal+baseVal;
 		
 		//Bound the total by -100 and 100
-		if(x > 100)  x = 100;
-		if(x <- 100) x = -100;
+		if(x>100)x=100;
+		if(x<100)x=-100;
 		
 		//Return to caller with calculated total
 		return x;
@@ -55,4 +57,10 @@ public class PTrait {
 	 * @param value
 	 ***************************************/
 	public void setAdj(int value){ this.adjVal = value; }
+	/***************************************
+	 * Setter for Trait key
+	 * @author Anthony and Michael
+	 * @param value
+	 ***************************************/
+	public void setKey(int value){ this.key = value; }
 }
