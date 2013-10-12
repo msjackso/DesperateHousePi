@@ -1,20 +1,16 @@
-# built application files
-*.apk
-*.ap_
+# MetaData Sources #
+####################
+.meta*
 
-# files for the dex VM
-*.dex
+####################
+# Assorted         #
+####################
+*.history
+*.index
+*org.eclipse*
 
-# Java class files
+####################
+# Class Files      #
+####################
 *.class
 
-# generated files
-bin/
-gen/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Eclipse project files
-.classpath
-.project
