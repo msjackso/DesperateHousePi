@@ -21,6 +21,43 @@ public class Commands {
 	}
 	
 	/***************************************
+	 * Saves an object to file to be imported from later
+	 * @param tkn - A string tokenizer containing the rest of the save command
+	 * @author Michael
+	 ***************************************/
+	public void save(StringTokenizer tkn){
+		
+		//Try to save the object
+		try{
+			
+			//Grab the name of the object to be saved
+			String obj = tkn.nextToken();
+			
+			//Find the object that is to be saved
+			switch(objectType.valueOf(obj.toUpperCase())){
+				
+				//If saving the crust
+				case CRUST:
+					if(tkn.hasMoreTokens())
+						crust.save(tkn.nextToken());
+					else
+						System.out.println("Invalid command.\nUsage: save [object] [profile name]");
+					break;
+				
+				//Otherwise object is not meant to be saved
+				default:
+					System.out.println("Invalid command, given object can not be created. Type 'help save'");
+					break;
+			}
+		
+		//Object not in list or invalid command
+		}catch(Exception e){
+			System.out.println("Invalid command.\nUsage: save [object] [profile name]");
+		}
+		
+	}
+	
+	/***************************************
 	 * Destroys an object and frees the memory
 	 * @param tkn - A string tokenizer containing the rest of the destroy command
 	 * @author Anthony and Michael
@@ -41,7 +78,7 @@ public class Commands {
 					crust = null;
 					break;
 				
-				//Otherwise object is not meant to be created
+				//Otherwise object is not meant to be destroyed
 				default:
 					System.out.println("Invalid command, given object can not be created. Type 'help destroy'");
 					break;

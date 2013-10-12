@@ -102,7 +102,7 @@ public class CommandLine {
 				
 				//Save the current state to file
 				case SAVE:
-					System.out.println("Not implemented.");
+					cmd.save(tkn);
 					return NO_CMD;
 				
 				//Clear the screen

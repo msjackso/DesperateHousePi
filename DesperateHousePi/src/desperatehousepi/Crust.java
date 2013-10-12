@@ -1,5 +1,9 @@
 package desperatehousepi;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class Crust extends Person {
@@ -52,6 +56,61 @@ public class Crust extends Person {
 		selfReliance.setRandomTrait();
 		perfectionism.setRandomTrait();
 		tension.setRandomTrait();
+	}
+	
+	/******************************
+	 * Saves the crust to a file to be imported later. Is saved as a .crust file
+	 * @param filename - The profile name it will be stored under
+	 * @author Michael
+	 * @throws IOException 
+	 ******************************/
+	public void save(String filename) throws IOException{
+		
+		//Open saveFile
+		File saveFile = new File(filename+".crust");
+		
+		//If file doesn't exist then create it
+		if(!saveFile.exists())
+			saveFile.createNewFile();
+		
+		//Open up the file and create the writers
+		FileWriter fw = new FileWriter(saveFile.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		//Generate content
+		String content = "";
+		content+=first_name+" "+middle_name+" "+last_name+" ";
+		content+=getFormattedTraits();
+		bw.write(content);
+		bw.close();
+	}
+	
+	/******************************
+	 * Returns all of the traits in format for being printed to file
+	 * @author Michael
+	 ******************************/
+	public String getFormattedTraits(){
+		
+		String allTraits = "";
+		
+		allTraits+=warmth.getBase()+" "+warmth.getMod()+" "+warmth.getAdj()+" ";
+		allTraits+=reasoning.getBase()+" "+reasoning.getMod()+" "+reasoning.getAdj()+" ";
+		allTraits+=emotionalStability.getBase()+" "+emotionalStability.getMod()+" "+emotionalStability.getAdj()+" ";
+		allTraits+=dominance.getBase()+" "+dominance.getMod()+" "+dominance.getAdj()+" ";
+		allTraits+=liveliness.getBase()+" "+liveliness.getMod()+" "+liveliness.getAdj()+" ";
+		allTraits+=ruleConsciousness.getBase()+" "+ruleConsciousness.getMod()+" "+ruleConsciousness.getAdj()+" ";
+		allTraits+=socialBoldness.getBase()+" "+socialBoldness.getMod()+" "+socialBoldness.getAdj()+" ";
+		allTraits+=sensitivity.getBase()+" "+sensitivity.getMod()+" "+sensitivity.getAdj()+" ";
+		allTraits+=vigilance.getBase()+" "+vigilance.getMod()+" "+vigilance.getAdj()+" ";
+		allTraits+=abstractedness.getBase()+" "+abstractedness.getMod()+" "+abstractedness.getAdj()+" ";
+		allTraits+=privateness.getBase()+" "+privateness.getMod()+" "+privateness.getAdj()+" ";
+		allTraits+=apprehensivness.getBase()+" "+apprehensivness.getMod()+" "+apprehensivness.getAdj()+" ";
+		allTraits+=opennessToChange.getBase()+" "+opennessToChange.getMod()+" "+opennessToChange.getAdj()+" ";
+		allTraits+=selfReliance.getBase()+" "+selfReliance.getMod()+" "+selfReliance.getAdj()+" ";
+		allTraits+=perfectionism.getBase()+" "+perfectionism.getMod()+" "+perfectionism.getAdj()+" ";
+		allTraits+=tension.getBase()+" "+tension.getMod()+" "+tension.getAdj()+" ";
+		
+		return allTraits;
 	}
 	
 	/******************************

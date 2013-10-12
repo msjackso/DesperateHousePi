@@ -45,6 +45,21 @@ public class PTrait {
 		//Return to caller with calculated total
 		return x;
 	}
+	/***************************************
+	 * Getter for Trait Base Value
+	 * @author Michael
+	 ***************************************/
+	public int getBase(){ return baseVal; }
+	/***************************************
+	 * Getter for Trait Modifier Value
+	 * @author Michael
+	 ***************************************/
+	public int getMod(){ return modVal; }
+	/***************************************
+	 * Getter for temporary Adjusted Trait Value
+	 * @author Michael
+	 ***************************************/
+	public int getAdj(){ return adjVal; }
 	
 	/***************************************
 	 * Setter for Trait Base Value
@@ -62,8 +77,6 @@ public class PTrait {
 	 * Setter for temporary Adjusted Trait Value
 	 * @author Anthony and Michael
 	 * @param value - Amount of adjustment
-	 * @param decay - Amount of decrement each time
-	 * @param time  - time in milliseconds of each decay, -1 for infinity
 	 ***************************************/
 	public void setAdj(int value){ adjVal = value; }
 	

@@ -15,7 +15,7 @@ public class Person {
 	
 	//Initialize variables
 	String first_name = "John";
-	String middle_name = "";
+	String middle_name = "Jacob";
 	String last_name = "Smith";
 	int age = 0;
 	int hunger = 50; //Hunger meter; 0 = starving; 100 = full; default value = 50
