@@ -1,0 +1,16 @@
+# MetaData Sources #
+####################
+.meta*
+
+####################
+# Assorted         #
+####################
+*.history
+*.index
+*org.eclipse*
+
+####################
+# Class Files      #
+####################
+*.class
+
