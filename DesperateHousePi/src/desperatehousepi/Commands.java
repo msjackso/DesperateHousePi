@@ -58,6 +58,54 @@ public class Commands {
 	}
 	
 	/***************************************
+	 * Loads an object from a file \
+	 * @param tkn - A string tokenizer containing the rest of the save command
+	 * @author Anthony and Michael
+	 ***************************************/
+	public void load(StringTokenizer tkn){
+		
+		try{	
+			
+			//Grab the name of the object to be loaded
+			String obj = tkn.nextToken();
+			
+			//Value to check if load works correctly
+			int loadVal = 0;
+			
+			//Find the object that is to be loaded
+			switch(objectType.valueOf(obj.toUpperCase())){
+			
+				//If Loading the crust
+				case CRUST:
+					if(tkn.hasMoreTokens()){
+						
+						//run load function and store success variable in loadVal
+						loadVal = crust.load(tkn.nextToken());
+						
+						//check that file exists and is in correct format; if not print useage message
+						if(loadVal == 1){
+							System.out.println("Invalid command.\nCrust not found.");
+						}else if(loadVal == 2){
+							System.out.println("Invalid command.\nBad file format.");
+						}
+					}else{
+						System.out.println("Invalid command.\nUsage: load [object] [profile name]");
+					}break;
+				
+				//Otherwise object is not meant to be loaded
+				default:
+					System.out.println("Invalid command, given object can not be loaded. Type 'help load'");
+					break;
+			}
+		
+		//Object not in list or invalid command
+		}catch(Exception e){
+			System.out.println("Invalid command.\nUsage: load [object] [profile name]");
+		}
+		
+	}
+	
+	/***************************************
 	 * Destroys an object and frees the memory
 	 * @param tkn - A string tokenizer containing the rest of the destroy command
 	 * @author Anthony and Michael

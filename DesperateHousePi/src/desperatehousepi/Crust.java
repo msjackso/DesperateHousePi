@@ -1,10 +1,13 @@
 package desperatehousepi;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 public class Crust extends Person {
 	
@@ -86,6 +89,42 @@ public class Crust extends Person {
 	}
 	
 	/******************************
+	 * Loads the crust from a file to currently selected Crust.
+	 * @param filename - The profile name of Crust to be Loaded
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int load(String filename) throws IOException{
+		
+		//open loadFIle
+		File loadFile = new File(filename+".crust");
+		
+		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
+		//'file not found'
+		if(!loadFile.exists())
+			return 1;
+		
+		//Open the file and create readers
+		FileReader fr = new FileReader(loadFile.getAbsolutePath());
+		BufferedReader br = new BufferedReader(fr);
+		
+		//Tokenize the String for the given file
+		StringTokenizer tkn = new StringTokenizer(br.readLine());
+		
+		//Try and run function to set the traits from the formatted file, if successful
+		//return 0, otherwise return 2
+		try{
+			setFormattedTraits(tkn);
+			br.close();
+			return 0;
+		}catch(Exception e){
+			br.close();
+			return 2;
+		}
+	}
+	
+	/******************************
 	 * Returns all of the traits in format for being printed to file
 	 * @author Michael
 	 ******************************/
@@ -111,6 +150,65 @@ public class Crust extends Person {
 		allTraits+=tension.getBase()+" "+tension.getMod()+" "+tension.getAdj()+" ";
 		
 		return allTraits;
+	}
+	
+	/******************************
+	 * Sets all of the traits from formatted file to this Crust
+	 * @author Michael and Anthony
+	 ******************************/
+	public void setFormattedTraits(StringTokenizer tkn){
+		
+		first_name = tkn.nextToken();
+		middle_name = tkn.nextToken();
+		last_name = tkn.nextToken();
+		warmth.setBase(Integer.parseInt(tkn.nextToken()));
+		warmth.setMod(Integer.parseInt(tkn.nextToken()));
+		warmth.setAdj(Integer.parseInt(tkn.nextToken()));
+		reasoning.setBase(Integer.parseInt(tkn.nextToken()));
+		reasoning.setMod(Integer.parseInt(tkn.nextToken()));
+		reasoning.setAdj(Integer.parseInt(tkn.nextToken()));
+		emotionalStability.setBase(Integer.parseInt(tkn.nextToken()));
+		emotionalStability.setMod(Integer.parseInt(tkn.nextToken()));
+		emotionalStability.setAdj(Integer.parseInt(tkn.nextToken()));
+		dominance.setBase(Integer.parseInt(tkn.nextToken()));
+		dominance.setMod(Integer.parseInt(tkn.nextToken()));
+		dominance.setAdj(Integer.parseInt(tkn.nextToken()));
+		liveliness.setBase(Integer.parseInt(tkn.nextToken()));
+		liveliness.setMod(Integer.parseInt(tkn.nextToken()));
+		liveliness.setAdj(Integer.parseInt(tkn.nextToken()));
+		ruleConsciousness.setBase(Integer.parseInt(tkn.nextToken()));
+		ruleConsciousness.setMod(Integer.parseInt(tkn.nextToken()));
+		ruleConsciousness.setAdj(Integer.parseInt(tkn.nextToken()));
+		socialBoldness.setBase(Integer.parseInt(tkn.nextToken()));
+		socialBoldness.setMod(Integer.parseInt(tkn.nextToken()));
+		socialBoldness.setAdj(Integer.parseInt(tkn.nextToken()));
+		sensitivity.setBase(Integer.parseInt(tkn.nextToken()));
+		sensitivity.setMod(Integer.parseInt(tkn.nextToken()));
+		sensitivity.setAdj(Integer.parseInt(tkn.nextToken()));
+		vigilance.setBase(Integer.parseInt(tkn.nextToken()));
+		vigilance.setMod(Integer.parseInt(tkn.nextToken()));
+		vigilance.setAdj(Integer.parseInt(tkn.nextToken()));
+		abstractedness.setBase(Integer.parseInt(tkn.nextToken()));
+		abstractedness.setMod(Integer.parseInt(tkn.nextToken()));
+		abstractedness.setAdj(Integer.parseInt(tkn.nextToken()));
+		privateness.setBase(Integer.parseInt(tkn.nextToken()));
+		privateness.setMod(Integer.parseInt(tkn.nextToken()));
+		privateness.setAdj(Integer.parseInt(tkn.nextToken()));
+		apprehensivness.setBase(Integer.parseInt(tkn.nextToken()));
+		apprehensivness.setMod(Integer.parseInt(tkn.nextToken()));
+		apprehensivness.setAdj(Integer.parseInt(tkn.nextToken()));
+		opennessToChange.setBase(Integer.parseInt(tkn.nextToken()));
+		opennessToChange.setMod(Integer.parseInt(tkn.nextToken()));
+		opennessToChange.setAdj(Integer.parseInt(tkn.nextToken()));
+		selfReliance.setBase(Integer.parseInt(tkn.nextToken()));
+		selfReliance.setMod(Integer.parseInt(tkn.nextToken()));
+		selfReliance.setAdj(Integer.parseInt(tkn.nextToken()));
+		perfectionism.setBase(Integer.parseInt(tkn.nextToken()));
+		perfectionism.setMod(Integer.parseInt(tkn.nextToken()));
+		perfectionism.setAdj(Integer.parseInt(tkn.nextToken()));
+		tension.setBase(Integer.parseInt(tkn.nextToken()));
+		tension.setMod(Integer.parseInt(tkn.nextToken()));
+		tension.setAdj(Integer.parseInt(tkn.nextToken()));
 	}
 	
 	/******************************

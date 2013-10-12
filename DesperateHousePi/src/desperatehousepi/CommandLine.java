@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE
+		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD
 	}
 	
 	/***************************************
@@ -104,7 +104,12 @@ public class CommandLine {
 				case SAVE:
 					cmd.save(tkn);
 					return NO_CMD;
-				
+					
+				//Load Crust from File
+				case LOAD:
+					cmd.load(tkn);
+					return NO_CMD;
+					
 				//Clear the screen
 				case CLEAR:
 					if(tkn.hasMoreTokens())
