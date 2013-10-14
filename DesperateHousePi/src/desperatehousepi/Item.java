@@ -1,11 +1,5 @@
 package desperatehousepi;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-import Integer;
-
 // Generic Item Class
 
 public class Item {
@@ -21,10 +15,10 @@ public class Item {
 	 *********************************/
 
 	//Constructor
-	Item(String name, String stat, String amount){
+	Item(String name, String stat, int amount){
 		item_name = name;
 		stat_improved = stat;
-		improvement_amount = Integer.parseInt(amount);
+		improvement_amount = amount;
 	}
 	
 }
