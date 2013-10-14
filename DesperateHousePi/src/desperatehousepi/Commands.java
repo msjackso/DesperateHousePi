@@ -7,6 +7,7 @@ public class Commands {
 	//Declare variables
 	private static Crust crust;
 	private static Item apple, rasberry, bed, coffee, tv, ball;
+	private static ActionLog history = new ActionLog();
 	
 	//Item itemSet = new Item();
 	
@@ -17,7 +18,24 @@ public class Commands {
 	
 	//Create items that crust objects may interact with
 	private static enum itemType{
-		APPLE, RASBERRY, BED, COFFEE, TV, BALL
+		APPLE, RASBERRY, BED, COFFEE, TV, BALL;
+	}
+	
+	/***************************************
+	 * Helper function that retrieves Item object specified by string name
+	 * @author Mark and Luke
+	 ***************************************/
+	private static Item getItem( itemType name ){
+		switch (name){
+			case APPLE: if( apple!=null )return apple; break;
+			case RASBERRY: if( rasberry!=null )return rasberry; break;
+			case BED: if( bed!=null )return bed; break;
+			case COFFEE: if( coffee!=null )return coffee; break;
+			case TV: if( tv!=null )return tv; break;
+			case BALL: if( ball!=null )return ball; break;
+			default: System.out.println("Invalid item");
+		}
+		return null;
 	}
 	
 	/***************************************
@@ -184,8 +202,12 @@ public class Commands {
 							case TV: tv.print(); break;
 							case BALL: ball.print(); break;
 						}
-					}else
-						System.out.println("No item selected to print.\nUsage: print [item] [item name]");
+					}else{
+						for ( itemType item : itemType.values() ){
+							if ( getItem(item)!=null )
+								getItem(item).print();
+						}
+					}
 					break;
 						
 					
@@ -197,7 +219,7 @@ public class Commands {
 		
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: \tprint [object]\n\tprint [item] [item name]");
+			System.out.println("Invalid command.\nUsage: \tprint [object]\n\tprint item [item name]");
 		}
 		
 	}
@@ -228,34 +250,35 @@ public class Commands {
 						
 						switch(itemType.valueOf(tkn.nextToken().toUpperCase())){
 							
+							//This is where item stat definitions go
 							case APPLE:
 								apple = new Item("Apple", "Hunger", 10);
-								System.out.println("Apple has been created");
+								history.logAction("Apple has been created");
 								break;
 							
 							case RASBERRY:
 								rasberry = new Item("Rasberry", "Hunger", 15);
-								System.out.println("Rasberry has been created");
+								history.logAction("Rasberry has been created");
 								break;
 							
 							case BED:
 								bed = new Item("Bed", "Energy", 50);
-								System.out.println("Bed has been created");
+								history.logAction("Bed has been created");
 								break;
 							
 							case COFFEE:
 								coffee = new Item("Coffee", "Energy", 40);
-								System.out.println("Coffee has been created");
+								history.logAction("Coffee has been created");
 								break;
 								
 							case TV:
 								tv = new Item("TV", "Entertainment", 30);
-								System.out.println("TV has been created");
+								history.logAction("TV has been created");
 								break;
 							
 							case BALL:
 								ball = new Item("Ball", "Entertainment", 15);
-								System.out.println("Ball has been created");
+								history.logAction("Ball has been created");
 								break;
 						}
 					}else{
@@ -274,36 +297,6 @@ public class Commands {
 			System.out.println("Invalid command.\nUsage: create [object]");
 		}
 	}
-	
-	/***************************************
-	 * Lets a crust object eat an item object
-	 * @param tkn - A string tokenizer containing the rest of the eat command
-	 * @author Mark and Luke
-	 ***************************************/
-	public void eat(StringTokenizer tkn){
-		
-		try{
-			
-			//Grab the name of the crust object
-			String obj = tkn.nextToken();
-			
-			//Find the object that is to be manipulated
-			switch(itemType.valueOf(obj.toUpperCase())){
-				
-				case APPLE: 
-				case RASBERRY:
-				case BED:
-
-				default:
-					System.out.println("Invalid command, given object can not be created. Type 'help print'");
-					break;
-			}
-		
-		//Object not in list or not enough in the list
-		}catch(Exception e){
-				System.out.println("Invalid command.\nUsage: eat [item]");
-			}
-		}
 	
 	/***************************************
 	 * Sets a variable in an object
@@ -374,6 +367,51 @@ public class Commands {
 		//Object not in list or not enough in the list
 		}catch(Exception e){
 			System.out.println("Invalid command.\nUsage: set [object] [variable]");
+		}
+	}
+	
+	/***************************************
+	 * Lets your crust object eat an item object
+	 * @param tkn - A string tokenizer containing the rest of the eat command
+	 * @author Mark and Luke
+	 ***************************************/
+	public void eat(StringTokenizer tkn){
+		
+		try{
+			
+			//Grab the name of the crust object
+			String obj = tkn.nextToken();
+			if( crust!=null ){
+				itemType findThis = itemType.valueOf(obj.toUpperCase());
+				//Find the object that is to be manipulated
+				for ( itemType search : itemType.values() ){
+					if( search==findThis ){
+						Item ourItem = getItem( search );
+						//Check if item has been created yet
+						if( ourItem!=null ){
+							//Check if it is an item you can eat
+							if( ourItem.getStat()=="Hunger" ){
+								crust.incrementHunger( ourItem.getAmountChanged() );
+								history.logAction("Crust has consumed: "+ourItem.getName() );
+								System.out.println("New Hunger: " + crust.getHunger() );
+								
+								//Delete the item eaten
+								switch ( search ){
+									case APPLE: apple=null; break;
+									case RASBERRY: rasberry=null; break;
+								}
+							}else
+								history.logAction("You can't eat: " + ourItem.getName() );
+						}else
+							System.out.println(ourItem.getName() + " does not exist");
+					}
+				}
+			}else
+				System.out.println("No crust available or invalid command.\nUsage: eat [item]");
+		
+		//Object not in list or not enough in the list
+		}catch(Exception e){
+				System.out.println("Invalid command or item does not exist. \nUsage: eat [item]");
 		}
 	}
 }

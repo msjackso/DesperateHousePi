@@ -11,9 +11,9 @@ import java.lang.Integer;
 public class Item {
 	
 	//Initialize variables
-	String item_name = null;
-	String stat_improved = null; //The name of the stat that gets improved
-	int improvement_amount = 0;  //The amount that the stat gets improved
+	private String name = null;
+	private String stat = null; //The name of the stat that gets improved
+	private int amountChanged = 0;  //The amount that the stat gets improved
 	
 	/**********************************
 	 * A generic item class containing information about an item and the stats that it affects
@@ -21,14 +21,18 @@ public class Item {
 	 *********************************/
 
 	//Constructor
-	Item(String name, String stat, int amount){
-		item_name = name;
-		stat_improved = stat;
-		improvement_amount = amount;
+	Item(String n, String s, int amount){
+		name = n;
+		stat = s;
+		amountChanged = amount;
 	}
 		
+	String getName(){ return this.name; }
+	String getStat(){ return this.stat; }
+	int getAmountChanged(){ return this.amountChanged; }
+	
 	void print(){
-		System.out.println(item_name + " -> " + stat_improved + " +" + improvement_amount);
+		System.out.println(name + " -> " + stat + " +" + amountChanged);
 	}
 	
 }

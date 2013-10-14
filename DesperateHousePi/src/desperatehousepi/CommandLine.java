@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD
+		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, EAT
 	}
 	
 	/***************************************
@@ -122,6 +122,11 @@ public class CommandLine {
 				//Print out the help prompt
 				case HELP:
 					System.out.println("Not implemented.");
+					return NO_CMD;
+					
+				//The crust, if it exists, will eat the food specified
+				case EAT:
+					cmd.eat(tkn);
 					return NO_CMD;
 				
 				//Otherwise function not implemented
