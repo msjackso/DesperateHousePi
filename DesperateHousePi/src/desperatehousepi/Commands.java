@@ -23,19 +23,40 @@ public class Commands {
 	
 	/***************************************
 	 * Helper function that retrieves Item object specified by string name
+	 * or deletes it with flag 'x'
+	 * If new items are wanted, their arguments must be defined in create(),
+	 * they must be added to this function, the enum, and also declared.
 	 * @author Mark and Luke
 	 ***************************************/
-	private static Item getItem( itemType name ){
+	private static Item getItem( itemType name, char delete ){
 		switch (name){
-			case APPLE: if( apple!=null )return apple; break;
-			case RASBERRY: if( rasberry!=null )return rasberry; break;
-			case BED: if( bed!=null )return bed; break;
-			case COFFEE: if( coffee!=null )return coffee; break;
-			case TV: if( tv!=null )return tv; break;
-			case BALL: if( ball!=null )return ball; break;
+			//The following items may be consumed
+			case APPLE:
+				if( delete=='x' )apple = null;
+				if( apple!=null )return apple; break;
+			case RASBERRY:
+				if( delete=='x' )rasberry = null;
+				if( rasberry!=null )return rasberry; break;
+				
+			//The following items may NOT be consumed
+			case BED: 
+				if( delete=='x' )bed = null;
+				if( bed!=null )return bed; break;
+			case COFFEE: 
+				if( delete=='x' )coffee = null;
+				if( coffee!=null )return coffee; break;
+			case TV: 
+				if( delete=='x' )tv = null;
+				if( tv!=null )return tv; break;
+			case BALL: 
+				if( delete=='x' )ball = null;
+				if( ball!=null )return ball; break;
 			default: System.out.println("Invalid item");
 		}
 		return null;
+	}
+	private static Item getItem( itemType name ){
+		return getItem(name, 'o'); //Neccessary so that the 2nd parameter is optional
 	}
 	
 	/***************************************
@@ -151,16 +172,32 @@ public class Commands {
 				case CRUST:
 					crust = null;
 					break;
-				
+					
+				//If destroying specified item
+				case ITEM:
+					if(tkn.hasMoreTokens()){
+						//If the item exists
+						itemType ourItem = itemType.valueOf(tkn.nextToken().toUpperCase());
+						if( getItem(ourItem)!=null ){
+							//Delete the item
+							getItem(ourItem, 'x');
+							history.logAction(ourItem.name() + " has been destroyed");
+						}
+						else
+							System.out.println("No such item exists");
+					}else
+						System.out.println("Cannot delete all items at once");
+					break;
+					
 				//Otherwise object is not meant to be destroyed
 				default:
-					System.out.println("Invalid command, given object can not be created. Type 'help destroy'");
+					System.out.println("Invalid command, given object can not be destroyed. Type 'help destroy'");
 					break;
 			}
 		
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: destroy [object]");
+			System.out.println("Invalid command.\nUsage:\tdestroy [object]\n\tdestroy item [item name]");
 		}
 		
 	}
@@ -193,16 +230,11 @@ public class Commands {
 				
 				//If printing item
 				case ITEM:
-					if(tkn.hasMoreTokens()){	
-						switch(itemType.valueOf(tkn.nextToken().toUpperCase())){
-							case APPLE: apple.print(); break;
-							case RASBERRY: rasberry.print(); break;
-							case BED: bed.print(); break;
-							case COFFEE: coffee.print(); break;
-							case TV: tv.print(); break;
-							case BALL: ball.print(); break;
-						}
+					//Is an item specified?
+					if(tkn.hasMoreTokens()){
+						getItem(itemType.valueOf(tkn.nextToken().toUpperCase())).print();
 					}else{
+						//Otherwise print all existing items
 						for ( itemType item : itemType.values() ){
 							if ( getItem(item)!=null )
 								getItem(item).print();
@@ -219,7 +251,7 @@ public class Commands {
 		
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: \tprint [object]\n\tprint item [item name]");
+			System.out.println("Invalid command.\nUsage:\tprint [object]\n\tprint item [item name]?");
 		}
 		
 	}
@@ -247,42 +279,40 @@ public class Commands {
 				
 				case ITEM:
 					if(tkn.hasMoreTokens()){
-						
-						switch(itemType.valueOf(tkn.nextToken().toUpperCase())){
+						itemType item = itemType.valueOf(tkn.nextToken().toUpperCase());
+						switch(item){
 							
 							//This is where item stat definitions go
 							case APPLE:
 								apple = new Item("Apple", "Hunger", 10);
-								history.logAction("Apple has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 							
 							case RASBERRY:
 								rasberry = new Item("Rasberry", "Hunger", 15);
-								history.logAction("Rasberry has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 							
 							case BED:
 								bed = new Item("Bed", "Energy", 50);
-								history.logAction("Bed has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 							
 							case COFFEE:
 								coffee = new Item("Coffee", "Energy", 40);
-								history.logAction("Coffee has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 								
 							case TV:
 								tv = new Item("TV", "Entertainment", 30);
-								history.logAction("TV has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 							
 							case BALL:
 								ball = new Item("Ball", "Entertainment", 15);
-								history.logAction("Ball has been created");
+								history.logAction(item.name() + " has been created");
 								break;
 						}
-					}else{
-						System.out.println("Items Available: Apple, Rasberry, Bed, Coffee, TV, Ball");
 					}
 					break;
 					
@@ -294,7 +324,7 @@ public class Commands {
 		
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: create [object]");
+			System.out.println("Invalid command.\nUsage:\tcreate [object]\n\tcreate item [item name]");
 		}
 	}
 	
@@ -379,11 +409,11 @@ public class Commands {
 		
 		try{
 			
-			//Grab the name of the crust object
+			//Grab the name of the item object
 			String obj = tkn.nextToken();
 			if( crust!=null ){
 				itemType findThis = itemType.valueOf(obj.toUpperCase());
-				//Find the object that is to be manipulated
+				//Find the item that is to be eaten
 				for ( itemType search : itemType.values() ){
 					if( search==findThis ){
 						Item ourItem = getItem( search );
@@ -392,26 +422,68 @@ public class Commands {
 							//Check if it is an item you can eat
 							if( ourItem.getStat()=="Hunger" ){
 								crust.incrementHunger( ourItem.getAmountChanged() );
-								history.logAction("Crust has consumed: "+ourItem.getName() );
+								history.logAction("Crust has consumed: " + findThis.name() );
 								System.out.println("New Hunger: " + crust.getHunger() );
 								
 								//Delete the item eaten
-								switch ( search ){
-									case APPLE: apple=null; break;
-									case RASBERRY: rasberry=null; break;
-								}
+								getItem( search, 'x' );
 							}else
 								history.logAction("You can't eat: " + ourItem.getName() );
 						}else
-							System.out.println(ourItem.getName() + " does not exist");
+							history.logAction(findThis.name() + " does not exist");
 					}
 				}
 			}else
-				System.out.println("No crust available or invalid command.\nUsage: eat [item]");
+				System.out.println("No crust available. Try \"create crust\"");
 		
 		//Object not in list or not enough in the list
 		}catch(Exception e){
-				System.out.println("Invalid command or item does not exist. \nUsage: eat [item]");
+				System.out.println("Invalid command or item does not exist. \nUsage: eat [item name]");
 		}
 	}
+	
+	/***************************************
+	 * Lets your crust object use an item object
+	 * @param tkn - A string tokenizer containing the rest of the eat command
+	 * @author Mark and Luke
+	 ***************************************/
+	public void use(StringTokenizer tkn){
+		
+		try{
+			
+			//Grab the name of the item object
+			String obj = tkn.nextToken();
+			if( crust!=null ){
+				itemType findThis = itemType.valueOf(obj.toUpperCase());
+				//Find the item that is to be eaten
+				for ( itemType search : itemType.values() ){
+					if( search==findThis ){
+						Item ourItem = getItem( search );
+						//Check if item has been created yet
+						if( ourItem!=null ){
+							//Check if it is an item you can eat
+							if( ourItem.getStat()=="Energy" ){
+								crust.incrementEnergy( ourItem.getAmountChanged() );
+								history.logAction("Crust has used: " + findThis.name() );
+								System.out.println("New Energy: " + crust.getEnergy() );
+							}else if( ourItem.getStat()=="Entertainment" ){
+								crust.incrementEntertainment( ourItem.getAmountChanged() );
+								history.logAction("Crust has used: " + findThis.name() );
+								System.out.println("New Entertainment: " + crust.getEntertainment() );
+							}else
+								history.logAction("You can't use: " + ourItem.getName() );
+						}else
+							history.logAction(findThis.name() + " does not exist");
+					}
+				}
+			}else
+				System.out.println("No crust available. Try \"create crust\"");
+		
+		//Object not in list or not enough in the list
+		}catch(Exception e){
+				System.out.println("Invalid command or item does not exist. \nUsage: use [item name]");
+		}
+	}	
 }
+
+

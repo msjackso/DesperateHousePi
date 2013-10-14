@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, EAT
+		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, EAT, USE
 	}
 	
 	/***************************************
@@ -127,6 +127,11 @@ public class CommandLine {
 				//The crust, if it exists, will eat the food specified
 				case EAT:
 					cmd.eat(tkn);
+					return NO_CMD;
+					
+				//The crust, if it exists, will use the item specified
+				case USE:
+					cmd.use(tkn);
 					return NO_CMD;
 				
 				//Otherwise function not implemented
