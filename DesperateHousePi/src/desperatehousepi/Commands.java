@@ -9,7 +9,12 @@ public class Commands {
 	
 	//Create objects that commands can alter
 	private static enum objectType{
-		CRUST
+		CRUST, ITEM
+	}
+	
+	//Create items that crust objects may interact with
+	private static enum itemType{
+		APPLE, RASBERRY, BED, COFFEE, TV, BALL
 	}
 	
 	/***************************************
@@ -198,6 +203,46 @@ public class Commands {
 					crust = new Crust();
 					break;
 				
+				case ITEM:
+					if(tkn.hasMoreTokens()){
+						
+						switch(itemType.valueOf(tkn.nextToken().toUpperCase())){
+							
+							case APPLE:
+								//apple = new Item("Apple", "Hunger", 10);
+								System.out.println("Apple has been created");
+								break;
+							
+							case RASBERRY:
+								//rasberry = new Item("Rasberry", "Hunger, 10");
+								System.out.println("Rasberry has been created");
+								break;
+								
+							case BED:
+								//bed = new Item("Bed", "Energy", 50);
+								System.out.println("Bed has been created");
+								break;
+							
+							case COFFEE:
+								//coffee = new Item("Coffee", "Energy", 40");
+								System.out.println("Coffee has been created");
+								break;
+								
+							case TV:
+								//tv = new Item("TV", "Entertainment", 30);
+								System.out.println("TV has been created");
+								break;
+							
+							case BALL:
+								//ball = new Item("Ball", "Entertainment, 15");
+								System.out.println("Ball has been created");
+								break;
+						}
+					}else{
+						System.out.println("Items Available: Apple, Rasberry, Bed, Coffee, TV, Ball");
+					}
+					break;
+					
 				//Otherwise object is not meant to be created
 				default:
 					System.out.println("Invalid command, given object can not be created. Type 'help create'");
@@ -209,6 +254,44 @@ public class Commands {
 			System.out.println("Invalid command.\nUsage: create [object]");
 		}
 	}
+	
+	/***************************************
+	 * Lets a crust object eat an item object
+	 * @param tkn - A string tokenizer containing the rest of the eat command
+	 * @author Mark and Luke
+	 ***************************************/
+	/*
+	public void eat(StringTokenizer tkn){
+		
+		try{
+			
+			//Grab the name of the crust object
+			String obj = tkn.nextToken();
+			
+			//Find the object that is to be manipulated
+			switch(objectType.valueOf(obj.toUpperCase())){
+				
+				case CRUST:
+					if(crust!=null){
+						
+						
+						
+					}else
+						System.out.println("No crust available or invalid command.\nUsage: eat [object] [item]");
+					break;
+				
+				//Otherwise object is not meant to be printed
+				default:
+					System.out.println("Invalid command, given object can not be created. Type 'help print'");
+					break;
+			}
+		
+		//Object not in list or not enough in the list
+		}catch(Exception e){
+				System.out.println("Invalid command.\nUsage: eat [crust] [item]");
+			}
+		}
+		*/
 	
 	/***************************************
 	 * Sets a variable in an object
