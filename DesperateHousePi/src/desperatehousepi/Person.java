@@ -19,6 +19,8 @@ public class Person {
 	String last_name = "Smith";
 	int age = 0;
 	int hunger = 50; //Hunger meter; 0 = starving; 100 = full; default value = 50
+	int energy = 50; //Energy meter; 0 = tired; 100 = wide awake; default value = 50
+	int entertainment = 50; //Energy meter; 0 = bored; 100 = entertained; default value = 50
 	
 	/**********************************
 	 * A generic person class containing general traits to be inherited
