@@ -1,19 +1,13 @@
 package desperatehousepi;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-import java.lang.Integer;
-
 // Generic Item Class
 
 public class Item {
-	
+
 	//Initialize variables
-	private String name = null;
-	private String stat = null; //The name of the stat that gets improved
-	private int amountChanged = 0;  //The amount that the stat gets improved
+	private desperatehousepi.Commands.itemType item = null; //The name of the item
+	private String stat = null; //The name of the stat that gets modified
+	private int value = 0;  //The value added/subtracted from stat
 	
 	/**********************************
 	 * A generic item class containing information about an item and the stats that it affects
@@ -21,18 +15,17 @@ public class Item {
 	 *********************************/
 
 	//Constructor
-	Item(String n, String s, int amount){
-		name = n;
+	Item( desperatehousepi.Commands.itemType n, String s, int val ){
+		item = n;
 		stat = s;
-		amountChanged = amount;
+		value = val;
 	}
 		
-	String getName(){ return this.name; }
-	String getStat(){ return this.stat; }
-	int getAmountChanged(){ return this.amountChanged; }
+	public String getName(){ return this.item.name(); }
+	public String getStat(){ return this.stat; }
+	public int getValue(){ return this.value; }
 	
-	void print(){
-		System.out.println(name + " -> " + stat + " +" + amountChanged);
-	}
-	
+	public void print(){
+		System.out.println(item.name() + " -> " + stat + " +" + value);
+	}	
 }

@@ -124,6 +124,8 @@ public class CommandLine {
 					System.out.println("Not implemented.");
 					return NO_CMD;
 					
+				/***************************************
+				 * @author Mark - case EAT and USE     */
 				//The crust, if it exists, will eat the food specified
 				case EAT:
 					cmd.eat(tkn);
@@ -133,6 +135,7 @@ public class CommandLine {
 				case USE:
 					cmd.use(tkn);
 					return NO_CMD;
+				/**************************************/
 				
 				//Otherwise function not implemented
 				default:
