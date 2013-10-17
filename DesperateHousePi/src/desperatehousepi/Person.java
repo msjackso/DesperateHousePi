@@ -2,7 +2,6 @@ package desperatehousepi;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
 
 import javax.swing.Timer;
 
@@ -10,33 +9,34 @@ import javax.swing.Timer;
 
 public class Person {
 	
+	
+	
 	//Set constants
 	private static final int millSecsInDay = 1000*60*60*24;
-	private static final int millSecsInHour = 1000*60*60;
-	private static final int hungerDecreaseRate = 1000*4; //loses 1 hunger every 4 minutes
-	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
-	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
+	//private static final int millSecsInHour = 1000*60*60;
+	private static final int hungerMeter = 1000*4; //loses 1 hunger every 4 minutes
+	private static final int energyMeter = 1000*15; //loses 1 energy every 15 minutes
+	private static final int entertainmentMeter = 1000*10; //loses 1 entertainment every 10 minutes
 	
 	//Initialize variables
 	String first_name = "John";
 	String middle_name = "Jacob";
 	String last_name = "Smith";
+
 	int age = 0;
-	
-	private LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
+	int hunger = 50; //Hunger meter; 0 = starving; 100 = full; default value = 50
+	int energy = 50; //Energy meter; 0 = tired; 100 = wide awake; default value = 50
+	int entertainment = 50; //Energy meter; 0 = bored; 100 = entertained; default value = 50
 	
 	/**********************************
 	 * A generic person class containing general traits to be inherited
 	 * @author Anthony and Michael
-	 * Edited 10/17/13 by Luke
 	 *********************************/
 	public Person(){
-		//starts the age timer
 		new Timer(millSecsInDay, ageMe).start();
-		//creates the persons
-		Needs.add(new Need("Hunger", hungerDecreaseRate));
-		Needs.add(new Need("Energy", energyDecreaseRate));
-		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		new Timer(hungerMeter, hungerMe).start();
+		new Timer(energyMeter, energyMe).start();
+		new Timer(entertainmentMeter, entertainmentMe).start();
 	}
 	
 	//Create a timer for the aging process
@@ -47,48 +47,74 @@ public class Person {
       	}
 	};
 	
+	//Create a timer for the hunger meter
+	private ActionListener hungerMe = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			if(hunger>0) hunger-=1;
+      	}
+	};
+		
+	//Create a timer for the energy meter
+	private ActionListener energyMe = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			if(hunger>0) energy-=1;
+      	}
+	};
+	
+	//Create a timer for the entertainment meter
+	private ActionListener entertainmentMe = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			if(entertainment>0) entertainment-=1;
+      	}
+	};
+	
 	////////////////////////Access Functions\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	
 	//Returns the age of the person
-	int getAge(){ 
-		return age; 
-	}
+	int getAge(){ return age; }
 	
-	/* Increases the hunger level of the person
-	 * Input: the name of the need to be checked.
-	 * Output: the new value for the need. If the need is not found in needs.
-	 */ 
-	int getNeed(String need_name){ 
-		
-		//Finds the need in the list of needs, then increments it.
-		for(Need n : Needs) {
-			if (n.getNeedName().equalsIgnoreCase(need_name)) {
-				return n.getNeedLevel();
-			}; 
-		}
-		
-		//If need is not defined.
-		System.out.println("Fatal error. Need " + need_name + " not defined.");
-		System.exit(0);
-		return 0;
-		
-	}
+	//Returns the hunger level of the person
+	int getHunger(){ return hunger; }
+	
+	//Returns the energy level of the person
+	int getEnergy() { return energy; }
+	
+	//Returns the entertainment level of the person
+	int getEntertainment() { return entertainment; }
 	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	
 	/* Increases the hunger level of the person
 	 * Input: the number that hunger will be incremented by
 	 */
-	void incrementNeed(String need_name, int amount) {
-		for(Need n : Needs)
-			if (n.getNeedName().equalsIgnoreCase(need_name)) {
-				n.incrementNeed(amount);
-			}
-		
-		//If need is not defined.
-		System.out.println("Fatal error. Need '" + need_name + "' not defined.");
-		System.exit(0);
-		
+	void incrementHunger(int amount) {
+		if (hunger + amount > 100) 
+			hunger = 100;
+		else 
+			hunger += amount;
+	}
+	
+	/* Increases the energy level of the person
+	 * Input: the number that energy will be incremented by
+	 */
+	void incrementEnergy(int amount) {
+		if (energy + amount > 100) 
+			energy = 100;
+		else 
+			energy += amount;
+	}
+	
+	/* Increases the entertainment level of the person
+	 * Input: the number that entertainment will be incremented by
+	 */
+	void incrementEntertainment(int amount) {
+		if (entertainment + amount > 100) 
+			entertainment = 100;
+		else 
+			entertainment += amount;
 	}
 	
 }
