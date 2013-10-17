@@ -359,7 +359,7 @@ public class Commands {
 			if( food.getStat()!="Hunger" )
 				System.out.println("You cannot eat "+food.getName());
 			else{
-				crust.incrementHunger( food.getValue() );
+				crust.incrementNeed(food.getStat(), food.getValue() );
 				inventory.destroy( itemName );
 				history.logAction("Crust has eaten "+food.getName());
 			}
@@ -399,11 +399,11 @@ public class Commands {
 					System.out.println("You cannot use "+item.getName());
 					break;
 				case "Energy":
-					crust.incrementEnergy( item.getValue() );
+					crust.incrementNeed(item.getStat(), item.getValue() );
 					history.logAction("Crust has used "+item.getName());
 					break;
 				case "Entertainment":
-					crust.incrementEntertainment( item.getValue() );
+					crust.incrementNeed(item.getStat(), item.getValue() );
 					history.logAction("Crust has used "+item.getName());
 					break;	
 			}
