@@ -9,56 +9,118 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+/******************************
+ * A crust is a personality with which interactions can be made. Every value in the
+ * crust object has a setter and getter which can be received using the set(trait, value)
+ * or get(trait) function. You can also print out all of the items in the crust by
+ * calling the print() function. Relationships are available but are not heavily
+ * implemented yet. You can add relationships between a crust and another by calling
+ * the addRelationship() function. If you need to see what relationships there are
+ * the only way right now is to call printRelationships(). This empty constructor will
+ * generate a personality randomly. Each trait is determined using the setRandomTrait()
+ * function from the PTrait object. This will create the values based on a bell curve.
+ * @author Anthony and Michael
+ ******************************/
 public class Crust extends Person {
 	
+	//Constant declarations
+	public static final int UNKNOWN = -1000;
+	public static final int OK = 0;
+	public static final int FILE_NOT_FOUND = 1;
+	public static final int FILE_BAD_FORMAT = 2;
+	
 	//Object Declarations
-	private PTrait warmth = new PTrait(0);
-	private PTrait reasoning = new PTrait(0);
-	private PTrait emotionalStability = new PTrait(0);
-	private PTrait dominance = new PTrait(0);
-	private PTrait liveliness = new PTrait(0);
-	private PTrait ruleConsciousness = new PTrait(0);
-	private PTrait socialBoldness = new PTrait(0);
-	private PTrait sensitivity = new PTrait(0);
-	private PTrait vigilance = new PTrait(0);
-	private PTrait abstractedness = new PTrait(0);
-	private PTrait privateness = new PTrait(0);
-	private PTrait apprehensivness = new PTrait(0);
-	private PTrait opennessToChange = new PTrait(0);
-	private PTrait selfReliance = new PTrait(0);
-	private PTrait perfectionism = new PTrait(0);
-	private PTrait tension = new PTrait(0);
+	private PTrait[] traits = new PTrait [16];
+	public enum traitName{
+		warmth(0), reasoning(1), emotionalStability(2), dominance(3), liveliness(4), ruleConsciousness(5), socialBoldness(6), sensitivity(7),
+		vigilance(8), abstractedness(9), privateness(10), apprehensivness(11), opennessToChange(12), selfReliance(13), perfectionism(14), tension(15);
+		
+		public int index;
+		traitName(int i){
+			index = i;
+		}
+	}
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	
 	/******************************
-	 * A crust is a personality with which interactions can be made. Every value in the
-	 * crust object has a setter and getter which can be received using the set(trait, value)
-	 * or get(trait) function. You can also print out all of the items in the crust by
-	 * calling the print() function. Relationships are available but are not heavily
-	 * implemented yet. You can add relationships between a crust and another by calling
-	 * the addRelationship() function. If you need to see what relationships there are
-	 * the only way right now is to call printRelationships(). This empty constructor will
-	 * generate a personality randomly. Each trait is determined using the setRandomTrait()
-	 * function from the PTrait object. This will create the values based on a bell curve.
+	 * This empty constructor will generate a personality randomly. Each trait is determined
+	 * using the setRandomTrait() function from the PTrait object. This will create the
+	 * values based on a bell curve.
 	 * @author Anthony and Michael
 	 ******************************/
 	Crust(){
-		warmth.setRandomTrait();
-		reasoning.setRandomTrait();
-		emotionalStability.setRandomTrait();
-		dominance.setRandomTrait();
-		liveliness.setRandomTrait();
-		ruleConsciousness.setRandomTrait();
-		socialBoldness.setRandomTrait();
-		sensitivity.setRandomTrait();
-		vigilance.setRandomTrait();
-		abstractedness.setRandomTrait();
-		privateness.setRandomTrait();
-		apprehensivness.setRandomTrait();
-		opennessToChange.setRandomTrait();
-		selfReliance.setRandomTrait();
-		perfectionism.setRandomTrait();
-		tension.setRandomTrait();
+		for(int x = 0; x<16; x++){
+			traits[x] = new PTrait(0);
+			traits[x].setRandomTrait();
+		}
+	}
+	
+	/******************************
+	 * Passing in any amount of strings will work for this constructor. It will set the
+	 * strings to firstName, middleName and lastName respectively. If more than 3 strings
+	 * are provided they will be ignored.
+	 * @author Michael
+	 ******************************/
+	Crust(String... names){
+		
+		//Try to set all of the names of the object
+		try{ first_name=names[0]; }catch(Exception e){ }
+		try{ middle_name=names[1]; }catch(Exception e){ }
+		try{ last_name=names[2]; }catch(Exception e){ }
+		
+		for(int x = 0; x<16; x++){
+			traits[x] = new PTrait(0);
+			traits[x].setRandomTrait();
+		}
+		
+	}
+	
+	/******************************
+	 * Passing in any amount of integers will work for this constructor. It will set
+	 * the integers to warmth, reasoning, emotionalStability, dominance, liveliness, ruleConsciousness,
+	 * socialBoldness, sensitivity, vigilance, abstractedness, privateness, apprehensivness,
+	 * opennessToChange, selfReliance, perfectionism and tension respectively. If more than
+	 * 16 integers are provided they will be ignored.
+	 * @author Michael
+	 ******************************/
+	Crust(int... trait_val){
+		
+		//Get the length of the amount of values passed in
+		int length = (trait_val.length>16) ? 16:trait_val.length;
+		
+		//Set all of the traits in the order that they were given if not -1000
+		for(int x = 0; x<length; x++)
+			if(trait_val[x]!=UNKNOWN){
+				traits[x] = new PTrait(0);
+				traits[x].setBase(trait_val[x]);
+			}
+	}
+	
+	/******************************
+	 * Passing in any amount of integers will work for this constructor. It will set
+	 * the integers to warmth, reasoning, emotionalStability, dominance, liveliness, ruleConsciousness,
+	 * socialBoldness, sensitivity, vigilance, abstractedness, privateness, apprehensivness,
+	 * opennessToChange, selfReliance, perfectionism and tension respectively. If more than
+	 * 16 integers are provided they will be ignored. It will also set each name accordingly.
+	 * This constructor is for creating an entire crust sans relationships.
+	 * @author Michael
+	 ******************************/
+	Crust(String firstName, String middleName, String lastName, int... trait_val){
+		
+		//Set names
+		first_name = firstName;
+		middle_name = middleName;
+		last_name = lastName;
+		
+		//Get the length of the amount of values passed in
+		int length = (trait_val.length>16) ? 16:trait_val.length;
+		
+		//Set all of the traits in the order that they were given if not -1000
+		for(int x = 0; x<length; x++)
+			if(trait_val[x]!=UNKNOWN){
+				traits[x] = new PTrait(0);
+				traits[x].setBase(trait_val[x]);
+			}
 	}
 	
 	/******************************
@@ -103,7 +165,7 @@ public class Crust extends Person {
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
 		if(!loadFile.exists())
-			return 1;
+			return FILE_NOT_FOUND;
 		
 		//Open the file and create readers
 		FileReader fr = new FileReader(loadFile.getAbsolutePath());
@@ -117,10 +179,10 @@ public class Crust extends Person {
 		try{
 			setFormattedTraits(tkn);
 			br.close();
-			return 0;
+			return OK;
 		}catch(Exception e){
 			br.close();
-			return 2;
+			return FILE_BAD_FORMAT;
 		}
 	}
 	
@@ -132,25 +194,18 @@ public class Crust extends Person {
 		
 		String allTraits = "";
 		
-		allTraits+=warmth.getBase()+" "+warmth.getMod()+" "+warmth.getAdj()+" ";
-		allTraits+=reasoning.getBase()+" "+reasoning.getMod()+" "+reasoning.getAdj()+" ";
-		allTraits+=emotionalStability.getBase()+" "+emotionalStability.getMod()+" "+emotionalStability.getAdj()+" ";
-		allTraits+=dominance.getBase()+" "+dominance.getMod()+" "+dominance.getAdj()+" ";
-		allTraits+=liveliness.getBase()+" "+liveliness.getMod()+" "+liveliness.getAdj()+" ";
-		allTraits+=ruleConsciousness.getBase()+" "+ruleConsciousness.getMod()+" "+ruleConsciousness.getAdj()+" ";
-		allTraits+=socialBoldness.getBase()+" "+socialBoldness.getMod()+" "+socialBoldness.getAdj()+" ";
-		allTraits+=sensitivity.getBase()+" "+sensitivity.getMod()+" "+sensitivity.getAdj()+" ";
-		allTraits+=vigilance.getBase()+" "+vigilance.getMod()+" "+vigilance.getAdj()+" ";
-		allTraits+=abstractedness.getBase()+" "+abstractedness.getMod()+" "+abstractedness.getAdj()+" ";
-		allTraits+=privateness.getBase()+" "+privateness.getMod()+" "+privateness.getAdj()+" ";
-		allTraits+=apprehensivness.getBase()+" "+apprehensivness.getMod()+" "+apprehensivness.getAdj()+" ";
-		allTraits+=opennessToChange.getBase()+" "+opennessToChange.getMod()+" "+opennessToChange.getAdj()+" ";
-		allTraits+=selfReliance.getBase()+" "+selfReliance.getMod()+" "+selfReliance.getAdj()+" ";
-		allTraits+=perfectionism.getBase()+" "+perfectionism.getMod()+" "+perfectionism.getAdj()+" ";
-		allTraits+=tension.getBase()+" "+tension.getMod()+" "+tension.getAdj()+" ";
+		for(PTrait tr : traits){
+			allTraits+=tr.getBase()+" "+tr.getMod()+" "+tr.getAdj()+" ";
+		}
 		
 		return allTraits;
 	}
+	
+	/******************************
+	 * Returns all of the traits for this crust
+	 * @author Michael
+	 ******************************/
+	public PTrait[] getTraits(){ return traits; }
 	
 	/******************************
 	 * Sets all of the traits from formatted file to this Crust
@@ -161,54 +216,12 @@ public class Crust extends Person {
 		first_name = tkn.nextToken();
 		middle_name = tkn.nextToken();
 		last_name = tkn.nextToken();
-		warmth.setBase(Integer.parseInt(tkn.nextToken()));
-		warmth.setMod(Integer.parseInt(tkn.nextToken()));
-		warmth.setAdj(Integer.parseInt(tkn.nextToken()));
-		reasoning.setBase(Integer.parseInt(tkn.nextToken()));
-		reasoning.setMod(Integer.parseInt(tkn.nextToken()));
-		reasoning.setAdj(Integer.parseInt(tkn.nextToken()));
-		emotionalStability.setBase(Integer.parseInt(tkn.nextToken()));
-		emotionalStability.setMod(Integer.parseInt(tkn.nextToken()));
-		emotionalStability.setAdj(Integer.parseInt(tkn.nextToken()));
-		dominance.setBase(Integer.parseInt(tkn.nextToken()));
-		dominance.setMod(Integer.parseInt(tkn.nextToken()));
-		dominance.setAdj(Integer.parseInt(tkn.nextToken()));
-		liveliness.setBase(Integer.parseInt(tkn.nextToken()));
-		liveliness.setMod(Integer.parseInt(tkn.nextToken()));
-		liveliness.setAdj(Integer.parseInt(tkn.nextToken()));
-		ruleConsciousness.setBase(Integer.parseInt(tkn.nextToken()));
-		ruleConsciousness.setMod(Integer.parseInt(tkn.nextToken()));
-		ruleConsciousness.setAdj(Integer.parseInt(tkn.nextToken()));
-		socialBoldness.setBase(Integer.parseInt(tkn.nextToken()));
-		socialBoldness.setMod(Integer.parseInt(tkn.nextToken()));
-		socialBoldness.setAdj(Integer.parseInt(tkn.nextToken()));
-		sensitivity.setBase(Integer.parseInt(tkn.nextToken()));
-		sensitivity.setMod(Integer.parseInt(tkn.nextToken()));
-		sensitivity.setAdj(Integer.parseInt(tkn.nextToken()));
-		vigilance.setBase(Integer.parseInt(tkn.nextToken()));
-		vigilance.setMod(Integer.parseInt(tkn.nextToken()));
-		vigilance.setAdj(Integer.parseInt(tkn.nextToken()));
-		abstractedness.setBase(Integer.parseInt(tkn.nextToken()));
-		abstractedness.setMod(Integer.parseInt(tkn.nextToken()));
-		abstractedness.setAdj(Integer.parseInt(tkn.nextToken()));
-		privateness.setBase(Integer.parseInt(tkn.nextToken()));
-		privateness.setMod(Integer.parseInt(tkn.nextToken()));
-		privateness.setAdj(Integer.parseInt(tkn.nextToken()));
-		apprehensivness.setBase(Integer.parseInt(tkn.nextToken()));
-		apprehensivness.setMod(Integer.parseInt(tkn.nextToken()));
-		apprehensivness.setAdj(Integer.parseInt(tkn.nextToken()));
-		opennessToChange.setBase(Integer.parseInt(tkn.nextToken()));
-		opennessToChange.setMod(Integer.parseInt(tkn.nextToken()));
-		opennessToChange.setAdj(Integer.parseInt(tkn.nextToken()));
-		selfReliance.setBase(Integer.parseInt(tkn.nextToken()));
-		selfReliance.setMod(Integer.parseInt(tkn.nextToken()));
-		selfReliance.setAdj(Integer.parseInt(tkn.nextToken()));
-		perfectionism.setBase(Integer.parseInt(tkn.nextToken()));
-		perfectionism.setMod(Integer.parseInt(tkn.nextToken()));
-		perfectionism.setAdj(Integer.parseInt(tkn.nextToken()));
-		tension.setBase(Integer.parseInt(tkn.nextToken()));
-		tension.setMod(Integer.parseInt(tkn.nextToken()));
-		tension.setAdj(Integer.parseInt(tkn.nextToken()));
+		
+		for(PTrait tr : traits){
+			tr.setBase(Integer.parseInt(tkn.nextToken()));
+			tr.setMod(Integer.parseInt(tkn.nextToken()));
+			tr.setAdj(Integer.parseInt(tkn.nextToken()));
+		}
 	}
 	
 	/******************************
@@ -219,22 +232,22 @@ public class Crust extends Person {
 		System.out.println("Name: " + first_name+" "+middle_name+" "+last_name);
 		System.out.println("Age: " + age);
 		System.out.println("Personality:");
-		System.out.println("\tWarmth = " + warmth.getValue());
-		System.out.println("\tReasoning = " + reasoning.getValue());
-		System.out.println("\tEmotional Stability = " + emotionalStability.getValue());
-		System.out.println("\tDominance = " + dominance.getValue());
-		System.out.println("\tLiveliness = " + liveliness.getValue());
-		System.out.println("\tRule Consciousness = " + ruleConsciousness.getValue());
-		System.out.println("\tSocial Boldness = " + socialBoldness.getValue());
-		System.out.println("\tSensitivity = " + sensitivity.getValue());
-		System.out.println("\tVigilance = " + vigilance.getValue());
-		System.out.println("\tAbstractedness = " + abstractedness.getValue());
-		System.out.println("\tPrivateness = " + privateness.getValue());
-		System.out.println("\tApprehensivness = " + apprehensivness.getValue());
-		System.out.println("\tOpenness to Change = " + opennessToChange.getValue());
-		System.out.println("\tSelf-Reliance = " + selfReliance.getValue());
-		System.out.println("\tPerfectionism = " + perfectionism.getValue());
-		System.out.println("\tTension = " + tension.getValue());
+		System.out.println("\tWarmth = " + traits[traitName.warmth.index].getValue());
+		System.out.println("\tReasoning = " + traits[traitName.reasoning.index].getValue());
+		System.out.println("\tEmotional Stability = " + traits[traitName.emotionalStability.index].getValue());
+		System.out.println("\tDominance = " + traits[traitName.dominance.index].getValue());
+		System.out.println("\tLiveliness = " + traits[traitName.liveliness.index].getValue());
+		System.out.println("\tRule Consciousness = " + traits[traitName.ruleConsciousness.index].getValue());
+		System.out.println("\tSocial Boldness = " + traits[traitName.socialBoldness.index].getValue());
+		System.out.println("\tSensitivity = " + traits[traitName.sensitivity.index].getValue());
+		System.out.println("\tVigilance = " + traits[traitName.vigilance.index].getValue());
+		System.out.println("\tAbstractedness = " + traits[traitName.abstractedness.index].getValue());
+		System.out.println("\tPrivateness = " + traits[traitName.privateness.index].getValue());
+		System.out.println("\tApprehensivness = " + traits[traitName.apprehensivness.index].getValue());
+		System.out.println("\tOpenness to Change = " + traits[traitName.opennessToChange.index].getValue());
+		System.out.println("\tSelf-Reliance = " + traits[traitName.selfReliance.index].getValue());
+		System.out.println("\tPerfectionism = " + traits[traitName.perfectionism.index].getValue());
+		System.out.println("\tTension = " + traits[traitName.tension.index].getValue());
 		
 	}
 	
@@ -267,54 +280,6 @@ public class Crust extends Person {
 	public void set(String trait, String value){
 		
 		switch(trait){
-			case "warmth":
-				warmth.setBase(Integer.parseInt(value));
-				break;
-			case "reasoning":
-				reasoning.setBase(Integer.parseInt(value));
-				break;
-			case "emotionalStability":
-				emotionalStability.setBase(Integer.parseInt(value));
-				break;
-			case "dominance":
-				dominance.setBase(Integer.parseInt(value));
-				break;
-			case "liveliness":
-				liveliness.setBase(Integer.parseInt(value));
-				break;
-			case "ruleConsciousness":
-				ruleConsciousness.setBase(Integer.parseInt(value));
-				break;
-			case "socialBoldness":
-				socialBoldness.setBase(Integer.parseInt(value));
-				break;
-			case "sensitivity":
-				sensitivity.setBase(Integer.parseInt(value));
-				break;
-			case "vigilance":
-				vigilance.setBase(Integer.parseInt(value));
-				break;
-			case "abstractedness":
-				abstractedness.setBase(Integer.parseInt(value));
-				break;
-			case "privateness":
-				privateness.setBase(Integer.parseInt(value));
-				break;
-			case "apprehensivness":
-				apprehensivness.setBase(Integer.parseInt(value));
-				break;
-			case "opennessToChange":
-				opennessToChange.setBase(Integer.parseInt(value));
-				break;
-			case "selfReliance":
-				selfReliance.setBase(Integer.parseInt(value));
-				break;
-			case "perfectionism":
-				perfectionism.setBase(Integer.parseInt(value));
-				break;
-			case "tension":
-				tension.setBase(Integer.parseInt(value));
-				break;
 			case "firstName":
 				first_name = value;
 				break;
@@ -328,8 +293,39 @@ public class Crust extends Person {
 				age = Integer.parseInt(value);
 				break;
 			default:
+				try{
+					traits[traitName.valueOf(trait).index].setBase(Integer.parseInt(value));
+				}catch(Exception e){ }
 				break;
 		}
+	}
+	
+	/******************************
+	 * Sets the trait's adjusted value to whatever is passed in
+	 * @param trait - The name of the trait
+	 * @param value - The value to be given, this is a parsed string
+	 * @author Michael
+	 ******************************/
+	public void setTraitAdj(String trait, String value){
+		
+		//Try to set the adjusted value
+		try{
+			traits[traitName.valueOf(trait).index].setAdj(Integer.parseInt(value));
+		}catch(Exception e){ }
+	}
+	
+	/******************************
+	 * Sets the trait's modified value to whatever is passed in
+	 * @param trait - The name of the trait
+	 * @param value - The value to be given, this is a parsed string
+	 * @author Michael
+	 ******************************/
+	public void setTraitMod(String trait, String value){
+		
+		//Try to set the modified value
+		try{
+			traits[traitName.valueOf(trait).index].setMod(Integer.parseInt(value));
+		}catch(Exception e){ }
 	}
 	
 	/******************************
@@ -341,38 +337,6 @@ public class Crust extends Person {
 	public String get(String trait){
 		
 		switch(trait){
-			case "warmth":
-				return String.valueOf(warmth.getValue());
-			case "reasoning":
-				return String.valueOf(reasoning.getValue());
-			case "emotionalStability":
-				return String.valueOf(emotionalStability.getValue());
-			case "dominance":
-				return String.valueOf(dominance.getValue());
-			case "liveliness":
-				return String.valueOf(liveliness.getValue());
-			case "ruleConsciousness":
-				return String.valueOf(ruleConsciousness.getValue());
-			case "socialBoldness":
-				return String.valueOf(socialBoldness.getValue());
-			case "sensitivity":
-				return String.valueOf(sensitivity.getValue());
-			case "vigilance":
-				return String.valueOf(vigilance.getValue());
-			case "abstractedness":
-				return String.valueOf(abstractedness.getValue());
-			case "privateness":
-				return String.valueOf(privateness.getValue());
-			case "apprehensivness":
-				return String.valueOf(apprehensivness.getValue());
-			case "opennessToChange":
-				return String.valueOf(opennessToChange.getValue());
-			case "selfReliance":
-				return String.valueOf(selfReliance.getValue());
-			case "perfectionism":
-				return String.valueOf(perfectionism.getValue());
-			case "tension":
-				return String.valueOf(tension.getValue());
 			case "firstName":
 				return first_name;
 			case "middleName":
@@ -382,7 +346,9 @@ public class Crust extends Person {
 			case "age":
 				return String.valueOf(age);
 			default:
-				return "Unknown";
+				try{
+					return String.valueOf(traits[traitName.valueOf(trait).index].getValue());
+				}catch(Exception e){ return "Unknown"; }
 		}
 	}
 }

@@ -9,8 +9,3 @@
 *.index
 *org.eclipse*
 
-####################
-# Class Files      #
-####################
-*.class
-
