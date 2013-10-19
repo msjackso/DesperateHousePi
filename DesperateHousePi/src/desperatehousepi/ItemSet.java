@@ -35,28 +35,28 @@ public class ItemSet {
 		//FISH
 		stats.clear();
 		stats.put("Hunger", 25);
-		encyclopedia.put(itemType.FISH, new Item( itemType.FISH, stats));
+		encyclopedia.put(itemType.FISH, new Item( itemType.FISH, stats ));
 		
 		//BED
 		stats.clear();
 		stats.put("Energy", 40);
-		encyclopedia.put(itemType.BED, new Item( itemType.BED, stats));
+		encyclopedia.put(itemType.BED, new Item( itemType.BED, stats ));
 		
 		//COFFEE
 		stats.clear();
 		stats.put("Hunger", 5);
 		stats.put("Energy", 30);
-		encyclopedia.put(itemType.COFFEE, new Item( itemType.COFFEE, stats));
+		encyclopedia.put(itemType.COFFEE, new Item( itemType.COFFEE, stats ));
 		
 		//TV
 		stats.clear();
 		stats.put("Entertainment", 30);
-		encyclopedia.put(itemType.TV, new Item( itemType.TV, stats));
+		encyclopedia.put(itemType.TV, new Item( itemType.TV, stats ));
 		
 		//BALL
 		stats.clear();
 		stats.put("Entertainment", 15);
-		encyclopedia.put(itemType.BALL, new Item( itemType.BALL, stats));
+		encyclopedia.put(itemType.BALL, new Item( itemType.BALL, stats ));
 		
 	}
 	
@@ -69,8 +69,8 @@ public class ItemSet {
 		 *********************************/
 
 		//Initialize variables
-		private itemType item = null; //The name of the item
-		private Map<String, Integer> myStats = new HashMap<String, Integer>();
+		protected itemType item = null; //The name of the item
+		private Map<String, Integer> myStats = new HashMap<String, Integer>(); //Stat container
 		private boolean alive = false;	//Exists?
 		
 		//Constructor
@@ -85,7 +85,12 @@ public class ItemSet {
 		}
 		
 		//Returns how much this item changes the specified need
-		public int getValue(String need){ return myStats.get(need); }
+		public int getValue(String need){ 
+			if( myStats.containsKey(need) )
+				return myStats.get(need);
+			else
+				return -1;
+		}
 		
 		//Prints item name and all the details
 		public void print(){
@@ -110,17 +115,6 @@ public class ItemSet {
 	 ***************************************/
 	public boolean has( itemType itemName ){
 		return( getItem(itemName).alive );
-	}
-	
-	/***************************************
-	 * prints every item object available with stat details.
-	 * @author Mark
-	 ***************************************/
-	public void printSet(){
-		for (itemType item : itemType.values() ){
-			if( getItem(item).alive )
-				getItem(item).print();
-		}
 	}
 	
 	/***************************************

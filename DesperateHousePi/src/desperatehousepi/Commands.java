@@ -1,6 +1,12 @@
 package desperatehousepi;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.StringTokenizer;
+
+import javax.swing.Timer;
+
 import desperatehousepi.ItemSet.itemType;
 
 public class Commands {
@@ -9,6 +15,86 @@ public class Commands {
 	private static Crust crust;
 	private static ItemSet inventory = new ItemSet();
 	private static ActionLog history = new ActionLog();
+	
+	/*********************************
+	 * Crust AI defined here.
+	 * \\note: is there any way we can move this to its own class?
+	 * @author Mark
+	 *********************************/
+	//Initialize crust AI
+	boolean altFlag = true;
+	boolean talkFlag = true;
+	int delay = 0;
+	String bedMsg = "Please make me a BED (;-;)";
+	private ActionListener crustAI = new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e){
+			StringTokenizer tkn;
+			
+			//CASE: Hunger<49
+			if( crust.getNeed("Hunger")<49 ){
+				if( altFlag == true ){
+					System.out.println("I'm hungry.. D:");
+					altFlag = !altFlag;
+				}
+				//See if we have a consumable in our inventory first
+				for( desperatehousepi.ItemSet.Item i : inventory.encyclopedia.values() ){
+					if( i.getValue("Hunger")>0 && inventory.has(i.item) ){
+						tkn = new StringTokenizer(i.item.name());
+						use(tkn);
+						return;
+					}
+				}
+				//If not, go hunting for fish
+				tkn = new StringTokenizer("item fish");
+				create(tkn);
+				//Log hunting experience in history log.txt
+				try {
+					history.logAction("Crust has gone hunting and got FISH");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				//Consume the FISH
+				tkn = new StringTokenizer("fish");
+				use(tkn);
+			}
+			
+			//CASE: Energy<49
+			if( crust.getNeed("Energy")<49 )
+				if( !inventory.has(itemType.BED) ){
+					if( talkFlag ){
+						System.out.println(bedMsg);
+						talkFlag = false;
+					}
+					//this is neccessary so the crust doesn't spam messages
+					delay++;
+					if( delay>10 ){ delay = 0; altFlag=true; talkFlag=true; bedMsg = "Please "+bedMsg; }
+				}
+				else{
+					tkn = new StringTokenizer("BED");
+					use(tkn);
+				}
+			//CASE: Energy<45
+			if( crust.getNeed("Energy")<45 ){
+				//Look for COFFEE
+				tkn = new StringTokenizer("item coffee");
+				create(tkn);
+				//Log that the crust has found COFFEE
+				try {
+					history.logAction("Crust has found COFFEE");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				//Consume the COFFEE
+				tkn = new StringTokenizer("coffee");
+				use(tkn);
+			}
+			//CASE: Entertainment<
+			if( crust.getNeed("Entertainment")<25 )
+				System.out.println("Entertain me, human.");
+		}
+	};
+	/*********************************/
 	
 	//Create objects that commands can alter
 	private static enum objectType{
@@ -138,8 +224,8 @@ public class Commands {
 					if( !tkn.hasMoreTokens() )
 						System.out.println("Invalid command.\nUsage: destroy item [item name]");
 					else{
-						itemType itemTkn = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.destroy( itemTkn );
+						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
+						inventory.destroy( itemName );
 					}	
 					break;
 				/*********************************/
@@ -187,11 +273,16 @@ public class Commands {
 				 *********************************/
 				//If printing item
 				case ITEM:
-					if( !tkn.hasMoreTokens() )
-						inventory.printSet();
+					//command "print item" should print all items that exist
+					if( !tkn.hasMoreTokens() ){
+						for( itemType name : itemType.values() )
+							if( inventory.has(name) )
+								inventory.getItem(name).print();
+					}
+					//command "print item [item name]" should print the specified item, created or not
 					else{
-						itemType itemTkn = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.getItem(itemTkn).print();
+						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
+						inventory.encyclopedia.get(itemName).print();
 					}
 					break;
 				/*********************************/
@@ -229,6 +320,7 @@ public class Commands {
 				//If creating the crust
 				case CRUST:
 					crust = new Crust();
+					new Timer(1000*4, crustAI).start();
 					break;
 					
 				//If creating an item
@@ -242,8 +334,8 @@ public class Commands {
 						return;
 					}else{
 						//Grab name of specified item
-						itemType itemTkn = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.create(itemTkn);
+						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
+						inventory.create( itemName );
 					}
 					break;
 				/**********************************/
@@ -376,7 +468,7 @@ public class Commands {
 			
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: eat [item name]");
+			System.out.println("Invalid command.\nUsage: use [item name]");
 		}
 	}
 }
