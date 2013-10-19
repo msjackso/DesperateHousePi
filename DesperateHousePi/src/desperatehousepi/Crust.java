@@ -236,10 +236,13 @@ public class Crust extends Person {
 		System.out.println("\tPerfectionism = " + perfectionism.getValue());
 		System.out.println("\tTension = " + tension.getValue());
 		
+		/*********************************
+		 * Edited 10/18/13 by Mark
+		 *********************************/
 		System.out.println("Needs: ");
-		System.out.println("\tHunger = " + hunger);
-		System.out.println("\tEnergy = " + energy);
-		System.out.println("\tEntertainment = " + entertainment);
+		for (Need n : Needs){
+			System.out.println("\t" + n.getNeedName() + " = " + n.getNeedLevel());
+		}
 		
 	}
 	

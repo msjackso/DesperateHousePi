@@ -1,6 +1,7 @@
 package desperatehousepi;
 
 import java.util.StringTokenizer;
+import desperatehousepi.ItemSet.itemType;
 
 public class Commands {
 	
@@ -12,11 +13,6 @@ public class Commands {
 	//Create objects that commands can alter
 	private static enum objectType{
 		CRUST, ITEM
-	}
-	
-	//Available items
-	static enum itemType{
-		APPLE, RASBERRY, BED, COFFEE, TV, BALL;
 	}
 
 	/***************************************
@@ -135,8 +131,9 @@ public class Commands {
 					
 
 				//If destroying specified item
-				/***************************************
-				 * @author Mark - case ITEM            */
+				/*********************************
+				 * Edited 10/18/13 by Mark
+				 *********************************/
 				case ITEM:
 					if( !tkn.hasMoreTokens() )
 						System.out.println("Invalid command.\nUsage: destroy item [item name]");
@@ -145,7 +142,7 @@ public class Commands {
 						inventory.destroy( itemTkn );
 					}	
 					break;
-				 /**************************************/
+				/*********************************/
 					
 				//Otherwise object is not meant to be destroyed
 				default:
@@ -185,18 +182,19 @@ public class Commands {
 						System.out.println("No crust available or invalid command.\nUsage: print [object]");
 					break;
 				
-				/***************************************
-				 * @author Mark - case ITEM            */
+				/*********************************
+				 * Edited 10/18/13 by Mark
+				 *********************************/
 				//If printing item
 				case ITEM:
 					if( !tkn.hasMoreTokens() )
 						inventory.printSet();
 					else{
 						itemType itemTkn = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.print( itemTkn );
+						inventory.getItem(itemTkn).print();
 					}
 					break;
-				/**************************************/
+				/*********************************/
 						
 					
 				//Otherwise object is not meant to be printed
@@ -234,11 +232,13 @@ public class Commands {
 					break;
 					
 				//If creating an item
-				/***************************************
-				 * @author Mark - case ITEM            */
+				/*********************************
+				 * Edited 10/18/13 by Mark
+				 *********************************/
 				case ITEM:
 					if( !tkn.hasMoreTokens() ){
-						System.out.println("Items Available: " + inventory.toString() );
+						//Print what items are available
+						System.out.println("Usage: \tcreate item [item name]\nItems Available: " + inventory.toString() );
 						return;
 					}else{
 						//Grab name of specified item
@@ -246,7 +246,7 @@ public class Commands {
 						inventory.create(itemTkn);
 					}
 					break;
-				/**************************************/
+				/**********************************/
 					
 				//Otherwise object is not meant to be created
 				default:
@@ -333,45 +333,7 @@ public class Commands {
 	}
 	
 	/***************************************
-	 * Lets your crust object eat an item object
-	 * @param tkn - A string tokenizer containing the rest of the eat command
-	 * @author Mark and Luke
-	 ***************************************/
-	public void eat(StringTokenizer tkn){
-
-		try{
-			//Check if crust exists
-			if( crust==null ){
-				System.out.println("No crust available.");
-				return;
-			}		
-			
-			//Grab the name of the object to be created
-			itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-			Item food = inventory.getItem( itemName );
-	
-			//Check if food item exists
-			if( !inventory.doWeHave(itemName) ){
-				System.out.println("No " + itemName + " available");
-				return;
-			}
-			//Check if food is actual Hunger-satisfying food
-			if( food.getStat()!="Hunger" )
-				System.out.println("You cannot eat "+food.getName());
-			else{
-				crust.incrementNeed(food.getStat(), food.getValue() );
-				inventory.destroy( itemName );
-				history.logAction("Crust has eaten "+food.getName());
-			}
-
-		//Object not in list or invalid command
-		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: eat [item name]");
-		}
-	}
-	
-	/***************************************
-	 * Lets your crust object use an item object
+	 * Lets your crust object use any item object
 	 * @param tkn - A string tokenizer containing the rest of the eat command
 	 * @author Mark and Luke
 	 ***************************************/
@@ -386,31 +348,35 @@ public class Commands {
 			
 			//Grab the name of the object to be created
 			itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-			Item item = inventory.getItem( itemName );
 	
-			//Check if object item exists
-			if( !inventory.doWeHave(itemName) ){
+			//Check if item exists
+			if( !inventory.has(itemName) ){
 				System.out.println("No " + itemName + " available");
 				return;
 			}
-			//Check if item is NOT Hunger-satisfying food
-			switch ( item.getStat() ){
-				case "Hunger":
-					System.out.println("You cannot use "+item.getName());
-					break;
-				case "Energy":
-					crust.incrementNeed(item.getStat(), item.getValue() );
-					history.logAction("Crust has used "+item.getName());
-					break;
-				case "Entertainment":
-					crust.incrementNeed(item.getStat(), item.getValue() );
-					history.logAction("Crust has used "+item.getName());
-					break;	
+			
+			//Apply item to crust
+			for( String need : inventory.getItem(itemName).getNeeds() ){
+				crust.incrementNeed(need, inventory.getItem(itemName).getValue(need));
 			}
-
+			
+			//Check if item is consumable
+			for( String need : inventory.getItem(itemName).getNeeds() ){
+				if( need=="Hunger" )
+					break;
+				else{
+					//if not, do not destroy
+					history.logAction("Crust has used "+itemName.name());
+					return;
+				}
+			}
+			inventory.destroy(itemName);
+			history.logAction("Crust has consumed "+itemName.name());
+			return;
+			
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: use [item name]");
+			System.out.println("Invalid command.\nUsage: eat [item name]");
 		}
 	}
 }

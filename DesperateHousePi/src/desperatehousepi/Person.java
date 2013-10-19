@@ -23,7 +23,7 @@ public class Person {
 	String last_name = "Smith";
 	int age = 0;
 	
-	private LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
+	protected LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
 	
 	/**********************************
 	 * A generic person class containing general traits to be inherited
@@ -62,7 +62,7 @@ public class Person {
 		
 		//Finds the need in the list of needs, then increments it.
 		for(Need n : Needs) {
-			if (n.getNeedName().equalsIgnoreCase(need_name)) {
+			if ( n.getNeedName()==need_name ) {
 				return n.getNeedLevel();
 			}; 
 		}
@@ -79,16 +79,18 @@ public class Person {
 	/* Increases the hunger level of the person
 	 * Input: the number that hunger will be incremented by
 	 */
+	/*********************************
+	 * Edited 10/18/13 by Mark
+	 *********************************/
 	void incrementNeed(String need_name, int amount) {
-		for(Need n : Needs)
-			if (n.getNeedName().equalsIgnoreCase(need_name)) {
+		for(Need n : Needs){
+			if ( n.getNeedName()==need_name ) {
 				n.incrementNeed(amount);
+				return;
 			}
-		
+		}
 		//If need is not defined.
 		System.out.println("Fatal error. Need '" + need_name + "' not defined.");
 		System.exit(0);
-		
 	}
-	
 }
