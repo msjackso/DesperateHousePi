@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD
+		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT
 	}
 	
 	/***************************************
@@ -109,7 +109,12 @@ public class CommandLine {
 				case LOAD:
 					cmd.load(tkn);
 					return NO_CMD;
-					
+				
+				//Chat with the bot
+				case CHAT:
+					cmd.chat(tkn);
+					return NO_CMD;
+				
 				//Clear the screen
 				case CLEAR:
 					if(tkn.hasMoreTokens())

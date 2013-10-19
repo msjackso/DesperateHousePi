@@ -7,7 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import com.google.code.chatterbotapi.ChatterBot;
+import com.google.code.chatterbotapi.ChatterBotFactory;
+import com.google.code.chatterbotapi.ChatterBotSession;
+import com.google.code.chatterbotapi.ChatterBotType;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -41,6 +47,7 @@ public class Crust extends Person {
 		}
 	}
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
+	private Scanner sc;
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -121,6 +128,49 @@ public class Crust extends Person {
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+	}
+	
+	/*******************************
+	 * Establishes a connection to a cleverbot server and then initates a dialogue with
+	 * the user. No linkage to personality though, just something to waste time. It will
+	 * throw an exception if it cannot connect to the server and print such to the
+	 * console.
+	 * @author Michael
+	 *******************************/
+	public void chat(){
+		
+		//Try to establish a connection to the server
+		try{
+			
+			//Create all of the chatter bot objects
+			ChatterBotFactory chatFactBot = new ChatterBotFactory();
+			ChatterBot chatBot = chatFactBot.create(ChatterBotType.CLEVERBOT);
+			ChatterBotSession chatBotSess = chatBot.createSession();
+			
+			//Create a scanner for reading in from the command line
+			String statement = "";
+			String reply = "";
+			sc = new Scanner(System.in);
+			
+			//Read forever
+			while(true){
+				
+				//Print out prompt for the user
+				System.out.print("\tYou: ");
+				statement = sc.nextLine();
+				
+				//If the user says goodbye then leave
+				if(statement.equals("bye")) break;
+				
+				//Get the reply from the server and print it out
+				reply = chatBotSess.think(statement);
+				System.out.println("\t"+first_name+": "+reply);
+			}
+		
+		//If the server can't be connected to
+		}catch(Exception e){
+			System.out.println("Chatting not available.");
+		}
 	}
 	
 	/******************************

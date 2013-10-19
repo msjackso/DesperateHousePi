@@ -21,6 +21,39 @@ public class Commands {
 	}
 	
 	/***************************************
+	 * Start a conversation with the object passed in
+	 * @param tkn - A string tokenizer containing the rest of the save command
+	 * @author Michael
+	 ***************************************/
+	public void chat(StringTokenizer tkn){
+		
+		//Try to save the object
+		try{
+			
+			//Grab the name of the object to be saved
+			String obj = tkn.nextToken();
+			
+			//Find the object that is to be saved
+			switch(objectType.valueOf(obj.toUpperCase())){
+				
+				//If saving the crust
+				case CRUST:
+					crust.chat();
+					break;
+				
+				//Otherwise object is not meant to be saved
+				default:
+					System.out.println("Invalid command, given object can not be created. Type 'help chat'");
+					break;
+			}
+		
+		//Object not in list or invalid command
+		}catch(Exception e){
+			System.out.println("Invalid command.\nUsage: chat [object]");
+		}
+	}
+	
+	/***************************************
 	 * Saves an object to file to be imported from later
 	 * @param tkn - A string tokenizer containing the rest of the save command
 	 * @author Michael
@@ -54,7 +87,6 @@ public class Commands {
 		}catch(Exception e){
 			System.out.println("Invalid command.\nUsage: save [object] [profile name]");
 		}
-		
 	}
 	
 	/***************************************
