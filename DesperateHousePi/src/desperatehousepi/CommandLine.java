@@ -124,9 +124,9 @@ public class CommandLine {
 						clearConsole();
 					return NO_CMD;
 				
-				//Print out the help prompt
+				//Print out the specified help message
 				case HELP:
-					System.out.println("Not implemented.");
+					cmd.help(tkn);
 					return NO_CMD;
 				
 				//Otherwise function not implemented
