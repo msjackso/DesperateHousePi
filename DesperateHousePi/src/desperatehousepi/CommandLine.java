@@ -126,7 +126,7 @@ public class CommandLine {
 				
 				//Print out the help prompt
 				case HELP:
-					System.out.println("Not implemented.");
+					cmd.help(tkn);
 					return NO_CMD;
 				
 				//Otherwise function not implemented

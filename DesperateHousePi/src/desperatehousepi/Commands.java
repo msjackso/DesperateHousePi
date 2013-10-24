@@ -22,6 +22,30 @@ public class Commands {
 	}
 	
 	/***************************************
+	 * Prints a message explaining the proper usage of the given command
+	 * @param tkn - A string tokenizer containing the command for which to 
+	 * display the help message
+	 * @author Anthony
+	 ***************************************/
+	public void help(StringTokenizer tkn){
+		
+		//String to hold name of command to display infromation for
+		String helpName = "";
+		
+		//create a new HelpText object, which contains all of the actual help messages
+		HelpText ht = new HelpText();
+		
+		//try to grab the name of command to display help info for
+		try{
+			helpName = tkn.nextToken();
+		}catch(Exception e){
+			helpName = "";
+		}
+		//print the appropriate message to the screen
+		System.out.println(ht.displayHelp(helpName));
+		
+	}
+	/***************************************
 	 * Saves an object to file to be imported from later
 	 * @param tkn - A string tokenizer containing the rest of the save command
 	 * @author Michael
