@@ -23,8 +23,12 @@ public class Commands {
 	
 	/***************************************
 <<<<<<< HEAD
+<<<<<<< HEAD
 	 * Prints a message explaining the proper usage of the given command or
 	 * a general help message if no parameter given
+=======
+	 * Prints a message explaining the proper usage of the given command
+>>>>>>> 2365277ac415543f3abd6ac2940b60cde3a91af3
 =======
 	 * Prints a message explaining the proper usage of the given command
 >>>>>>> 2365277ac415543f3abd6ac2940b60cde3a91af3
