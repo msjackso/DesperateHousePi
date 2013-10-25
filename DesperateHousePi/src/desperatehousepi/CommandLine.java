@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, CREATE, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT
+		SET, GET, RANDOM, CUSTOM, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT
 	}
 	
 	/***************************************
@@ -41,7 +41,7 @@ public class CommandLine {
 			command = scan.nextLine();
 			
 			//Parse the command and look for the exit
-			if(parseCommand(command)==EXIT_CMD) break;
+			if(parseCommand(command, scan)==EXIT_CMD) break;
 		}
 		
 		//Stop reading for input and close the scanner
@@ -52,9 +52,9 @@ public class CommandLine {
 	 * Parses through a command, executes any functions associated with command
 	 * @param command - A string to be parsed
 	 * @return A status number, 1 meaning exit and 0 meaning okay
-	 * @author Anthony and Michael
+	 * @author Anthony and Michael; Edited by Anthony 10/16/2013
 	 ***************************************/
-	private static int parseCommand(String command){
+	private static int parseCommand(String command, Scanner scan){
 		
 		//If command is empty just return
 		if(command.equals("")) return NO_CMD;
@@ -90,9 +90,14 @@ public class CommandLine {
 					cmd.print(tkn);
 					return NO_CMD;
 				
-				//Create an object
-				case CREATE:
-					cmd.create(tkn);
+				//Create an object with random default values
+				case RANDOM:
+					cmd.random(tkn);
+					return NO_CMD;
+					
+				//Create an object and prompt user for input values for the object
+				case CUSTOM:
+					cmd.custom(tkn, scan);
 					return NO_CMD;
 				
 				//Destroy an object
@@ -124,9 +129,9 @@ public class CommandLine {
 						clearConsole();
 					return NO_CMD;
 				
-				//Print out the help prompt
+				//Print out the specified help message
 				case HELP:
-					System.out.println("Not implemented.");
+					cmd.help(tkn);
 					return NO_CMD;
 				
 				//Otherwise function not implemented

@@ -1,5 +1,6 @@
 package desperatehousepi;
 
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Commands {
@@ -51,6 +52,32 @@ public class Commands {
 		}catch(Exception e){
 			System.out.println("Invalid command.\nUsage: chat [object]");
 		}
+	}
+	
+	 /***************************************
+	 * Prints a message explaining the proper usage of the given command or
+	 * a general help message if no parameter given
+	 * @param tkn - A string tokenizer containing the command for which to 
+	 * display the help message
+	 * @author Anthony
+	 ***************************************/
+	public void help(StringTokenizer tkn){
+		
+		//String to hold name of command to display infromation for
+		String helpName = "";
+		
+		//create a new HelpText object, which contains all of the actual help messages
+		HelpText ht = new HelpText();
+		
+		//try to grab the name of command to display help info for
+		try{
+			helpName = tkn.nextToken();
+		}catch(Exception e){
+			helpName = "";
+		}
+		//print the appropriate message to the screen
+		System.out.println(ht.displayHelp(helpName));
+		
 	}
 	
 	/***************************************
@@ -210,11 +237,11 @@ public class Commands {
 	}
 	
 	/***************************************
-	 * Creates a new object to be manipulated
-	 * @param tkn - A string tokenizer containing the rest of the create command
+	 * Creates a new object with default constructors
+	 * @param tkn - A string tokenizer containing the rest of the random command
 	 * @author Anthony and Michael
 	 ***************************************/
-	public void create(StringTokenizer tkn){
+	public void random(StringTokenizer tkn){
 		
 		//Try to create the object
 		try{
@@ -230,6 +257,86 @@ public class Commands {
 					crust = new Crust();
 					break;
 				
+				//Otherwise object is not meant to be created
+				default:
+					System.out.println("Invalid command, given object can not be created. Type 'help create'");
+					break;
+			}
+		
+		//Object not in list or invalid command
+		}catch(Exception e){
+			System.out.println("Invalid command.\nUsage: create [object]");
+		}
+	}
+	
+	/***************************************
+	 * Creates a new object and asks user for further input to determine its values
+	 * @param tkn - A string tokenizer containing the rest of the custom command
+	 * @param scan - A Scanner which needs to be passed in from the Commandline calling custom
+	 * @author Anthony
+	 ***************************************/
+	public void custom(StringTokenizer tkn, Scanner scan){
+		
+		//Try to create the object
+		try{
+			
+			//Grab the name of the object to be created
+			String obj = tkn.nextToken();
+			
+			//Find the object that is to be manipulated
+			switch(objectType.valueOf(obj.toUpperCase())){
+				
+				//If creating the crust
+				case CRUST:
+					crust = new Crust();
+					
+					//array to hold all of the trait names
+					String[] traits = {"firstName","middleName", "lastName", "warmth",
+							"reasoning", "emotionalStability", "dominance", "liveliness",
+							"ruleConsciousness", "socialBoldness", "sensitivity",
+							"vigilance", "abstractedness", "privateness", "apprehensivness",
+							"opennessToChange", "selfReliance", "perfectionism", "tension" };
+					
+					//other variable declarations
+					String input = ""; //Input string for storing the user's given value
+					boolean prompted = false;//boolean for displaying second prompt only once
+					
+					//Print instructions
+					System.out.println("Start by naming your Crust,");
+					System.out.println("or type 'cancel' at anytime to exit crust creation.");
+					
+					for(int i = 0; i <= 18; i++){
+						
+						//Print necessary prompts
+						if(i == 3 && !prompted){
+							System.out.println("Now set you Crust's personality traits.");
+							System.out.println("Traits should be an integer between -100 and 100.");
+							prompted = true;
+						}
+						System.out.print("$:");
+						System.out.print(" " + traits[i].toUpperCase() + ": ");
+						
+						
+						//Scan for input
+						input = scan.nextLine();
+						
+						//See if custom creation was cancelled, if so set crust = null and return
+						if(input.equals("cancel")){ 
+							crust = null;
+							return;
+						}
+						
+						//otherwise try to set the trait, recalling this iteration if bad input given
+						try{
+							crust.set(traits[i], input);
+						}catch(Exception e){
+							System.out.println("Traits must be an integer between -100 and 100");
+							i--;
+						}
+						
+					}
+					break;
+					
 				//Otherwise object is not meant to be created
 				default:
 					System.out.println("Invalid command, given object can not be created. Type 'help create'");
