@@ -14,7 +14,7 @@ public class CommandLine {
 	
 	//Create command enumerations
 	private static enum keyCommand{
-		SET, GET, RANDOM, CUSTOM, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT
+		SET, GET, RANDOM, CUSTOM, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT, USE
 	}
 	
 	/***************************************
@@ -133,6 +133,14 @@ public class CommandLine {
 				case HELP:
 					cmd.help(tkn);
 					return NO_CMD;
+					
+				/***************************************
+				 * @author Mark - case USE     */
+				//The crust, if it exists, will use the item specified
+				case USE:
+					cmd.use(tkn);
+					return NO_CMD;
+				/**************************************/
 				
 				//Otherwise function not implemented
 				default:
