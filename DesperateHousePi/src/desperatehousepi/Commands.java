@@ -48,7 +48,7 @@ public class Commands {
 				}
 				//If not, go hunting for fish
 				tkn = new StringTokenizer("item fish");
-				create(tkn);
+				random(tkn);
 				//Log hunting experience in history log.txt
 				try {
 					history.logAction("Crust has gone hunting and got FISH");
@@ -79,7 +79,7 @@ public class Commands {
 			if( crust.getNeed("Energy")<45 ){
 				//Look for COFFEE
 				tkn = new StringTokenizer("item coffee");
-				create(tkn);
+				random(tkn);
 				//Log that the crust has found COFFEE
 				try {
 					history.logAction("Crust has found COFFEE");

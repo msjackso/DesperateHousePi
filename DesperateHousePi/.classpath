@@ -2,11 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/mswjackso/Downloads/chatter-bot-api.jar-1.3/chatter-bot-api.jar"/>
-=======
-	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/jre7/lib/ojdbc7.jar"/>
->>>>>>> User-Story-3.Crust-Management
+	<classpathentry kind="lib" path="C:/Users/Tony/Documents/GitHub/DesperateHousePi/DesperateHousePi/libs/ojdbc7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tony/Documents/GitHub/DesperateHousePi/DesperateHousePi/libs/chatter-bot-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
