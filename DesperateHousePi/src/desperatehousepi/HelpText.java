@@ -10,7 +10,7 @@ public class HelpText {
 
 	//Create command name enumerations
 	private static enum commandName{
-		SET, GET, RANDOM, CUSTOM, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD
+		SET, GET, RANDOM, CUSTOM, DESTROY, PRINT, CLEAR, EXIT, HELP, SAVE, LOAD, CHAT, USE
 	}
 	
 	/***************************************
@@ -103,6 +103,19 @@ public class HelpText {
 						+"loads a crust's names and PTrait values from a file, assuming given file\n"
 						+ "exists.\n"
 						+ "Usage: load [object] [profile name] \n";
+				break;
+			case CHAT:
+				message = "The 'CHAT' command opens up a prompt so that the user can chat with the\n"
+						+ "crust as if chatting with a real person."
+						+ "Usage: chat [object] \n";
+				break;
+			case USE:
+				message = "The 'USE' command lets the crust use objects such as food, beds, coffee,\n"
+						+ "etc, in order to keep it's needs levels at healthy levels. Currently,\n"
+						+ "needs include hunger, energy and entertainment. Items that can be used\n"
+						+ "by the crust include the APPLE, RASBERRY, FISH, BED, COFFEE, TV, and\n"
+						+ "BALL, with each filling the need one would expect in a real person."
+						+ "Usage: USE [item name] \n";
 				break;
 			}
 		}catch(Exception e){
