@@ -8,7 +8,6 @@ log.txt
 # Eclipse metadata #
 ####################
 .pydevproject
-.project
 .metadata
 bin/**
 tmp/**
