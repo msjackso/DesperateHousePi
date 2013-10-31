@@ -12,7 +12,6 @@ public class Person {
 	
 	//Set constants
 	private static final int millSecsInDay = 1000*60*60*24;
-	private static final int millSecsInHour = 1000*60*60;
 	private static final int hungerDecreaseRate = 1000*4; //loses 1 hunger every 4 minutes
 	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
 	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
@@ -50,7 +49,7 @@ public class Person {
 	////////////////////////Access Functions\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	
 	//Returns the age of the person
-	int getAge(){ 
+	public int getAge(){ 
 		return age; 
 	}
 	
@@ -58,7 +57,7 @@ public class Person {
 	 * Input: the name of the need to be checked.
 	 * Output: the new value for the need. If the need is not found in needs.
 	 */ 
-	int getNeed(String need_name){ 
+	public int getNeed(String need_name){ 
 		
 		//Finds the need in the list of needs, then increments it.
 		for(Need n : Needs) {
@@ -82,7 +81,7 @@ public class Person {
 	/*********************************
 	 * Edited 10/18/13 by Mark
 	 *********************************/
-	void incrementNeed(String need_name, int amount) {
+	public void incrementNeed(String need_name, int amount) {
 		for(Need n : Needs){
 			if ( n.getNeedName()==need_name ) {
 				n.incrementNeed(amount);
