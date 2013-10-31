@@ -143,7 +143,7 @@ public class PersonalityTest{
                                                 isValid = false;
                                 }
                         }
-
+                        scan.close();
 
                }
         }
