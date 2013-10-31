@@ -55,7 +55,7 @@ public class Crust extends Person {
 	 * values based on a bell curve.
 	 * @author Anthony and Michael
 	 ******************************/
-	Crust(){
+	public Crust(){
 		for(int x = 0; x<16; x++){
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
@@ -68,7 +68,7 @@ public class Crust extends Person {
 	 * are provided they will be ignored.
 	 * @author Michael
 	 ******************************/
-	Crust(String... names){
+	public Crust(String... names){
 		
 		//Try to set all of the names of the object
 		try{ first_name=names[0]; }catch(Exception e){ }
@@ -90,7 +90,7 @@ public class Crust extends Person {
 	 * 16 integers are provided they will be ignored.
 	 * @author Michael
 	 ******************************/
-	Crust(int... trait_val){
+	public Crust(int... trait_val){
 		
 		//Get the length of the amount of values passed in
 		int length = (trait_val.length>16) ? 16:trait_val.length;
@@ -112,7 +112,7 @@ public class Crust extends Person {
 	 * This constructor is for creating an entire crust sans relationships.
 	 * @author Michael
 	 ******************************/
-	Crust(String firstName, String middleName, String lastName, int... trait_val){
+	public Crust(String firstName, String middleName, String lastName, int... trait_val){
 		
 		//Set names
 		first_name = firstName;
