@@ -12,7 +12,6 @@ public class Person {
 	
 	//Set constants
 	private static final int millSecsInDay = 1000*60*60*24;
-	private static final int millSecsInHour = 1000*60*60;
 	private static final int hungerDecreaseRate = 1000*4; //loses 1 hunger every 4 minutes
 	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
 	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
