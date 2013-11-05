@@ -13,20 +13,23 @@ import desperatehousepi.ItemSet.itemType;
 public class Commands {
 	
 	//Declare variables
+	private static Alerts alerts = new Alerts();
 	private static Crust crust;
 	private static ItemSet inventory = new ItemSet();
 	private static ActionLog history = new ActionLog();
 	
+	private String alertString = "";
 	/*********************************
 	 * Crust AI defined here.
 	 * \\note: is there any way we can move this to its own class?
 	 * @author Mark
+	 * @edit Brad - alerts
 	 *********************************/
 	//Initialize crust AI
 	boolean altFlag = true;
 	boolean talkFlag = true;
 	int delay = 0;
-	String bedMsg = "Please make me a BED (;-;)";
+//	String bedMsg = "Please make me a BED (;-;)";
 	private ActionListener crustAI = new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e){
@@ -35,7 +38,10 @@ public class Commands {
 			//CASE: Hunger<49
 			if( crust.getNeed("Hunger")<49 ){
 				if( altFlag == true ){
-					System.out.println("I'm hungry.. D:");
+					//alert user of need and log it
+					alertString = alerts.hungry(crust);
+                                        history.logAction(alertString);
+                                        System.out.println(alertString);
 					altFlag = !altFlag;
 				}
 				//See if we have a consumable in our inventory first
@@ -64,7 +70,10 @@ public class Commands {
 			if( crust.getNeed("Energy")<49 )
 				if( !inventory.has(itemType.BED) ){
 					if( talkFlag ){
-						System.out.println(bedMsg);
+						//alert user of need and log it
+						alertString = alerts.tired(crust);
+                                                history.logAction(alertString);
+                                                System.out.println(alertString);
 						talkFlag = false;
 					}
 					//this is neccessary so the crust doesn't spam messages
@@ -92,7 +101,11 @@ public class Commands {
 			}
 			//CASE: Entertainment<
 			if( crust.getNeed("Entertainment")<25 )
-				System.out.println("Entertain me, human.");
+				//alert user of need and log it
+				alertString = alerts.bored(crust);
+                                history.logAction(alertString);
+                                System.out.println(alertString);
+
 		}
 	};
 	/*********************************/
@@ -189,6 +202,10 @@ public class Commands {
 				case CRUST:
 					if(tkn.hasMoreTokens())
 						crust.save(tkn.nextToken());
+						//alert user of action and log it
+						alertString = alerts.saved(crust);
+                                                history.logAction(alertString);
+                                                System.out.println(alertString);
 					else
 						System.out.println("Invalid command.\nUsage: save [object] [profile name]");
 					break;
@@ -285,6 +302,10 @@ public class Commands {
 					else{
 						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
 						inventory.destroy( itemName );
+						//alert user of action and log it
+						alertString = alerts.destroyed(itemName);
+                                                history.logAction(alertString);
+                                                System.out.println(alertString);
 					}	
 					break;
 				/*********************************/
@@ -395,6 +416,10 @@ public class Commands {
 						//Grab name of specified item
 						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
 						inventory.create( itemName );
+						//alert user of action and log it
+						alertString = alerts.created(itemName);
+                                                history.logAction(alertString);
+                                                System.out.println(alertString);
 					}
 					break;
 				/**********************************/
@@ -597,12 +622,20 @@ public class Commands {
 					break;
 				else{
 					//if not, do not destroy
-					history.logAction("Crust has used "+itemName.name());
+					//alert user of action and log it
+					alertString = alerts.used(crust, itemName);
+                                        history.logAction(alertString);
+                                        System.out.println(alertString);
+
 					return;
 				}
 			}
 			inventory.destroy(itemName);
-			history.logAction("Crust has consumed "+itemName.name());
+			//alert user of action and log it
+			alertString = alerts.consumed(crust, itemName);
+                        history.logAction(alertString);
+                        System.out.println(alertString);
+
 			return;
 			
 		//Object not in list or invalid command
