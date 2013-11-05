@@ -14,8 +14,6 @@ public class Commands {
 	
 	//Declare variables
 	private static Crust crust;
-	private static ItemSet inventory = new ItemSet();
-	private static ActionLog history = new ActionLog();
 	
 	/*********************************
 	 * Crust AI defined here.
@@ -39,8 +37,8 @@ public class Commands {
 					altFlag = !altFlag;
 				}
 				//See if we have a consumable in our inventory first
-				for( desperatehousepi.ItemSet.Item i : inventory.encyclopedia.values() ){
-					if( i.getValue("Hunger")>0 && inventory.has(i.item) ){
+				for( desperatehousepi.ItemSet.Item i : crust.inventory.encyclopedia.values() ){
+					if( i.getValue("Hunger")>0 && crust.inventory.has(i.item) ){
 						tkn = new StringTokenizer(i.item.name());
 						use(tkn);
 						return;
@@ -51,7 +49,7 @@ public class Commands {
 				random(tkn);
 				//Log hunting experience in history log.txt
 				try {
-					history.logAction("Crust has gone hunting and got FISH");
+					crust.history.logAction("Crust has gone hunting and got FISH");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -62,7 +60,7 @@ public class Commands {
 			
 			//CASE: Energy<49
 			if( crust.getNeed("Energy")<49 )
-				if( !inventory.has(itemType.BED) ){
+				if( !crust.inventory.has(itemType.BED) ){
 					if( talkFlag ){
 						System.out.println(bedMsg);
 						talkFlag = false;
@@ -82,7 +80,7 @@ public class Commands {
 				random(tkn);
 				//Log that the crust has found COFFEE
 				try {
-					history.logAction("Crust has found COFFEE");
+					crust.history.logAction("Crust has found COFFEE");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -128,7 +126,7 @@ public class Commands {
 				
 				//If saving the crust
 				case CRUST:
-					crust.chat();
+					System.out.println("Response: "+crust.chat(tkn.toString()));
 					break;
 				
 				//Otherwise object is not meant to be saved
@@ -284,7 +282,7 @@ public class Commands {
 						System.out.println("Invalid command.\nUsage: destroy item [item name]");
 					else{
 						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.destroy( itemName );
+						crust.inventory.destroy( itemName );
 					}	
 					break;
 				/*********************************/
@@ -335,13 +333,13 @@ public class Commands {
 					//command "print item" should print all items that exist
 					if( !tkn.hasMoreTokens() ){
 						for( itemType name : itemType.values() )
-							if( inventory.has(name) )
-								inventory.getItem(name).print();
+							if( crust.inventory.has(name) )
+								crust.inventory.getItem(name).print();
 					}
 					//command "print item [item name]" should print the specified item, created or not
 					else{
 						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.encyclopedia.get(itemName).print();
+						crust.inventory.encyclopedia.get(itemName).print();
 					}
 					break;
 				/*********************************/
@@ -389,12 +387,12 @@ public class Commands {
 				case ITEM:
 					if( !tkn.hasMoreTokens() ){
 						//Print what items are available
-						System.out.println("Usage: \tcreate item [item name]\nItems Available: " + inventory.toString() );
+						System.out.println("Usage: \tcreate item [item name]\nItems Available: " + crust.inventory.toString() );
 						return;
 					}else{
 						//Grab name of specified item
 						itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-						inventory.create( itemName );
+						crust.inventory.create( itemName );
 					}
 					break;
 				/**********************************/
@@ -577,32 +575,12 @@ public class Commands {
 				return;
 			}		
 			
-			//Grab the name of the object to be created
-			itemType itemName = itemType.valueOf(tkn.nextToken().toUpperCase());
-	
-			//Check if item exists
-			if( !inventory.has(itemName) ){
-				System.out.println("No " + itemName + " available");
-				return;
+			if(crust.use(tkn.nextToken())==Crust.ITEM_USED){
+				System.out.println("Item used.");
+			}else{
+				System.out.println("Item not available.");
 			}
 			
-			//Apply item to crust
-			for( String need : inventory.getItem(itemName).getNeeds() ){
-				crust.incrementNeed(need, inventory.getItem(itemName).getValue(need));
-			}
-			
-			//Check if item is consumable
-			for( String need : inventory.getItem(itemName).getNeeds() ){
-				if( need=="Hunger" )
-					break;
-				else{
-					//if not, do not destroy
-					history.logAction("Crust has used "+itemName.name());
-					return;
-				}
-			}
-			inventory.destroy(itemName);
-			history.logAction("Crust has consumed "+itemName.name());
 			return;
 			
 		//Object not in list or invalid command

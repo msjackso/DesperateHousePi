@@ -14,7 +14,6 @@ public class ActionLog{
     * *******************************/
    public void logAction(String action) throws IOException{
       try{
-    	 System.out.println(action);
          FileWriter fstream = new FileWriter("log.txt", true);
          BufferedWriter log = new BufferedWriter(fstream);
          log.write(action);

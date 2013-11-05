@@ -25,6 +25,10 @@ public class Interest {
 		description = "";
 	}
 	
+	public int getImportance(){
+		return importance;
+	}
+	
 	public String toString(){
 		return (name+": "+importance);
 	}
