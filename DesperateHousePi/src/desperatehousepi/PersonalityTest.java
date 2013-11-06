@@ -3,6 +3,8 @@ package desperatehousepi;
 import java.io.IOException;
 import java.util.Scanner;
 
+import desperatehousepi.Crust.Crust;
+
 public class PersonalityTest{
 
         //*************************************************

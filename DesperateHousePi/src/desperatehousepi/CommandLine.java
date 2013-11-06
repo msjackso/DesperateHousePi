@@ -3,6 +3,8 @@ package desperatehousepi;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import desperatehousepi.Crust.Crust;
+
 public class CommandLine {
 	
 	//Declare constants

@@ -12,10 +12,12 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 
-import desperatehousepi.Crust;
+import desperatehousepi.Crust.Crust;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class CreationWindow {
@@ -261,7 +263,7 @@ public class CreationWindow {
 							Integer.parseInt(privateness.getText()), Integer.parseInt(apprehensivness.getText()), Integer.parseInt(opennessToChange.getText()),
 							Integer.parseInt(selfReliance.getText()), Integer.parseInt(perfectionism.getText()), Integer.parseInt(tension.getText()));
 					creation_frame.setVisible(false);
-					new MainWindow();					
+					try { new MainWindow(newCrust); } catch (FileNotFoundException e) { }					
 					return;
 				}
 			}

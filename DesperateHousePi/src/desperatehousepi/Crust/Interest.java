@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Crust;
 
 public class Interest {
 	
@@ -23,6 +23,10 @@ public class Interest {
 		name = "";
 		importance = 0;
 		description = "";
+	}
+	
+	public int getImportance(){
+		return importance;
 	}
 	
 	public String toString(){

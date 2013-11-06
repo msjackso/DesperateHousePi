@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Crust;
 
 public class Relationship {
 	
@@ -27,6 +27,27 @@ public class Relationship {
 		other = null;
 		value = 0;
 	}
+	
+	/*****************************
+	 * Returns the value of the relationship
+	 * @return The value of this relationship
+	 * @author Michael
+	 */
+	public int getValue(){ return value; }
+	
+	/*****************************
+	 * Returns the owner of the relationship
+	 * @return The owner crust object of this relationship
+	 * @author Michael
+	 */
+	public Crust getOwner(){ return owner; }
+	
+	/*****************************
+	 * Returns the other of the relationship
+	 * @return The other crust object of this relationship
+	 * @author Michael
+	 */
+	public Crust getOther(){ return other; }
 	
 	public String toString(){
 		return (value+":"+owner.first_name+" "+owner.last_name+"->"+other.first_name+" "+other.last_name);

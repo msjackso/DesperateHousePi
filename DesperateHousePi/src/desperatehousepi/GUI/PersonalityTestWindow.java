@@ -14,8 +14,6 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import desperatehousepi.Crust;
-
 import java.awt.Color;
 
 public class PersonalityTestWindow {
@@ -54,8 +52,6 @@ public class PersonalityTestWindow {
 		PTest_frame.setBounds(100, 100, 455, 300);
 		PTest_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		PTest_frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
-		
-		Crust newCrust = new Crust();
 		
 		String[] qArray;
 		qArray  = new String[16];

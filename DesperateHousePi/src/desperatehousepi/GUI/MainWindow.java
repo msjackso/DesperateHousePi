@@ -16,6 +16,15 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.SwingConstants;
 import javax.swing.JProgressBar;
@@ -28,22 +37,36 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.Timer;
 
-import desperatehousepi.Crust;
+import desperatehousepi.Crust.Crust;
+import desperatehousepi.Crust.Interest;
+import desperatehousepi.Crust.Relationship;
+import desperatehousepi.ItemSet.itemType;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class MainWindow {
-
+	
+	private static final int refreshTime = 500;
+	
 	private JFrame frameMain;
 	private Crust crust;
+	private File logFile;
+	private BufferedReader logFileReader;
 	
 	JTabbedPane tabbedPane;
 		JTextArea alertTab;
+		JScrollPane alertTabPane;
 		JTree relationshipTree;
 		JPanel statsTab;
 			JLabel lblStatsTabWarmth;
@@ -81,6 +104,7 @@ public class MainWindow {
 		JList<String> interestTab;
 		JPanel chatTab;
 			JTextArea chatTabChatLog;
+			JTextArea textField;
 			JTextField chatTabSendText;
 			JButton chatTabSendBtn;
 	JPanel crustImage;
@@ -97,20 +121,46 @@ public class MainWindow {
 		JProgressBar entertainmentBar;
 		JLabel lblHunger;
 		JProgressBar hungerBar;
+	JCheckBox chckbxCrustAi;
 	
-	public static void main(String[] args){ new MainWindow(new Crust("Jim","Rayner")); }
+	public static void main(String[] args) throws FileNotFoundException{ new MainWindow(new Crust("Jim","Rayner")); }
 	
-	public MainWindow(Crust c) {
+	public MainWindow(Crust c) throws FileNotFoundException {
 		crust = c;
 		initialize();
 		refreshAll();
+		new Timer(refreshTime, refreshMeEssential).start();
+		new Timer(refreshTime*5, refreshMeAll).start();
 		frameMain.setVisible(true);
 	}
 	
-	private void refreshAll(){
-		refreshCrustInfo();
-	}
+	//ActionListeners
+	private ActionListener refreshMeEssential = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			refreshEssentials();
+	   	}
+	};
 	
+	//ActionListeners
+	private ActionListener refreshMeAll = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			refreshAll();
+	   	}
+	};
+	
+	//Refresh functions
+	private void refreshAll(){
+		refreshRelationships();
+		refreshInterests();
+		refreshEssentials();
+	}
+	private void refreshEssentials(){
+		refreshCrustInfo();
+		refreshCrustStats();
+		try { refreshAlerts(); } catch (IOException e) { }
+	}
 	private void refreshCrustInfo(){
 		
 		//Set the name
@@ -123,25 +173,99 @@ public class MainWindow {
 		energyBar.setValue(crust.getNeed("Energy"));
 		
 		//Set the entertainment
-		energyBar.setValue(crust.getNeed("Entertainment"));
+		entertainmentBar.setValue(crust.getNeed("Entertainment"));
 		
 		//Set the hunger
-		energyBar.setValue(crust.getNeed("Hunger"));
+		hungerBar.setValue(crust.getNeed("Hunger"));
+	}
+	private void refreshCrustStats(){
+		
+		lblStatsTabWarmthVal.setText(crust.get("warmth"));
+		lblStatsTabReasoningVal.setText(crust.get("reasoning"));
+		lblStatsTabEmotionalStabilityVal.setText(crust.get("emotionalStability"));
+		lblStatsTabDominanceVal.setText(crust.get("dominance"));
+		lblStatsTabLivelinessVal.setText(crust.get("liveliness"));
+		lblStatsTabRuleConsciousnessVal.setText(crust.get("ruleConsciousness"));
+		lblStatsTabSocialBoldnessVal.setText(crust.get("socialBoldness"));
+		lblStatsTabSensitivityVal.setText(crust.get("sensitivity"));
+		lblStatsTabVigilanceVal.setText(crust.get("vigilance"));
+		lblStatsTabAbstractednessVal.setText(crust.get("abstractedness"));
+		lblStatsTabPrivatenessVal.setText(crust.get("privateness"));
+		lblStatsTabApprehensivnessVal.setText(crust.get("apprehensivness"));
+		lblStatsTabOpennessToChangeVal.setText(crust.get("opennessToChange"));
+		lblStatsTabSelfRelianceVal.setText(crust.get("selfReliance"));
+		lblStatsTabPerfectionismVal.setText(crust.get("perfectionism"));
+		lblStatsTabTensionVal.setText(crust.get("tension"));
+	}
+	private void refreshRelationships(){
+		
+		relationshipTree.removeAll();
+		
+		DefaultMutableTreeNode relationshipNode =
+		        new DefaultMutableTreeNode("Relationships");
+		
+		DefaultMutableTreeNode friendNode =
+		        new DefaultMutableTreeNode("Friends");
+		DefaultMutableTreeNode acquaintanceNode =
+		        new DefaultMutableTreeNode("Acquaintances");
+		DefaultMutableTreeNode enemyNode =
+		        new DefaultMutableTreeNode("Enemies");
+		
+		relationshipNode.add(friendNode);
+		relationshipNode.add(acquaintanceNode);
+		relationshipNode.add(enemyNode);
+		
+		for(Relationship r : crust.getRelationships()){
+			
+			if(r.getValue()<-25)
+				enemyNode.add(new DefaultMutableTreeNode((r.getOther().get("fullName"))));
+			
+		}
+		
+		relationshipTree = new JTree(relationshipNode);
+	}
+	private void refreshInterests(){
+		
+		interestTab.removeAll();
+		
+		DefaultListModel<String> interestList = new DefaultListModel<String>();
+		
+		for(Interest i : crust.getInterests()){
+			interestList.addElement(i.toString());
+		} 
+		
+		interestTab = new JList<String>(interestList);
+	}
+	private void refreshAlerts() throws IOException{
+		
+		String alertLine = logFileReader.readLine();
+		
+		while(alertLine!=null){
+			alertTab.append(alertLine+"\n");
+			
+			alertLine = logFileReader.readLine();
+		}
+		
+		alertTab.setCaretPosition(alertTab.getDocument().getLength());
 		
 	}
 	
-	
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	//Initialize the whole window
+	private void initialize() throws FileNotFoundException {
+		
+		//Open log file
+		logFile = new File(crust.get("fullName").replace(" ", "_")+"_log.txt");
+		
+		//If it doesn't exist then make it
+		if(!logFile.exists()) try{ logFile.createNewFile(); }catch(Exception e){}
+		logFileReader = new BufferedReader(new FileReader(logFile));
 		
 		//Create the main window
 		frameMain = new JFrame();
 		frameMain.getContentPane().setBackground(Color.GREEN);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/com/sun/java/swing/plaf/motif/icons/DesktopIcon.gif")));
 		frameMain.setTitle("Main");
-		frameMain.setBounds(100, 100, 507, 644);
+		frameMain.setBounds(100, 100, 510, 669);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.getContentPane().setLayout(null);
 		
@@ -176,15 +300,25 @@ public class MainWindow {
 		
 		//Create the give options
 		Vector<String> comboBoxItems=new Vector<String>();
-	    comboBoxItems.add("Apple");
-	    final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(comboBoxItems);
-		JComboBox<String> comboBox = new JComboBox<String>(model);
+	    
+		for(itemType iT : itemType.values()){
+			comboBoxItems.add(iT.name);
+		}
+	    
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(comboBoxItems);
+		final JComboBox<String> comboBox = new JComboBox<String>(model);
 		comboBox.setEditable(true);
 		comboBox.setBounds(10, 238, 134, 20);
 		frameMain.getContentPane().add(comboBox);
 		
 		//Create the give button
 		JButton btnGive = new JButton("Give");
+		btnGive.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				crust.give(comboBox.getSelectedItem().toString());
+				crust.use(comboBox.getSelectedItem().toString());
+			}
+		});
 		btnGive.setBounds(143, 238, 89, 20);
 		frameMain.getContentPane().add(btnGive);
 		
@@ -193,10 +327,27 @@ public class MainWindow {
 		frameMain.setJMenuBar(menuBar);
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
+		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                try {
+					crust.save();
+				} catch (IOException e) { }
+            }
+        });
 		mnFile.add(mntmSave);
+		
+		chckbxCrustAi = new JCheckBox("Crust AI");
+		chckbxCrustAi.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				crust.crustAI.setSelfThink(chckbxCrustAi.isSelected());
+			}
+		});
+		menuBar.add(chckbxCrustAi);
 	}
 	
+	//Generate the initial values
 	private void createStatsTabLabels(){
 		
 		//Create warmth labels
@@ -327,34 +478,53 @@ public class MainWindow {
 		lblStatsTabTensionVal.setBounds(428, 186, 48, 14);
 		statsTab.add(lblStatsTabTensionVal);
 	}
-	
 	private void createChatTab(){
 		
 		//Create the log to hold past statements
-		chatTabChatLog = new JTextArea();
-		chatTabChatLog.setEditable(false);
+		textField = new JTextArea();
+		JScrollPane chatTabChatLog = new JScrollPane (textField, 
+				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		textField.setLineWrap(true);
+		textField.setEditable(false);
 		chatTabChatLog.setBounds(0, 0, 486, 172);
 		chatTab.add(chatTabChatLog);
 		
 		//Create the field for user input
 		chatTabSendText = new JTextField();
+		chatTabSendText.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                	textField.append("You: "+chatTabSendText.getText()+"\n");
+                	textField.append(crust.get("firstName")+": "+crust.chat(chatTabSendText.getText())+"\n");
+    				chatTabSendText.setText("");
+                }
+            }
+		});
 		chatTabSendText.setBounds(0, 183, 404, 29);
 		chatTab.add(chatTabSendText);
 		chatTabSendText.setColumns(10);
 		
 		//Create the button to send chats
 		chatTabSendBtn = new JButton("Send");
+		chatTabSendBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField.append("You: "+chatTabSendText.getText()+"\n");
+				textField.append(crust.get("firstName")+": "+crust.chat(chatTabSendText.getText())+"\n");
+				chatTabSendText.setText("");
+			}
+		});
 		chatTabSendBtn.setBounds(405, 183, 81, 29);
 		chatTab.add(chatTabSendBtn);
 		
 	}
-	
 	private void createTabs(){
 		
 		//Create the tab for alerts
 		alertTab = new JTextArea();
+		alertTabPane = new JScrollPane (alertTab, 
+				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		alertTab.setEditable(false);
-		tabbedPane.addTab("Alerts", null, alertTab, null);
+		tabbedPane.addTab("Alerts", null, alertTabPane, null);
 		tabbedPane.setEnabledAt(0, true);
 		
 		//Create the tab for relationships
@@ -395,7 +565,6 @@ public class MainWindow {
 		chatTab.setLayout(null);
 		createChatTab();
 	}
-	
 	private void createCrustInfo(){
 		
 		//Create the name label

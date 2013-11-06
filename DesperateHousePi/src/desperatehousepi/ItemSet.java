@@ -12,13 +12,18 @@ public class ItemSet {
 	 * @author Mark and Luke
 	 *********************************/
 	//Available items
-	static enum itemType{
-		APPLE, RASBERRY, FISH, BED, COFFEE, TV, BALL;
+	public static enum itemType{
+		APPLE("APPLE"), RASBERRY("RASBERRY"), FISH("FISH"), BED("BED"), COFFEE("COFFEE"), TV("TV"), BALL("BALL");
+		
+		public String name;
+		itemType(String n){
+			name = n;
+		}
 	}
 	
-	EnumMap<itemType,Item> encyclopedia = new EnumMap<itemType,Item>(itemType.class);
+	public EnumMap<itemType,Item> encyclopedia = new EnumMap<itemType,Item>(itemType.class);
 	
-	ItemSet(){
+	public ItemSet(){
 		//Initialize Item Definitions
 		Map<String, Integer> stats = new HashMap<String, Integer>();
 		
@@ -69,7 +74,7 @@ public class ItemSet {
 		 *********************************/
 
 		//Initialize variables
-		protected itemType item = null; //The name of the item
+		public itemType item = null; //The name of the item
 		private Map<String, Integer> myStats = new HashMap<String, Integer>(); //Stat container
 		private boolean alive = false;	//Exists?
 		
@@ -135,7 +140,7 @@ public class ItemSet {
 	 ***************************************/
 	public void create( itemType itemName ){
 		if( getItem(itemName).alive)
-			System.out.println(itemName.name()+" already exists");
+			return;
 		else
 			getItem(itemName).alive = true;
 	}
