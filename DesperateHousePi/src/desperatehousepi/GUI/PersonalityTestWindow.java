@@ -26,27 +26,13 @@ public class PersonalityTestWindow {
 
 	private JFrame PTest_frame;
 	JTextArea question;
+	JTextArea heading;
 	
 	Crust newCrust = new Crust();
 	int currentTrait = 0;
 	String[] tArray;
 	String[] qArray;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PersonalityTestWindow window = new PersonalityTestWindow();
-					window.PTest_frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -66,7 +52,7 @@ public class PersonalityTestWindow {
 		PTest_frame.setForeground(Color.RED);
 		PTest_frame.setBackground(Color.RED);
 		PTest_frame.setTitle("Personality Test");
-		PTest_frame.setBounds(100, 100, 455, 300);
+		PTest_frame.setBounds(100, 100, 700, 400);
 		PTest_frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		PTest_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -118,23 +104,24 @@ public class PersonalityTestWindow {
 		
         
         JButton instructionsBtn = new JButton("Instructions");
-		instructionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		instructionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		instructionsBtn.setBackground(Color.RED);
 		instructionsBtn.setForeground(Color.WHITE);
-		instructionsBtn.setBounds(340, 11, 89, 23);
+		instructionsBtn.setBounds(531, 11, 143, 62);
 		panel.add(instructionsBtn);
 		
 		JButton minusFiveBtn = new JButton("-5");
 		minusFiveBtn.setBackground(Color.RED);
 		minusFiveBtn.setForeground(Color.WHITE);
-		minusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		minusFiveBtn.setBounds(10, 227, 39, 23);
+		minusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		minusFiveBtn.setBounds(10, 307, 60, 43);
 		minusFiveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], -5);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(minusFiveBtn);
@@ -142,14 +129,15 @@ public class PersonalityTestWindow {
 		JButton minusFourBtn = new JButton("-4");
 		minusFourBtn.setBackground(Color.RED);
 		minusFourBtn.setForeground(Color.WHITE);
-		minusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		minusFourBtn.setBounds(48, 227, 39, 23);
+		minusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		minusFourBtn.setBounds(70, 307, 60, 43);
 		minusFourBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], -4);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(minusFourBtn);
@@ -157,14 +145,15 @@ public class PersonalityTestWindow {
 		JButton minusThreeBtn = new JButton("-3");
 		minusThreeBtn.setBackground(Color.RED);
 		minusThreeBtn.setForeground(Color.WHITE);
-		minusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		minusThreeBtn.setBounds(86, 227, 39, 23);
+		minusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		minusThreeBtn.setBounds(130, 307, 60, 43);
 		minusThreeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], -3);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(minusThreeBtn);
@@ -172,14 +161,15 @@ public class PersonalityTestWindow {
 		JButton minusTwoBtn = new JButton("-2");
 		minusTwoBtn.setBackground(Color.RED);
 		minusTwoBtn.setForeground(Color.WHITE);
-		minusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		minusTwoBtn.setBounds(124, 227, 39, 23);
+		minusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		minusTwoBtn.setBounds(190, 307, 60, 43);
 		minusTwoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], -2);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(minusTwoBtn);
@@ -187,14 +177,15 @@ public class PersonalityTestWindow {
 		JButton minusOneBtn = new JButton("-1");
 		minusOneBtn.setBackground(Color.RED);
 		minusOneBtn.setForeground(Color.WHITE);
-		minusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		minusOneBtn.setBounds(162, 227, 39, 23);
+		minusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		minusOneBtn.setBounds(250, 307, 60, 43);
 		minusOneBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], -1);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(minusOneBtn);
@@ -202,14 +193,15 @@ public class PersonalityTestWindow {
 		JButton zeroBtn = new JButton("0");
 		zeroBtn.setBackground(Color.RED);
 		zeroBtn.setForeground(Color.WHITE);
-		zeroBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		zeroBtn.setBounds(200, 227, 39, 23);
+		zeroBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		zeroBtn.setBounds(310, 307, 60, 43);
 		zeroBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 0);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(zeroBtn);
@@ -217,14 +209,15 @@ public class PersonalityTestWindow {
 		JButton plusOneBtn = new JButton("1");
 		plusOneBtn.setBackground(Color.RED);
 		plusOneBtn.setForeground(Color.WHITE);
-		plusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		plusOneBtn.setBounds(238, 227, 39, 23);
+		plusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		plusOneBtn.setBounds(370, 307, 60, 43);
 		plusOneBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 1);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(plusOneBtn);
@@ -232,14 +225,15 @@ public class PersonalityTestWindow {
 		JButton plusTwoBtn = new JButton("2");
 		plusTwoBtn.setBackground(Color.RED);
 		plusTwoBtn.setForeground(Color.WHITE);
-		plusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		plusTwoBtn.setBounds(276, 227, 39, 23);
+		plusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		plusTwoBtn.setBounds(430, 307, 60, 43);
 		plusTwoBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 2);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(plusTwoBtn);
@@ -247,14 +241,15 @@ public class PersonalityTestWindow {
 		JButton plusThreeBtn = new JButton("3");
 		plusThreeBtn.setBackground(Color.RED);
 		plusThreeBtn.setForeground(Color.WHITE);
-		plusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		plusThreeBtn.setBounds(314, 227, 39, 23);
+		plusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		plusThreeBtn.setBounds(490, 307, 60, 43);
 		plusThreeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 3);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(plusThreeBtn);
@@ -262,14 +257,15 @@ public class PersonalityTestWindow {
 		JButton plusFourBtn = new JButton("4");
 		plusFourBtn.setBackground(Color.RED);
 		plusFourBtn.setForeground(Color.WHITE);
-		plusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		plusFourBtn.setBounds(352, 227, 39, 23);
+		plusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		plusFourBtn.setBounds(550, 307, 60, 43);
 		plusFourBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 4);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(plusFourBtn);
@@ -277,23 +273,31 @@ public class PersonalityTestWindow {
 		JButton plusFiveBtn = new JButton("5");
 		plusFiveBtn.setBackground(Color.RED);
 		plusFiveBtn.setForeground(Color.WHITE);
-		plusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 6));
-		plusFiveBtn.setBounds(390, 227, 39, 23);
+		plusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		plusFiveBtn.setBounds(610, 307, 60, 43);
 		plusFiveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setFromTest(newCrust, tArray[currentTrait], 5);
 				currentTrait++;
 				isFinished(currentTrait);
 				question.setText(qArray[currentTrait]);
+				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
 		panel.add(plusFiveBtn);
 		
+		heading = new JTextArea("Question #" + String.valueOf(currentTrait+1));
+		heading.setLineWrap(true);
+		heading.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		heading.setBackground(Color.GREEN);
+		heading.setBounds(10, 14, 318, 57);
+		panel.add(heading);
+		
 		question = new JTextArea(qArray[currentTrait]);
 		question.setLineWrap(true);
 		question.setBackground(Color.GREEN);
-		question.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		question.setBounds(10, 36, 419, 180);
+		question.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		question.setBounds(10, 98, 660, 198);
 		panel.add(question);	
 		
 	}
@@ -307,6 +311,7 @@ public class PersonalityTestWindow {
 		if(c == 16){
 			PTest_frame.setVisible(false);
 			new CreationWindow(newCrust);
+			currentTrait--;
 			return;
 		}
 		return;
