@@ -23,14 +23,26 @@ import java.util.Random;
 public class CreationWindow {
 
 	private JFrame creation_frame;
-	
+	private Crust newCrust;
 
 	/**
-	 * Create the application.
+	 * Open window to create new Crust
+	 * @wbp.parser.constructor 
 	 */
 	public CreationWindow() {
+		newCrust = new Crust();
 		initialize();
 		creation_frame.setVisible(true);
+	}
+	
+	/**************************************
+	 * Pass in an existing Crust, used with personality test
+	 * @param c - Crust object to pass in
+	 **************************************/
+	public CreationWindow(Crust c){
+		newCrust = c;
+		initialize();
+		creation_frame.setVisible(true);	
 	}
 
 	/**
@@ -134,8 +146,27 @@ public class CreationWindow {
 		tension.setBounds(361, 410, 80, 20);
 		panel.add(tension);
 		
+		//set values of tdxt fields given newCrust object
+		warmth.setText(newCrust.get("warmth"));
+		reasoning.setText(newCrust.get("reasoning"));
+		emotionalStability.setText(newCrust.get("emotionalStability"));
+		dominance.setText(newCrust.get("dominance"));
+		liveliness.setText(newCrust.get("liveliness"));
+		ruleConsciousness.setText(newCrust.get("ruleConsciousness"));
+		socialBoldness.setText(newCrust.get("socialBoldness"));
+		sensitivity.setText(newCrust.get("sensitivity"));
+		vigilance.setText(newCrust.get("vigilance"));
+		abstractedness.setText(newCrust.get("abstractedness"));
+		privateness.setText(newCrust.get("privateness"));
+		apprehensivness.setText(newCrust.get("apprehensivness"));
+		opennessToChange.setText(newCrust.get("opennessToChange"));
+		selfReliance.setText(newCrust.get("selfReliance"));
+		perfectionism.setText(newCrust.get("perfectionism"));
+		tension.setText(newCrust.get("tension"));
+		
 		//Button for clearing trait values from text boxes
 		JButton clearBtn = new JButton("Clear");
+		clearBtn.setToolTipText("Clear personality trait values");
 		clearBtn.setForeground(Color.WHITE);
 		clearBtn.setBackground(Color.RED);
 		clearBtn.addActionListener(new ActionListener() {
@@ -168,6 +199,7 @@ public class CreationWindow {
 		
 		//button for giving traits random values in text boxes
 		JButton randomBtn = new JButton("Randomize");
+		randomBtn.setToolTipText("Set personality trait values randomly");
 		randomBtn.setForeground(Color.WHITE);
 		randomBtn.setBackground(Color.RED);
 		randomBtn.addActionListener(new ActionListener() {
@@ -200,10 +232,12 @@ public class CreationWindow {
 		
 		//Button opens new personality test window
 		JButton testBtn = new JButton("Take PF Test");
+		testBtn.setToolTipText("Take a personality test to determine base trait values");
 		testBtn.setForeground(Color.WHITE);
 		testBtn.setBackground(Color.RED);
 		testBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				creation_frame.setVisible(false);
 				new PersonalityTestWindow();
 			}
 		});
@@ -213,6 +247,7 @@ public class CreationWindow {
 		
 		//Button to create crust with given traits
 		JButton createBtn = new JButton("Create Crust");
+		createBtn.setToolTipText("Create a new Crust with given traits");
 		createBtn.setForeground(Color.WHITE);
 		createBtn.setBackground(Color.RED);
 		createBtn.addActionListener(new ActionListener() {
@@ -263,7 +298,7 @@ public class CreationWindow {
 							Integer.parseInt(privateness.getText()), Integer.parseInt(apprehensivness.getText()), Integer.parseInt(opennessToChange.getText()),
 							Integer.parseInt(selfReliance.getText()), Integer.parseInt(perfectionism.getText()), Integer.parseInt(tension.getText()));
 					creation_frame.setVisible(false);
-					try { new MainWindow(newCrust); } catch (FileNotFoundException e) { }					
+					try { new MainWindow(newCrust); } catch (FileNotFoundException e) { }							
 					return;
 				}
 			}
