@@ -25,6 +25,7 @@ public class CreationWindow {
 
 	/**
 	 * Open window to create new Crust
+	 * @wbp.parser.constructor 
 	 */
 	public CreationWindow() {
 		newCrust = new Crust();
@@ -163,6 +164,7 @@ public class CreationWindow {
 		
 		//Button for clearing trait values from text boxes
 		JButton clearBtn = new JButton("Clear");
+		clearBtn.setToolTipText("Clear personality trait values");
 		clearBtn.setForeground(Color.WHITE);
 		clearBtn.setBackground(Color.RED);
 		clearBtn.addActionListener(new ActionListener() {
@@ -195,6 +197,7 @@ public class CreationWindow {
 		
 		//button for giving traits random values in text boxes
 		JButton randomBtn = new JButton("Randomize");
+		randomBtn.setToolTipText("Set personality trait values randomly");
 		randomBtn.setForeground(Color.WHITE);
 		randomBtn.setBackground(Color.RED);
 		randomBtn.addActionListener(new ActionListener() {
@@ -227,6 +230,7 @@ public class CreationWindow {
 		
 		//Button opens new personality test window
 		JButton testBtn = new JButton("Take PF Test");
+		testBtn.setToolTipText("Take a personality test to determine base trait values");
 		testBtn.setForeground(Color.WHITE);
 		testBtn.setBackground(Color.RED);
 		testBtn.addActionListener(new ActionListener() {
@@ -241,6 +245,7 @@ public class CreationWindow {
 		
 		//Button to create crust with given traits
 		JButton createBtn = new JButton("Create Crust");
+		createBtn.setToolTipText("Create a new Crust with given traits");
 		createBtn.setForeground(Color.WHITE);
 		createBtn.setBackground(Color.RED);
 		createBtn.addActionListener(new ActionListener() {

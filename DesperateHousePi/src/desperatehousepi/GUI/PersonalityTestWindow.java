@@ -1,7 +1,6 @@
 package desperatehousepi.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,9 +11,6 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 
 import java.awt.Font;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import desperatehousepi.Crust;
 
@@ -35,19 +31,19 @@ public class PersonalityTestWindow {
 
 
 	/**
-	 * Create the application.
+	 * Opens up personality test window
 	 */
 	public PersonalityTestWindow() {
-	
 		initialize();
 		PTest_frame.setVisible(true);
-		
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the Personality Test Window
 	 */
 	private void initialize() {
+		
+		//initialize frame
 		PTest_frame = new JFrame();
 		PTest_frame.setForeground(Color.RED);
 		PTest_frame.setBackground(Color.RED);
@@ -56,14 +52,16 @@ public class PersonalityTestWindow {
 		PTest_frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		PTest_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//initialize panel
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GREEN);
 		PTest_frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
+		//initialize Crust object
 		newCrust = new Crust();
 		
-		 // tArray holds the String name for the 16 traits
+		//Initialize tArray to hold the String name for the 16 traits
         tArray = new String[16];
         tArray[0] = "privateness";
         tArray[1] = "abstractedness";
@@ -83,7 +81,7 @@ public class PersonalityTestWindow {
         tArray[15] = "warmth";
 
 
-        //qArray contains each of the questions to ask the user
+        //Initialize qArray to contain each of the questions to ask the user
         qArray  = new String[16];
         qArray[0] = "I prefer to be around others (-5) \nOR I prefer to be alone (5)\n";
         qArray[1] = "I am a practical thinker (-5) \nOR I am very imaginative (5) \n";
@@ -102,14 +100,23 @@ public class PersonalityTestWindow {
         qArray[14] = "People are generally good (-5) \nOR People are generally bad (5) \n";
         qArray[15] = "I am reserved (-5) \nOR I am outgoing (5) \n";
 		
-        
+        //initialize button for displaying Test instructions
         JButton instructionsBtn = new JButton("Instructions");
+        instructionsBtn.setToolTipText("Display Personality Test Instructions");
 		instructionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		instructionsBtn.setBackground(Color.RED);
 		instructionsBtn.setForeground(Color.WHITE);
 		instructionsBtn.setBounds(531, 11, 143, 62);
 		panel.add(instructionsBtn);
 		
+		/**********************************************
+		 * Initialize buttons for answering questions
+		 * as well as their associated listeners, which
+		 * set button value to newCrust, check if test is done,
+		 * and update heading and question if not.
+		 **********************************************/
+		
+		//-5 button
 		JButton minusFiveBtn = new JButton("-5");
 		minusFiveBtn.setBackground(Color.RED);
 		minusFiveBtn.setForeground(Color.WHITE);
@@ -126,6 +133,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(minusFiveBtn);
 		
+		//-4 button
 		JButton minusFourBtn = new JButton("-4");
 		minusFourBtn.setBackground(Color.RED);
 		minusFourBtn.setForeground(Color.WHITE);
@@ -142,6 +150,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(minusFourBtn);
 		
+		//-3 button
 		JButton minusThreeBtn = new JButton("-3");
 		minusThreeBtn.setBackground(Color.RED);
 		minusThreeBtn.setForeground(Color.WHITE);
@@ -158,6 +167,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(minusThreeBtn);
 		
+		//-2 button
 		JButton minusTwoBtn = new JButton("-2");
 		minusTwoBtn.setBackground(Color.RED);
 		minusTwoBtn.setForeground(Color.WHITE);
@@ -174,6 +184,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(minusTwoBtn);
 		
+		//-1 button
 		JButton minusOneBtn = new JButton("-1");
 		minusOneBtn.setBackground(Color.RED);
 		minusOneBtn.setForeground(Color.WHITE);
@@ -190,6 +201,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(minusOneBtn);
 		
+		//zero button
 		JButton zeroBtn = new JButton("0");
 		zeroBtn.setBackground(Color.RED);
 		zeroBtn.setForeground(Color.WHITE);
@@ -206,6 +218,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(zeroBtn);
 		
+		//1 button
 		JButton plusOneBtn = new JButton("1");
 		plusOneBtn.setBackground(Color.RED);
 		plusOneBtn.setForeground(Color.WHITE);
@@ -222,6 +235,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(plusOneBtn);
 		
+		//two button
 		JButton plusTwoBtn = new JButton("2");
 		plusTwoBtn.setBackground(Color.RED);
 		plusTwoBtn.setForeground(Color.WHITE);
@@ -238,6 +252,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(plusTwoBtn);
 		
+		//three button
 		JButton plusThreeBtn = new JButton("3");
 		plusThreeBtn.setBackground(Color.RED);
 		plusThreeBtn.setForeground(Color.WHITE);
@@ -254,6 +269,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(plusThreeBtn);
 		
+		//four button
 		JButton plusFourBtn = new JButton("4");
 		plusFourBtn.setBackground(Color.RED);
 		plusFourBtn.setForeground(Color.WHITE);
@@ -270,6 +286,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(plusFourBtn);
 		
+		//five button
 		JButton plusFiveBtn = new JButton("5");
 		plusFiveBtn.setBackground(Color.RED);
 		plusFiveBtn.setForeground(Color.WHITE);
@@ -286,6 +303,7 @@ public class PersonalityTestWindow {
 		});
 		panel.add(plusFiveBtn);
 		
+		//initialize question heading
 		heading = new JTextArea("Question #" + String.valueOf(currentTrait+1));
 		heading.setLineWrap(true);
 		heading.setFont(new Font("Tahoma", Font.PLAIN, 32));
@@ -293,6 +311,7 @@ public class PersonalityTestWindow {
 		heading.setBounds(10, 14, 318, 57);
 		panel.add(heading);
 		
+		//initialize question text area
 		question = new JTextArea(qArray[currentTrait]);
 		question.setLineWrap(true);
 		question.setBackground(Color.GREEN);
@@ -307,6 +326,7 @@ public class PersonalityTestWindow {
 		c.set(t, String.valueOf(v));
 	}
 	
+	//check to see if test is done, if it is exit this window and pass the trait values via newCrust
 	public void isFinished(int c){
 		if(c == 16){
 			PTest_frame.setVisible(false);
