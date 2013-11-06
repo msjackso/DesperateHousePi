@@ -74,7 +74,7 @@ public class ItemSet {
 		 *********************************/
 
 		//Initialize variables
-		protected itemType item = null; //The name of the item
+		public itemType item = null; //The name of the item
 		private Map<String, Integer> myStats = new HashMap<String, Integer>(); //Stat container
 		private boolean alive = false;	//Exists?
 		

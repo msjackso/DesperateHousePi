@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Crust;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +14,7 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 
+import desperatehousepi.ItemSet;
 import desperatehousepi.ItemSet.itemType;
 
 /******************************
@@ -52,7 +53,8 @@ public class Crust extends Person {
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
 	public ItemSet inventory = new ItemSet();
-	public ActionLog history = new ActionLog();
+	public ActionLog history = new ActionLog(this);
+	public CrustAI crustAI;
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -65,6 +67,8 @@ public class Crust extends Person {
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -85,6 +89,7 @@ public class Crust extends Person {
 			traits[x].setRandomTrait();
 		}
 		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -106,6 +111,8 @@ public class Crust extends Person {
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -133,6 +140,8 @@ public class Crust extends Person {
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/*******************************
@@ -174,10 +183,10 @@ public class Crust extends Person {
 	 * @author Michael
 	 * @throws IOException 
 	 ******************************/
-	public void save(String filename) throws IOException{
+	public void save() throws IOException{
 		
 		//Open saveFile
-		File saveFile = new File(filename+".crust");
+		File saveFile = new File(get("fullName").replace(" ", "_")+".crust");
 		
 		//If file doesn't exist then create it
 		if(!saveFile.exists())
@@ -314,7 +323,7 @@ public class Crust extends Person {
 	 * @param item - The string containing the name of the item
 	 * @throws IOException if the action can't be logged
 	 */
-	public int use(String item) throws IOException{
+	public int use(String item){
 		
 		//Grab the name of the object to be created
 		itemType itemName = itemType.valueOf(item.toUpperCase());

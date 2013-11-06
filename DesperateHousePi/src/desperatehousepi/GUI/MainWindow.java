@@ -47,10 +47,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
-import desperatehousepi.Crust;
-import desperatehousepi.Interest;
-import desperatehousepi.Relationship;
+import desperatehousepi.Crust.Crust;
+import desperatehousepi.Crust.Interest;
+import desperatehousepi.Crust.Relationship;
 import desperatehousepi.ItemSet.itemType;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class MainWindow {
 	
@@ -63,6 +66,7 @@ public class MainWindow {
 	
 	JTabbedPane tabbedPane;
 		JTextArea alertTab;
+		JScrollPane alertTabPane;
 		JTree relationshipTree;
 		JPanel statsTab;
 			JLabel lblStatsTabWarmth;
@@ -117,6 +121,7 @@ public class MainWindow {
 		JProgressBar entertainmentBar;
 		JLabel lblHunger;
 		JProgressBar hungerBar;
+	JCheckBox chckbxCrustAi;
 	
 	public static void main(String[] args) throws FileNotFoundException{ new MainWindow(new Crust("Jim","Rayner")); }
 	
@@ -124,25 +129,32 @@ public class MainWindow {
 		crust = c;
 		initialize();
 		refreshAll();
-		new Timer(refreshTime, refreshMe).start();
+		new Timer(refreshTime, refreshMeEssential).start();
+		new Timer(refreshTime*5, refreshMeAll).start();
 		frameMain.setVisible(true);
 	}
 	
 	//ActionListeners
-	private ActionListener refreshMe = new ActionListener() {
+	private ActionListener refreshMeEssential = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			refreshEssentials();
 	   	}
 	};
 	
+	//ActionListeners
+	private ActionListener refreshMeAll = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			refreshAll();
+	   	}
+	};
+	
 	//Refresh functions
 	private void refreshAll(){
-		refreshCrustInfo();
-		refreshCrustStats();
 		refreshRelationships();
 		refreshInterests();
-		try { refreshAlerts(); } catch (IOException e) {}
+		refreshEssentials();
 	}
 	private void refreshEssentials(){
 		refreshCrustInfo();
@@ -230,8 +242,11 @@ public class MainWindow {
 		
 		while(alertLine!=null){
 			alertTab.append(alertLine+"\n");
+			
 			alertLine = logFileReader.readLine();
 		}
+		
+		alertTab.setCaretPosition(alertTab.getDocument().getLength());
 		
 	}
 	
@@ -239,7 +254,10 @@ public class MainWindow {
 	private void initialize() throws FileNotFoundException {
 		
 		//Open log file
-		logFile = new File("log.txt");
+		logFile = new File(crust.get("fullName").replace(" ", "_")+"_log.txt");
+		
+		//If it doesn't exist then make it
+		if(!logFile.exists()) try{ logFile.createNewFile(); }catch(Exception e){}
 		logFileReader = new BufferedReader(new FileReader(logFile));
 		
 		//Create the main window
@@ -298,9 +316,7 @@ public class MainWindow {
 		btnGive.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				crust.give(comboBox.getSelectedItem().toString());
-				try {
-					crust.use(comboBox.getSelectedItem().toString());
-				} catch (IOException e1) { }
+				crust.use(comboBox.getSelectedItem().toString());
 			}
 		});
 		btnGive.setBounds(143, 238, 89, 20);
@@ -311,8 +327,24 @@ public class MainWindow {
 		frameMain.setJMenuBar(menuBar);
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
+		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                try {
+					crust.save();
+				} catch (IOException e) { }
+            }
+        });
 		mnFile.add(mntmSave);
+		
+		chckbxCrustAi = new JCheckBox("Crust AI");
+		chckbxCrustAi.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				crust.crustAI.setSelfThink(chckbxCrustAi.isSelected());
+			}
+		});
+		menuBar.add(chckbxCrustAi);
 	}
 	
 	//Generate the initial values
@@ -489,7 +521,7 @@ public class MainWindow {
 		
 		//Create the tab for alerts
 		alertTab = new JTextArea();
-		JScrollPane alertTabPane = new JScrollPane (alertTab, 
+		alertTabPane = new JScrollPane (alertTab, 
 				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		alertTab.setEditable(false);
 		tabbedPane.addTab("Alerts", null, alertTabPane, null);

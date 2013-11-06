@@ -1,99 +1,15 @@
 package desperatehousepi;
 
 import java.util.Scanner;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.StringTokenizer;
 
-import javax.swing.Timer;
-
+import desperatehousepi.Crust.Crust;
 import desperatehousepi.ItemSet.itemType;
 
 public class Commands {
 	
 	//Declare variables
 	private static Crust crust;
-	
-	/*********************************
-	 * Crust AI defined here.
-	 * \\note: is there any way we can move this to its own class?
-	 * @author Mark
-	 *********************************/
-	//Initialize crust AI
-	boolean altFlag = true;
-	boolean talkFlag = true;
-	int delay = 0;
-	String bedMsg = "Please make me a BED (;-;)";
-	private ActionListener crustAI = new ActionListener(){
-		@Override
-		public void actionPerformed(ActionEvent e){
-			StringTokenizer tkn;
-			
-			//CASE: Hunger<49
-			if( crust.getNeed("Hunger")<49 ){
-				if( altFlag == true ){
-					System.out.println("I'm hungry.. D:");
-					altFlag = !altFlag;
-				}
-				//See if we have a consumable in our inventory first
-				for( desperatehousepi.ItemSet.Item i : crust.inventory.encyclopedia.values() ){
-					if( i.getValue("Hunger")>0 && crust.inventory.has(i.item) ){
-						tkn = new StringTokenizer(i.item.name());
-						use(tkn);
-						return;
-					}
-				}
-				//If not, go hunting for fish
-				tkn = new StringTokenizer("item fish");
-				random(tkn);
-				//Log hunting experience in history log.txt
-				try {
-					crust.history.logAction("Crust has gone hunting and got FISH");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				//Consume the FISH
-				tkn = new StringTokenizer("fish");
-				use(tkn);
-			}
-			
-			//CASE: Energy<49
-			if( crust.getNeed("Energy")<49 )
-				if( !crust.inventory.has(itemType.BED) ){
-					if( talkFlag ){
-						System.out.println(bedMsg);
-						talkFlag = false;
-					}
-					//this is neccessary so the crust doesn't spam messages
-					delay++;
-					if( delay>10 ){ delay = 0; altFlag=true; talkFlag=true; bedMsg = "Please "+bedMsg; }
-				}
-				else{
-					tkn = new StringTokenizer("BED");
-					use(tkn);
-				}
-			//CASE: Energy<45
-			if( crust.getNeed("Energy")<45 ){
-				//Look for COFFEE
-				tkn = new StringTokenizer("item coffee");
-				random(tkn);
-				//Log that the crust has found COFFEE
-				try {
-					crust.history.logAction("Crust has found COFFEE");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				//Consume the COFFEE
-				tkn = new StringTokenizer("coffee");
-				use(tkn);
-			}
-			//CASE: Entertainment<
-			if( crust.getNeed("Entertainment")<25 )
-				System.out.println("Entertain me, human.");
-		}
-	};
-	/*********************************/
 	
 	//Create objects that commands can alter
 	private static enum objectType{
@@ -186,9 +102,9 @@ public class Commands {
 				//If saving the crust
 				case CRUST:
 					if(tkn.hasMoreTokens())
-						crust.save(tkn.nextToken());
+						crust.save();
 					else
-						System.out.println("Invalid command.\nUsage: save [object] [profile name]");
+						System.out.println("Invalid command.\nUsage: save [object]");
 					break;
 				
 				//Otherwise object is not meant to be saved
@@ -199,7 +115,7 @@ public class Commands {
 		
 		//Object not in list or invalid command
 		}catch(Exception e){
-			System.out.println("Invalid command.\nUsage: save [object] [profile name]");
+			System.out.println("Invalid command.\nUsage: save [object]");
 		}
 	}
 	
@@ -377,7 +293,6 @@ public class Commands {
 				//If creating the crust
 				case CRUST:
 					crust = new Crust();
-					new Timer(1000*4, crustAI).start();
 					break;
 					
 				//If creating an item

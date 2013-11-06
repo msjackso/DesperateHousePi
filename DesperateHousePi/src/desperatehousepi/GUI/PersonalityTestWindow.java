@@ -14,7 +14,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import desperatehousepi.Crust;
+import desperatehousepi.Crust.Crust;
 
 import java.awt.Color;
 
