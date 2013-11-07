@@ -14,8 +14,8 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 
-import desperatehousepi.ItemSet;
-import desperatehousepi.ItemSet.itemType;
+import desperatehousepi.Items.ItemSet;
+import desperatehousepi.Items.ItemSet.itemType;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -214,7 +214,7 @@ public class Crust extends Person {
 	public int load(String filename) throws IOException{
 		
 		//open loadFIle
-		File loadFile = new File(filename+".crust");
+		File loadFile = new File(filename);
 		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'

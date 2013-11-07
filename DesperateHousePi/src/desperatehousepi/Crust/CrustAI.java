@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import desperatehousepi.ItemSet.itemType;
+import desperatehousepi.Items.ItemSet.itemType;
 
 public class CrustAI {
 	
@@ -24,7 +24,7 @@ public class CrustAI {
 					altFlag = !altFlag;
 				}
 				//See if we have a consumable in our inventory first
-				for( desperatehousepi.ItemSet.Item i : crust.inventory.encyclopedia.values() ){
+				for( desperatehousepi.Items.ItemSet.Item i : crust.inventory.encyclopedia.values() ){
 					if( i.getValue("Hunger")>0 && crust.inventory.has(i.item) ){
 						crust.use(i.item.name());
 						return;

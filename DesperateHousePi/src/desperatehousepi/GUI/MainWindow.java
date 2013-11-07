@@ -50,7 +50,8 @@ import javax.swing.Timer;
 import desperatehousepi.Crust.Crust;
 import desperatehousepi.Crust.Interest;
 import desperatehousepi.Crust.Relationship;
-import desperatehousepi.ItemSet.itemType;
+import desperatehousepi.Items.ItemSet.itemType;
+
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;

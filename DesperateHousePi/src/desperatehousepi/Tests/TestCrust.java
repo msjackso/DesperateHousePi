@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Tests;
 
 import static org.junit.Assert.*;
 

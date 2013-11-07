@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Items;
 
 import java.util.EnumMap;
 import java.util.HashMap;

@@ -2,21 +2,35 @@ package desperatehousepi.GUI;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+
 import java.awt.Toolkit;
+
 import javax.swing.JButton;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
+
 import java.awt.Color;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import desperatehousepi.Crust.Crust;
+
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Intro {
 
 	private JFrame intro_frame;
-
+	private JFileChooser fc;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -72,8 +86,25 @@ public class Intro {
 		JButton loadBtn = new JButton("Load");
 		loadBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				intro_frame.setVisible(false);
-				new LoadWindow();
+				
+				//Create a file chooser
+				fc = new JFileChooser();
+				int returnVal = fc.showDialog(intro_frame, "Load");
+				
+				//If a valid file was loaded
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fc.getSelectedFile();
+		            Crust c = new Crust();
+		            try {
+						c.load(file.getName());
+					} catch (IOException e) { }
+		            
+		            intro_frame.setVisible(false);
+		            try {
+						new MainWindow(c);
+					} catch (FileNotFoundException e) { }
+		            
+		        }
 			}
 		});
 		loadBtn.setForeground(Color.WHITE);
@@ -84,7 +115,6 @@ public class Intro {
 		JButton helpBtn = new JButton("Help");
 		helpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				intro_frame.setVisible(false);
 				new HelpWindow();
 			}
 		});

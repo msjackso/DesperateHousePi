@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import desperatehousepi.Crust.Crust;
-import desperatehousepi.ItemSet.itemType;
+import desperatehousepi.Items.ItemSet.itemType;
 
 public class Commands {
 	
