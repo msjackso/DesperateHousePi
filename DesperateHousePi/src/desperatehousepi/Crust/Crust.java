@@ -1,4 +1,4 @@
-package desperatehousepi;
+package desperatehousepi.Crust;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,13 +7,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+
+import desperatehousepi.Items.ItemSet;
+import desperatehousepi.Items.ItemSet.itemType;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -34,6 +36,8 @@ public class Crust extends Person {
 	public static final int OK = 0;
 	public static final int FILE_NOT_FOUND = 1;
 	public static final int FILE_BAD_FORMAT = 2;
+	public static final int NO_ITEM_AVAILABLE = 1;
+	public static final int ITEM_USED = 0;
 	
 	//Object Declarations
 	private PTrait[] traits = new PTrait [16];
@@ -47,7 +51,10 @@ public class Crust extends Person {
 		}
 	}
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
-	private Scanner sc;
+	private LinkedList<Interest> interests = new LinkedList<Interest>();
+	public ItemSet inventory = new ItemSet();
+	public ActionLog history = new ActionLog(this);
+	public CrustAI crustAI;
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -55,11 +62,13 @@ public class Crust extends Person {
 	 * values based on a bell curve.
 	 * @author Anthony and Michael
 	 ******************************/
-	Crust(){
+	public Crust(){
 		for(int x = 0; x<16; x++){
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -68,7 +77,7 @@ public class Crust extends Person {
 	 * are provided they will be ignored.
 	 * @author Michael
 	 ******************************/
-	Crust(String... names){
+	public Crust(String... names){
 		
 		//Try to set all of the names of the object
 		try{ first_name=names[0]; }catch(Exception e){ }
@@ -80,6 +89,7 @@ public class Crust extends Person {
 			traits[x].setRandomTrait();
 		}
 		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -90,7 +100,7 @@ public class Crust extends Person {
 	 * 16 integers are provided they will be ignored.
 	 * @author Michael
 	 ******************************/
-	Crust(int... trait_val){
+	public Crust(int... trait_val){
 		
 		//Get the length of the amount of values passed in
 		int length = (trait_val.length>16) ? 16:trait_val.length;
@@ -101,6 +111,8 @@ public class Crust extends Person {
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/******************************
@@ -112,7 +124,7 @@ public class Crust extends Person {
 	 * This constructor is for creating an entire crust sans relationships.
 	 * @author Michael
 	 ******************************/
-	Crust(String firstName, String middleName, String lastName, int... trait_val){
+	public Crust(String firstName, String middleName, String lastName, int... trait_val){
 		
 		//Set names
 		first_name = firstName;
@@ -128,6 +140,8 @@ public class Crust extends Person {
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		crustAI = new CrustAI(this);
 	}
 	
 	/*******************************
@@ -137,7 +151,10 @@ public class Crust extends Person {
 	 * console.
 	 * @author Michael
 	 *******************************/
-	public void chat(){
+	public String chat(String statement){
+		
+		//Create a string for holding the reply
+		String reply = "";
 		
 		//Try to establish a connection to the server
 		try{
@@ -147,30 +164,17 @@ public class Crust extends Person {
 			ChatterBot chatBot = chatFactBot.create(ChatterBotType.CLEVERBOT);
 			ChatterBotSession chatBotSess = chatBot.createSession();
 			
-			//Create a scanner for reading in from the command line
-			String statement = "";
-			String reply = "";
-			sc = new Scanner(System.in);
 			
-			//Read forever
-			while(true){
 				
-				//Print out prompt for the user
-				System.out.print("\tYou: ");
-				statement = sc.nextLine();
-				
-				//If the user says goodbye then leave
-				if(statement.equals("bye")) break;
-				
-				//Get the reply from the server and print it out
-				reply = chatBotSess.think(statement);
-				System.out.println("\t"+first_name+": "+reply);
-			}
+			//Get the reply from the server and print it out
+			reply = chatBotSess.think(statement);
 		
 		//If the server can't be connected to
 		}catch(Exception e){
 			System.out.println("Chatting not available.");
 		}
+		
+		return reply;
 	}
 	
 	/******************************
@@ -179,10 +183,10 @@ public class Crust extends Person {
 	 * @author Michael
 	 * @throws IOException 
 	 ******************************/
-	public void save(String filename) throws IOException{
+	public void save() throws IOException{
 		
 		//Open saveFile
-		File saveFile = new File(filename+".crust");
+		File saveFile = new File(get("fullName").replace(" ", "_")+".crust");
 		
 		//If file doesn't exist then create it
 		if(!saveFile.exists())
@@ -215,7 +219,7 @@ public class Crust extends Person {
 	public int load(String filename) throws IOException{
 		
 		//open loadFIle
-		File loadFile = new File(filename+".crust");
+		File loadFile = new File(filename);
 		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
@@ -341,6 +345,46 @@ public class Crust extends Person {
 		
 	}
 	
+	public void give(String item){
+		itemType itemName = itemType.valueOf(item.toUpperCase());
+		inventory.create(itemName);
+	}
+	
+	/*******************************
+	 * Tells the crust to use the item that is passed in
+	 * @param item - The string containing the name of the item
+	 * @throws IOException if the action can't be logged
+	 */
+	public int use(String item){
+		
+		//Grab the name of the object to be created
+		itemType itemName = itemType.valueOf(item.toUpperCase());
+
+		//Check if item exists
+		if( !inventory.has(itemName) ){
+			return NO_ITEM_AVAILABLE;
+		}
+		
+		//Apply item to crust
+		for( String need : inventory.getItem(itemName).getNeeds() ){
+			incrementNeed(need, inventory.getItem(itemName).getValue(need));
+		}
+		
+		//Check if item is consumable
+		for( String need : inventory.getItem(itemName).getNeeds() ){
+			if( need=="Hunger" )
+				break;
+			else{
+				//if not, do not destroy
+				history.logAction("Crust has used "+itemName.name());
+				return ITEM_USED;
+			}
+		}
+		inventory.destroy(itemName);
+		history.logAction("Crust has consumed "+itemName.name());
+		return ITEM_USED;
+	}
+	
 	/******************************
 	 * Prints out all of the relationships that this crust has
 	 * @author Michael
@@ -359,6 +403,19 @@ public class Crust extends Person {
 	 ******************************/
 	public void addRelationship(Crust other, int value){
 		relationships.add(new Relationship(this, other, value));
+	}
+	
+	/******************************
+	 * Returns the relationship list
+	 * @return The linked list of relationships this crust has
+	 * @author Michael
+	 ******************************/
+	public LinkedList<Relationship> getRelationships(){
+		return relationships;
+	}
+	
+	public LinkedList<Interest> getInterests() {
+		return interests;
 	}
 	
 	/******************************
@@ -433,6 +490,8 @@ public class Crust extends Person {
 				return middle_name;
 			case "lastName":
 				return last_name;
+			case "fullName":
+				return first_name+" "+middle_name+" "+last_name;
 			case "age":
 				return String.valueOf(age);
 			default:

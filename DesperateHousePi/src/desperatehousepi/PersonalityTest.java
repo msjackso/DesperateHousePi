@@ -3,6 +3,8 @@ package desperatehousepi;
 import java.io.IOException;
 import java.util.Scanner;
 
+import desperatehousepi.Crust.Crust;
+
 public class PersonalityTest{
 
         //*************************************************
@@ -143,7 +145,7 @@ public class PersonalityTest{
                                                 isValid = false;
                                 }
                         }
-
+                        scan.close();
 
                }
         }

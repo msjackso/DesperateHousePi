@@ -2,12 +2,12 @@
 ####################
 .meta*
 log.txt
+*.class
 
 ####################
 # Eclipse metadata #
 ####################
 .pydevproject
-.project
 .metadata
 bin/**
 tmp/**

@@ -1,8 +1,10 @@
-package desperatehousepi;
+package desperatehousepi.Tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import desperatehousepi.Crust.Crust;
 
 public class TestCrust {
 	
