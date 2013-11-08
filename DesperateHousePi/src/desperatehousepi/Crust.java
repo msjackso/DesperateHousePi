@@ -196,6 +196,11 @@ public class Crust extends Person {
 		String content = "";
 		content+=first_name+" "+middle_name+" "+last_name+" ";
 		content+=getFormattedTraits();
+		/*********************************
+		 * Edited 11/5/13 by Luke
+		 *********************************/
+		content+=getFormattedNeeds();
+		
 		bw.write(content);
 		bw.close();
 	}
@@ -252,6 +257,21 @@ public class Crust extends Person {
 	}
 	
 	/******************************
+	 * Returns all of the needs in format for being printed to file
+	 * @author Luke
+	 ******************************/
+	public String getFormattedNeeds(){
+		
+		String allNeeds = "";
+		
+		for (Need n : Needs){
+			allNeeds+=n.getNeedLevel()+" ";
+		}
+		
+		return allNeeds;
+	}
+	
+	/******************************
 	 * Returns all of the traits for this crust
 	 * @author Michael
 	 ******************************/
@@ -272,6 +292,13 @@ public class Crust extends Person {
 			tr.setMod(Integer.parseInt(tkn.nextToken()));
 			tr.setAdj(Integer.parseInt(tkn.nextToken()));
 		}
+		
+		/*********************************
+		 * Edited 11/5/13 by Luke
+		 *********************************/
+		for (Need n : Needs){
+			n.setNeed(Integer.parseInt(tkn.nextToken()));
+		}
 	}
 	
 	/******************************
@@ -280,7 +307,7 @@ public class Crust extends Person {
 	 ******************************/
 	public void print(){
 		System.out.println("Name: " + first_name+" "+middle_name+" "+last_name);
-		System.out.println("Age: " + age);
+		System.out.println("Age: " + getAge());
 		System.out.println("Personality:");
 		System.out.println("\tWarmth = " + traits[traitName.warmth.index].getValue());
 		System.out.println("\tReasoning = " + traits[traitName.reasoning.index].getValue());
@@ -306,6 +333,11 @@ public class Crust extends Person {
 		for (Need n : Needs){
 			System.out.println("\t" + n.getNeedName() + " = " + n.getNeedLevel());
 		}
+		
+		/*********************************
+		 * Edited 11/5/13 by Luke
+		 *********************************/
+		System.out.println("");
 		
 	}
 	

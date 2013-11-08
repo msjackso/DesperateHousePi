@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-// Generic Person Class
+// Generic Need Class
 
 public class Need {
 	
@@ -22,7 +22,7 @@ public class Need {
 		new Timer(decrease_rate, decrease_level).start();
 	}
 	
-	//Create a timer for the aging process
+	//Create a timer for the need
 	private ActionListener decrease_level = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
@@ -32,16 +32,16 @@ public class Need {
 	
 	////////////////////////Access Functions\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	
-	//Returns the age of the person
+	//Returns the need level of the person
 	String getNeedName(){ return needName; }
 	
-	//Returns the age of the person
+	//Returns the need level of the person
 	int getNeedLevel(){ return needLevel; }
 	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	
-	/* Increases the entertainment level of the person
-	 * Input: the number that entertainment will be incremented by
+	/* Increases the need level of the person
+	 * Input: the number that the need will be incremented by
 	 */
 	void incrementNeed(int amount) {
 		if (needLevel + amount > 100) 
@@ -50,13 +50,20 @@ public class Need {
 			needLevel += amount;
 	}
 	
-	/* Increases the entertainment level of the person
-	 * Input: the (POSITIVE) number that entertainment will be decremented by
+	/* Increases the need level of the person
+	 * Input: the (POSITIVE) number that the need will be decremented by
 	 */
 	void decrementNeed(int amount) {
 		if (needLevel - amount < 0) 
 			needLevel = 0;
 		else 
 			needLevel -= amount;
+	}
+	
+	/* Sets the need level of the person (for loading from file)
+	 * Input: the number to set the need equal to
+	 */
+	void setNeed(int amount) {
+		needLevel = amount;
 	}
 }

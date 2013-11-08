@@ -3,6 +3,7 @@ package desperatehousepi;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 
@@ -21,9 +22,11 @@ public class Person {
 	String first_name = "John";
 	String middle_name = "Jacob";
 	String last_name = "Smith";
-	int age = 0;
+	private int age = 0; //Current age; default value = 0
+	private int growthStageIndex = 0; //stores the index of the current growth stage
 	
 	protected LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
+	protected ArrayList<GrowthStage> GrowthStages = new LinkedList<GrowthStage>(); //the person's set of needs
 	
 	/**********************************
 	 * A generic person class containing general traits to be inherited
@@ -31,32 +34,36 @@ public class Person {
 	 * Edited 10/17/13 by Luke
 	 *********************************/
 	public Person(){
-		//starts the age timer
-		new Timer(millSecsInDay, ageMe).start();
-		//creates the persons
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
 		Needs.add(new Need("Hunger", hungerDecreaseRate));
 		Needs.add(new Need("Energy", energyDecreaseRate));
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		GrowthStages.add(new GrowthStage("Baby", 3));
+		GrowthStages.add(new GrowthStage("Child", 12));
+		GrowthStages.add(new GrowthStage("Teen", 18));
+		GrowthStages.add(new GrowthStage("Adult", 50));
+		GrowthStages.add(new GrowthStage("Elder", 100));
 	}
 	
 	//Create a timer for the aging process
-	private ActionListener ageMe = new ActionListener() {
+	private ActionListener increase_age = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
-			age+=1;
+			incrementAge();
+			//If the crust's age is at the threshold for the next growth stage and not over 100, progresses it to the next stage
+			if (getAge() == GrowthStages.get(growthStageIndex).getMaxAge() && !(getAge() >= 100)) {
+				growthStageIndex++;
+			}
       	}
 	};
 	
 	////////////////////////Access Functions\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	
-	//Returns the age of the person
-	int getAge(){ 
-		return age; 
-	}
-	
-	/* Increases the hunger level of the person
+	/* Returns the level of the specified need
 	 * Input: the name of the need to be checked.
-	 * Output: the new value for the need. If the need is not found in needs.
+	 * Output: the value for the need. If the need is not found in needs returns an error.
 	 */ 
 	int getNeed(String need_name){ 
 		
@@ -67,17 +74,35 @@ public class Person {
 			}; 
 		}
 		
-		//If need is not defined.
+		//If need is not defined, return an error.
 		System.out.println("Fatal error. Need " + need_name + " not defined.");
 		System.exit(0);
 		return 0;
 		
 	}
 	
+	/* Returns the age of the crust
+	 * Input: None
+	 * Output: the crust's age
+	 */ 
+	int getAge(){ return age; }
+	
+	/* Returns the current string name of the growth stage of the crust
+	 * Input: None
+	 * Output: the crust's growth stage as a string
+	 */ 
+	String getGrowthStage() { return GrowthStages.get(growthStageIndex).getGrowthStage(); }
+	
+	/* Returns the current index of the crust's growth stage for saving and loading
+	 * Input: None
+	 * Output: the crust's growth stage as a string
+	 */ 
+	String getGrowthStageIndex() { return GrowthStages.get(growthStageIndex).getGrowthStage(); }
+	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	
-	/* Increases the hunger level of the person
-	 * Input: the number that hunger will be incremented by
+	/* Increases the need level of the person
+	 * Input: the number that the need will be incremented by
 	 */
 	/*********************************
 	 * Edited 10/18/13 by Mark
@@ -89,8 +114,18 @@ public class Person {
 				return;
 			}
 		}
-		//If need is not defined.
+		//If need is not defined, produce error.
 		System.out.println("Fatal error. Need '" + need_name + "' not defined.");
 		System.exit(0);
+	}
+	
+	/* Increases the age of the person
+	 * Input: the number that age will be incremented by
+	 */
+	void incrementAge() {
+		if (age + 1 > 100) 
+			return;
+		else 
+			age += 1;
 	}
 }
