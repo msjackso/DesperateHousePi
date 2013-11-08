@@ -1,7 +1,5 @@
 package desperatehousepi;
 
-import java.io.IOException;
-
 import desperatehousepi.Crust.Crust;
 import desperatehousepi.Items.ItemSet.itemType;
 

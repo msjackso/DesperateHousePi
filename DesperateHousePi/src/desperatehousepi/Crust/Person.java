@@ -21,11 +21,11 @@ public class Person {
 	String first_name = "John";
 	String middle_name = "Jacob";
 	String last_name = "Smith";
-	private int age = 0; //Current age; default value = 0
+	protected int age = 0; //Current age; default value = 0
 	private int growthStageIndex = 0; //stores the index of the current growth stage
 	
 	protected LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
-	protected ArrayList<GrowthStage> GrowthStages = new LinkedList<GrowthStage>(); //the person's set of needs
+	protected ArrayList<GrowthStage> GrowthStages = new ArrayList<GrowthStage>(); //the person's set of needs
 	
 	/**********************************
 	 * A generic person class containing general traits to be inherited
