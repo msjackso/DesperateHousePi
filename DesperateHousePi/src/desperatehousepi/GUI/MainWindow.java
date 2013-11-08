@@ -218,8 +218,8 @@ public class MainWindow {
 		
 		for(Relationship r : crust.getRelationships()){
 			
-			if(r.getValue()<-25)
-				enemyNode.add(new DefaultMutableTreeNode((r.getOther().get("fullName"))));
+			//if(r.getValue()<-25)
+				//enemyNode.add(new DefaultMutableTreeNode((r.getOther().get("fullName"))));
 			
 		}
 		

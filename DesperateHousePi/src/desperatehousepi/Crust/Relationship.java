@@ -1,9 +1,18 @@
 package desperatehousepi.Crust;
 
+import java.util.Date;
+import java.util.LinkedList;
+
 public class Relationship {
 	
-	Crust owner, other;
-	int value;
+	Crust owner;
+	String nameOfContact;
+	String addressOfContact;
+	Date firstMet;
+	Date lastMeeting;
+	LinkedList<String> log;
+	
+	int chemistry;
 	
 	/******************************
 	 * A relationship is a set of contacts that the owner has
@@ -14,8 +23,7 @@ public class Relationship {
 	 ******************************/
 	public Relationship(Crust new_owner, Crust new_other, int new_value){
 		owner = new_owner;
-		other = new_other;
-		value = new_value;
+		chemistry = new_value;
 	}
 	
 	/******************************
@@ -24,8 +32,7 @@ public class Relationship {
 	 ******************************/
 	public Relationship(){
 		owner = null;
-		other = null;
-		value = 0;
+		chemistry = 0;
 	}
 	
 	/*****************************
@@ -33,7 +40,13 @@ public class Relationship {
 	 * @return The value of this relationship
 	 * @author Michael
 	 */
-	public int getValue(){ return value; }
+	public int getChemistry(){ return chemistry; }
+	
+	/*****************************
+	 * Sets the value of the relationship
+	 * @author Michael
+	 */
+	public void setChemistry(int c){ chemistry = c; }
 	
 	/*****************************
 	 * Returns the owner of the relationship
@@ -42,15 +55,8 @@ public class Relationship {
 	 */
 	public Crust getOwner(){ return owner; }
 	
-	/*****************************
-	 * Returns the other of the relationship
-	 * @return The other crust object of this relationship
-	 * @author Michael
-	 */
-	public Crust getOther(){ return other; }
-	
 	public String toString(){
-		return (value+":"+owner.first_name+" "+owner.last_name+"->"+other.first_name+" "+other.last_name);
+		return (chemistry+":"+owner.first_name+" "+owner.last_name);
 	}
 	
 }
