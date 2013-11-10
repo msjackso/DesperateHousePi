@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -55,6 +56,7 @@ public class Crust extends Person {
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
+	public QuestForGrowth destiny = new QuestForGrowth();
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -348,6 +350,19 @@ public class Crust extends Person {
 	public void give(String item){
 		itemType itemName = itemType.valueOf(item.toUpperCase());
 		inventory.create(itemName);
+	}
+	
+	public void requestGrowthQuest(String stage){
+		String status = destiny.assign(stage);
+		history.logAction(status);
+	}
+	
+	public boolean requestQuestVerification(){
+		return destiny.verifyCurrentQuest();
+	}
+	
+	public String getStage(){
+		return destiny.getGrowthStage();
 	}
 	
 	/*******************************

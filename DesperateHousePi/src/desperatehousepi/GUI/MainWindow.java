@@ -1,5 +1,6 @@
 package desperatehousepi.GUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -170,6 +171,9 @@ public class MainWindow {
 		//Set the age
 		lblAgeVal.setText(crust.get("age"));
 		
+		//Set the growth stage
+		lblStageVal.setText(crust.getStage());
+		
 		//Set the energy
 		energyBar.setValue(crust.getNeed("Energy"));
 		
@@ -277,13 +281,15 @@ public class MainWindow {
 		tabbedPane.setBounds(0, 366, 491, 240);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
-		
+
 		//Create the crust's image in the top left hand corner
 		crustImage = new JPanel();
 		crustImage.setBorder(new MatteBorder(0, 0, 3, 3, (Color) new Color(0, 0, 0)));
 		crustImage.setBackground(Color.RED);
 		crustImage.setBounds(0, 0, 185, 226);
+
 		frameMain.getContentPane().add(crustImage);
+		
 		
 		//Create the crust information
 		crustInfo = new JPanel();
@@ -322,6 +328,16 @@ public class MainWindow {
 		});
 		btnGive.setBounds(143, 238, 89, 20);
 		frameMain.getContentPane().add(btnGive);
+		
+		//Create the Request Quest button
+		JButton btnRequestQuest = new JButton("Quest");
+		btnRequestQuest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				crust.requestGrowthQuest(crust.getStage());
+			}
+		});
+		btnRequestQuest.setBounds(143, 268, 89, 20);
+		frameMain.getContentPane().add(btnRequestQuest);
 		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();
