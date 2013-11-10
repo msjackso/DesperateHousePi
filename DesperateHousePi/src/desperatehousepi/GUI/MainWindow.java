@@ -339,6 +339,16 @@ public class MainWindow {
 		btnRequestQuest.setBounds(143, 268, 89, 20);
 		frameMain.getContentPane().add(btnRequestQuest);
 		
+		//Create the Verify Quest button
+		JButton btnVerifyQuest = new JButton("Verify");
+		btnVerifyQuest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				crust.requestQuestVerification();
+			}
+		});
+		btnVerifyQuest.setBounds(143, 298, 89, 20);
+		frameMain.getContentPane().add(btnVerifyQuest);
+		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();
 		frameMain.setJMenuBar(menuBar);

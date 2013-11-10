@@ -72,7 +72,7 @@ public class QuestForGrowth {
 		private String name;
 		private int qty;
 		private int qtyReq;
-		private boolean completed = false;	//Completed?
+		boolean completed = false;	//Completed?
 		
 		//Constructor
 		Requirement( String s, int req ){
@@ -112,16 +112,22 @@ public class QuestForGrowth {
 			return null;
 	}
 	
-	public boolean verifyCurrentQuest(){
+	public String verifyCurrentQuest(){
 		updateJourney();
 		if (quest2enabled){
-			return quest2completed;
+			if (quest2completed)
+				return "Congratulations! You have reached the end of your journey";
+			else
+				return "You are still lacking, young one";
 		}
 		else if (quest1enabled){
-			return quest1completed;
+			if (quest1completed)
+				return "Congratulations! You have proven yourself worthy to progress further";
+			else
+				return "You are still lacking, young one";
 		}
 		else
-			return false;
+			return "Do you seek growth?";
 		
 	}
 	
@@ -157,9 +163,14 @@ public class QuestForGrowth {
 	 * returns a Requirement object, given its String name.
 	 * @author Mark
 	 ***************************************/
-	public void receive(String reqName){
-		getReq(reqName).incQty();
-		return;
+	public String receive(String reqName){
+		Requirement item = getReq(reqName);
+		if (!item.completed){
+			item.incQty();
+			return reqName+" accepted!";
+		}
+		else
+			return "Already have "+reqName;
 	}
 	
 	
@@ -168,22 +179,29 @@ public class QuestForGrowth {
 		Requirement req;
 		
 		epiphany= true;
-		for (quest1reqs req1 : quest1reqs.values()){
-			req = getReq(req1.name);
-			req.update();
-			if (!req.completed)
-				epiphany = false;
-		}
-		quest1completed = epiphany;
-
-		epiphany = true;
-		for (quest2reqs req2 : quest2reqs.values()){
-			req = getReq(req2.name);
-			req.update();
-			if (!req.completed)
-				epiphany = false;
-		}
-		quest2completed = epiphany;
+		
+		if (quest2enabled){
+			for (quest2reqs req2 : quest2reqs.values()){
+				req = getReq(req2.name);
+				req.update();
+				if (!req.completed)
+					epiphany = false;
+			}
+			quest2completed = epiphany;
+			return;
+		} 
+		else if (quest1enabled){
+			for (quest1reqs req1 : quest1reqs.values()){
+				req = getReq(req1.name);
+				req.update();
+				if (!req.completed)
+					epiphany = false;
+			}
+			quest1completed = epiphany;
+			return;
+		} 
+		else
+			return;
 	}
 	
 }

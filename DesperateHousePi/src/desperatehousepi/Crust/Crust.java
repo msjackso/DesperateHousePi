@@ -357,10 +357,10 @@ public class Crust extends Person {
 		history.logAction(status);
 	}
 	
-	public boolean requestQuestVerification(){
-		return destiny.verifyCurrentQuest();
+	public void requestQuestVerification(){
+		String status = destiny.verifyCurrentQuest();
+		history.logAction(status);
 	}
-	
 	public String getStage(){
 		return destiny.getGrowthStage();
 	}
@@ -382,7 +382,12 @@ public class Crust extends Person {
 		
 		//Apply item to crust
 		for( String need : inventory.getItem(itemName).getNeeds() ){
-			incrementNeed(need, inventory.getItem(itemName).getValue(need));
+			if (need=="Quest"){
+				String status = destiny.receive(itemName.name);
+				history.logAction(status);
+			}
+			else
+				incrementNeed(need, inventory.getItem(itemName).getValue(need));
 		}
 		
 		//Check if item is consumable
