@@ -49,6 +49,7 @@ import javax.swing.Timer;
 
 import desperatehousepi.Crust.Crust;
 import desperatehousepi.Crust.Interest;
+import desperatehousepi.Crust.Interests;
 import desperatehousepi.Crust.Relationship;
 import desperatehousepi.Items.ItemSet.itemType;
 
@@ -103,6 +104,7 @@ public class MainWindow {
 			JLabel lblStatsTabTension;
 			JLabel lblStatsTabTensionVal;
 		JList<String> interestTab;
+		DefaultListModel<String> interestList;
 		JPanel chatTab;
 			JTextArea chatTabChatLog;
 			JTextArea textField;
@@ -142,8 +144,6 @@ public class MainWindow {
 			refreshEssentials();
 	   	}
 	};
-	
-	//ActionListeners
 	private ActionListener refreshMeAll = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
@@ -227,15 +227,11 @@ public class MainWindow {
 	}
 	private void refreshInterests(){
 		
-		interestTab.removeAll();
-		
-		DefaultListModel<String> interestList = new DefaultListModel<String>();
+		interestList.clear();
 		
 		for(Interest i : crust.getInterests()){
 			interestList.addElement(i.toString());
 		} 
-		
-		interestTab = new JList<String>(interestList);
 	}
 	private void refreshAlerts() throws IOException{
 		
@@ -557,7 +553,8 @@ public class MainWindow {
 		createStatsTabLabels();
 		
 		//Create the tab that holds all of the interests
-		interestTab = new JList<String>();
+		interestList = new DefaultListModel<String>();
+		interestTab = new JList<String>(interestList);
 		tabbedPane.addTab("Interests", null, interestTab, null);
 		
 		//Create the chat tab

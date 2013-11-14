@@ -38,6 +38,7 @@ public class Crust extends Person {
 	public static final int FILE_BAD_FORMAT = 2;
 	public static final int NO_ITEM_AVAILABLE = 1;
 	public static final int ITEM_USED = 0;
+	public static final int MAX_NUM_OF_INTERESTS = 10;
 	
 	//Object Declarations
 	private PTrait[] traits = new PTrait [16];
@@ -69,6 +70,11 @@ public class Crust extends Person {
 		}
 		
 		crustAI = new CrustAI(this);
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
+		
 	}
 	
 	/******************************
@@ -90,6 +96,10 @@ public class Crust extends Person {
 		}
 		
 		crustAI = new CrustAI(this);
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/******************************
@@ -113,6 +123,10 @@ public class Crust extends Person {
 			}
 		
 		crustAI = new CrustAI(this);
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/******************************
@@ -142,6 +156,10 @@ public class Crust extends Person {
 			}
 		
 		crustAI = new CrustAI(this);
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/*******************************
@@ -412,6 +430,44 @@ public class Crust extends Person {
 	 ******************************/
 	public LinkedList<Relationship> getRelationships(){
 		return relationships;
+	}
+	
+	/******************************
+	 * Prints out all of the interests that this crust has
+	 * @author Michael
+	 ******************************/
+	public void printInterests(){
+		System.out.println("Interests:");
+		for(Interest i : interests)
+			System.out.println("\t"+i.toString());
+	}
+	
+	/******************************
+	 * Adds an interest to the crust's list of interests
+	 * @param value - A value coresponding to the interest desired, -1 for random
+	 * @return Returns -1 if the crust couldn't add the interest
+	 * @author Michael
+	 ******************************/
+	public int addInterest(int value){
+		
+		//If the crust has too many interests return
+		if(interests.size()>MAX_NUM_OF_INTERESTS) return -1;
+		
+		//If the crust is trying to add a static interest that it already has return
+		if(value!=-1 && interests.contains(Interests.getInterest(value))) return -1;
+		
+		//Generate that potential interest
+		Interest potInterests= Interests.getInterest(value);
+		
+		//Check that the crust doesn't have that interest already, if it does then generate a new one
+		while(interests.contains(potInterests))
+			potInterests= Interests.getInterest(value);
+		
+		//Add it to the list of interests
+		interests.add(Interests.getInterest(value));
+		
+		//Return ok
+		return OK;
 	}
 	
 	public LinkedList<Interest> getInterests() {
