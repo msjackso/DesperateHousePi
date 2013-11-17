@@ -23,6 +23,8 @@ public class Relationship {
 	 ******************************/
 	public Relationship(Crust new_owner, Crust new_other, int new_value){
 		owner = new_owner;
+		nameOfContact = new_other.get("fullName");
+		addressOfContact = "127.0.0.1";
 		chemistry = new_value;
 	}
 	
@@ -49,6 +51,32 @@ public class Relationship {
 	public void setChemistry(int c){ chemistry = c; }
 	
 	/*****************************
+	 * Returns the name of the contact
+	 * @return The name of the contact
+	 * @author Michael
+	 */
+	public String getContactName(){ return nameOfContact; }
+	
+	/*****************************
+	 * Sets the name of the contact
+	 * @author Michael
+	 */
+	public void setContactName(String s){ nameOfContact = s; }
+	
+	/*****************************
+	 * Returns the address of the contact
+	 * @return The address of the contact
+	 * @author Michael
+	 */
+	public String getContactAddress(){ return addressOfContact; }
+	
+	/*****************************
+	 * Sets the address of the contact
+	 * @author Michael
+	 */
+	public void setContactAddress(String s){ addressOfContact = s; }
+	
+	/*****************************
 	 * Returns the owner of the relationship
 	 * @return The owner crust object of this relationship
 	 * @author Michael
@@ -56,7 +84,7 @@ public class Relationship {
 	public Crust getOwner(){ return owner; }
 	
 	public String toString(){
-		return (chemistry+":"+owner.first_name+" "+owner.last_name);
+		return (chemistry+":"+owner.first_name+" "+owner.last_name+ "->"+nameOfContact);
 	}
 	
 }

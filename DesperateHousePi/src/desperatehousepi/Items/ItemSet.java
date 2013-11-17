@@ -66,7 +66,7 @@ public class ItemSet {
 	}
 	
 	// Generic Item inner class
-	public class Item {
+	public static class Item {
 		/**********************************
 		 * A generic-item inner class containing information about an item and 
 		 * the needs that it affects
@@ -76,7 +76,7 @@ public class ItemSet {
 		//Initialize variables
 		public itemType item = null; //The name of the item
 		private Map<String, Integer> myStats = new HashMap<String, Integer>(); //Stat container
-		private boolean alive = false;	//Exists?
+		public boolean alive = false;	//Exists?
 		
 		//Constructor
 		Item( itemType name, Map<String, Integer> stats ){

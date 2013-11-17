@@ -1,8 +1,11 @@
 package desperatehousepi.Crust;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +19,7 @@ import com.google.code.chatterbotapi.ChatterBotType;
 
 import desperatehousepi.Items.ItemSet;
 import desperatehousepi.Items.ItemSet.itemType;
+import desperatehousepi.Server.Server;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -53,6 +57,7 @@ public class Crust extends Person {
 	}
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
+	private Thread serverThread;
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
@@ -70,6 +75,7 @@ public class Crust extends Person {
 		}
 		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -96,6 +102,7 @@ public class Crust extends Person {
 		}
 		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -123,6 +130,7 @@ public class Crust extends Person {
 			}
 		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -156,6 +164,7 @@ public class Crust extends Person {
 			}
 		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -196,15 +205,40 @@ public class Crust extends Person {
 	}
 	
 	/******************************
-	 * Saves the crust to a file to be imported later. Is saved as a .crust file
+	 * Saves the crust to a file to be imported later. Saves all of the necessary
+	 * files into a new directory known as [crust name]
 	 * @param filename - The profile name it will be stored under
 	 * @author Michael
 	 * @throws IOException 
 	 ******************************/
 	public void save() throws IOException{
 		
+		//Create profile folder
+		/*File saveFolder = new File(get("fullName").replace(" ", "_"));
+		if(!saveFolder.exists())
+			saveFolder.mkdir();
+		
+		String folderPath = saveFolder.getAbsolutePath();
+		
+		saveCrust(folderPath);
+		saveOther(folderPath);*/
+		
+		XMLEncoder e = new XMLEncoder( new BufferedOutputStream(new FileOutputStream(get("fullName").replace(" ", "_")+".crust")) );
+		e.writeObject(this);
+		e.close();
+		
+	}
+	
+	/******************************
+	 * Saves the crust object into the crust file. This will have the new form
+	 * of [crust name].crust
+	 * @author Michael
+	 * @throws IOException 
+	 ******************************/
+	private void saveCrust(String folderPath) throws IOException{
+		
 		//Open saveFile
-		File saveFile = new File(get("fullName").replace(" ", "_")+".crust");
+		File saveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".crust");
 		
 		//If file doesn't exist then create it
 		if(!saveFile.exists())
@@ -226,6 +260,61 @@ public class Crust extends Person {
 		bw.write(content);
 		bw.close();
 	}
+	
+	/******************************
+	 * Saves the crust's relationships and interests into two new files. These will have
+	 * the form of [crust name].rel and [crust name].int
+	 * @author Michael
+	 * @throws IOException 
+	 ******************************/
+	private void saveOther(String folderPath) throws IOException{
+		
+		//Open relSaveFile
+		File relSaveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".rel");
+		
+		//Open intSaveFile
+		File intSaveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".int");
+		
+		//If files doesn't exist then create it
+		if(!relSaveFile.exists())
+			relSaveFile.createNewFile();
+		if(!intSaveFile.exists())
+			intSaveFile.createNewFile();
+		
+		//Open up the file and create the writers
+		FileWriter rfw = new FileWriter(relSaveFile.getAbsoluteFile());
+		BufferedWriter rbw = new BufferedWriter(rfw);
+		
+		for(Relationship r:relationships){
+			
+			String content = "";
+			
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
+			
+			rbw.write(content);
+			rbw.newLine();
+		}
+		
+		rbw.close();
+		
+		//Open up the file and create the writers
+		FileWriter ifw = new FileWriter(intSaveFile.getAbsoluteFile());
+		BufferedWriter ibw = new BufferedWriter(ifw);
+		
+		for(Interest i:interests){
+			
+			String content = "";
+			
+			content+=i.name.replace(" ", "_")+" "+i.importance;
+			
+			ibw.write(content);
+			ibw.newLine();
+		}
+		
+		ibw.close();
+	}
+	
+	
 	
 	/******************************
 	 * Loads the crust from a file to currently selected Crust.
