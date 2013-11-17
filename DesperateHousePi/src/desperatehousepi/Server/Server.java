@@ -35,6 +35,7 @@ public class Server implements Runnable{
 			outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 			
 			while(true){
+				
 				try {
 					crust = (Crust)inputStream.readObject();
 				} catch (ClassNotFoundException e) {

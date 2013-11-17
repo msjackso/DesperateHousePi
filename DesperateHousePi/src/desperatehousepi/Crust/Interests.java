@@ -41,10 +41,15 @@ public class Interests{
 	public static final int KARTRACING_VAL = 32;
 	public static final int FOOTBALL_VAL = 33;
 	
-	
+	/************************
+	 * Returns an interest object depending on the value that is passed in. An
+	 * interest value can be referenced using one of the static values from this
+	 * class.
+	 * @param val - The value referencing a certain type of interest, RANDOM_VAL for random
+	 * @return An interest object depending on the val passed in, Music by default
+	 * @author Michael
+	 ************************/
 	public static Interest getInterest(int val){
-		
-		
 		
 		if(val == RANDOM_VAL){
 			Random rand = new Random();
@@ -90,6 +95,55 @@ public class Interests{
 		}
 		
 		return i.new Music();
+	}
+	
+	/************************
+	 * Returns an integer value to reference one of the interests in this class.
+	 * Essentially a converter for string to integer.
+	 * @param name - The name of the interest to be converted
+	 * @return An integer to reference the given interest. Returns -1 if it couldn't be found.
+	 * @author Michael
+	 ************************/
+	public static int getInterestVal(String name){
+		
+		switch(name){
+			case "Music": return MUSIC_VAL;
+			case "Food": return FOOD_VAL;
+			case "Dancing": return DANCING_VAL;
+			case "Film": return FILM_VAL;
+			case "Computers": return COMPUTERS_VAL;
+			case "Gaming": return GAMING_VAL;
+			case "Sports": return SPORTS_VAL;
+			case "Outdoors": return OUTDOORS_VAL;
+			case "ComputerProgramming": return COMPUTERPROGRAMMING_VAL;
+			case "Cooking": return COOKING_VAL;
+			case "Art": return ART_VAL;
+			case "Homebrewing": return HOMEBREWING_VAL;
+			case "LegoBuilding": return LEGOBUILDING_VAL;
+			case "Magic": return MAGIC_VAL;
+			case "Reading": return READING_VAL;
+			case "Skateboarding": return SKATEBOARDING_VAL;
+			case "VideoGaming": return VIDEOGAMING_VAL;
+			case "Writing": return WRITING_VAL;
+			case "Basketball": return BASKETBALL_VAL;
+			case "Gardening": return GARDENING_VAL;
+			case "GhostHunting": return GHOSTHUNTING_VAL;
+			case "Mycology": return MYCOLOGY_VAL;
+			case "Running": return RUNNING_VAL;
+			case "Surfing": return SURFING_VAL;
+			case "Swimming": return SWIMMING_VAL;
+			case "RockStacking": return ROCKSTACKING_VAL;
+			case "Go": return GO_VAL;
+			case "LodgeDodgePong": return LODGEDODGEPONG_VAL;
+			case "Baseball": return BASEBALL_VAL;
+			case "Fishing": return FISHING_VAL;
+			case "Jukskei": return JUKSKEI_VAL;
+			case "KartRacing": return KARTRACING_VAL;
+			case "Football": return FOOTBALL_VAL;
+		}
+		
+		return -1;
+		
 	}
 	
 	public class Music extends Interest{

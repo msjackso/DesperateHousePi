@@ -29,6 +29,10 @@ public class Interest {
 		return importance;
 	}
 	
+	public void setImportance(int i){
+		importance = i;
+	}
+	
 	public String toString(){
 		return (name+": "+importance);
 	}

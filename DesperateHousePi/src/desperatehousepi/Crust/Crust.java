@@ -1,11 +1,8 @@
 package desperatehousepi.Crust;
 
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,6 +54,7 @@ public class Crust extends Person {
 	}
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
+	@SuppressWarnings("unused")
 	private Thread serverThread;
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
@@ -69,17 +67,31 @@ public class Crust extends Person {
 	 * @author Anthony and Michael
 	 ******************************/
 	public Crust(){
+		
 		for(int x = 0; x<16; x++){
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
 		
+		//TODO: Remove
+		System.out.println("Traits done");
+		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this),"Server");
+
+		//TODO: Remove
+		System.out.println("AI done");
+		
+		new Thread(new Server(this),"Server");
+		
+		//TODO: Remove
+		System.out.println("Thread made");
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//TODO: Remove
+		System.out.println("Interests done");
 		
 	}
 	
@@ -214,18 +226,14 @@ public class Crust extends Person {
 	public void save() throws IOException{
 		
 		//Create profile folder
-		/*File saveFolder = new File(get("fullName").replace(" ", "_"));
+		File saveFolder = new File(get("fullName").replace(" ", "_"));
 		if(!saveFolder.exists())
 			saveFolder.mkdir();
 		
 		String folderPath = saveFolder.getAbsolutePath();
 		
 		saveCrust(folderPath);
-		saveOther(folderPath);*/
-		
-		XMLEncoder e = new XMLEncoder( new BufferedOutputStream(new FileOutputStream(get("fullName").replace(" ", "_")+".crust")) );
-		e.writeObject(this);
-		e.close();
+		saveOther(folderPath);
 		
 	}
 	
@@ -289,7 +297,7 @@ public class Crust extends Person {
 			
 			String content = "";
 			
-			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
 			
 			rbw.write(content);
 			rbw.newLine();
@@ -317,16 +325,43 @@ public class Crust extends Person {
 	
 	
 	/******************************
-	 * Loads the crust from a file to currently selected Crust.
-	 * @param filename - The profile name of Crust to be Loaded
+	 * Loads the crust from a folder to currently selected Crust.
+	 * @param folderName - The name of the directory holding the crust information
 	 * @author Anthony and Michael
 	 * @throws IOException 
 	 * @return int: 0 success; 1 file not found; 2 bad file format
 	 ******************************/
-	public int load(String filename) throws IOException{
+	public int load(String folderName) throws IOException{
+		
+		File loadDirectory = new File(folderName);
+		
+		String baseFileName = loadDirectory.getName();
 		
 		//open loadFIle
-		File loadFile = new File(filename);
+		File crustLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".crust");
+		File relLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".rel");
+		File intLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".int");
+		
+		int loadVal = loadCrust(crustLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		loadVal = loadRel(relLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		loadVal = loadInt(intLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		return OK;
+	}
+	
+	/******************************
+	 * Loads the crust from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadCrust(File loadFile) throws IOException{
 		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
@@ -350,6 +385,88 @@ public class Crust extends Person {
 			br.close();
 			return FILE_BAD_FORMAT;
 		}
+	}
+	
+	/******************************
+	 * Loads a crust's relationships from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadInt(File loadFile) throws IOException{
+		
+		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
+		//'file not found'
+		if(!loadFile.exists())
+			return FILE_NOT_FOUND;
+		
+		//Open the file and create readers
+		FileReader fr = new FileReader(loadFile.getAbsolutePath());
+		BufferedReader br = new BufferedReader(fr);
+		
+		for(String line = br.readLine();line!=null;line=br.readLine()){
+			
+			StringTokenizer tkn = new StringTokenizer(line);
+			
+			if(!tkn.hasMoreTokens()){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			addInterest(Interests.getInterestVal(tkn.nextToken().replace("_", " ")));
+			
+			if(!tkn.hasMoreTokens()){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			interests.getLast().setImportance(Integer.parseInt(tkn.nextToken()));
+		}
+		
+		br.close();
+		
+		return OK;
+	}
+	
+	/******************************
+	 * Loads a crust's relationships from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadRel(File loadFile) throws IOException{
+
+		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
+		//'file not found'
+		if(!loadFile.exists())
+			return FILE_NOT_FOUND;
+		
+		//Open the file and create readers
+		FileReader fr = new FileReader(loadFile.getAbsolutePath());
+		BufferedReader br = new BufferedReader(fr);
+		
+		for(String line = br.readLine();line!=null;line=br.readLine()){
+			
+			String[] parsedLine = line.split("|||");
+			StringTokenizer tkn = new StringTokenizer(parsedLine[0]);
+			
+			if(tkn.countTokens()<3){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			
+			Relationship r = new Relationship();
+			r.setContactName(tkn.nextToken());
+			r.setContactAddress(tkn.nextToken());
+			r.setChemistry(Integer.parseInt(tkn.nextToken()));
+			r.setFirstMet(parsedLine[1]);
+			r.setLastMeeting(parsedLine[2]);
+			relationships.add(r);
+		}
+		
+		br.close();
+		
+		return OK;
 	}
 	
 	/******************************
@@ -452,6 +569,11 @@ public class Crust extends Person {
 		
 	}
 	
+	/*****************************
+	 * Give the crust the item that is specified in the parameters
+	 * @param item - The name of the item to be given
+	 * @author Michael
+	 */
 	public void give(String item){
 		itemType itemName = itemType.valueOf(item.toUpperCase());
 		inventory.create(itemName);
@@ -508,8 +630,8 @@ public class Crust extends Person {
 	 * @param value - The initial value of that relationship
 	 * @author Michael
 	 ******************************/
-	public void addRelationship(Crust other, int value){
-		relationships.add(new Relationship(this, other, value));
+	public void addRelationship(String contactName, String address, int value){
+		relationships.add(new Relationship(this, contactName, address, value));
 	}
 	
 	/******************************
@@ -559,6 +681,11 @@ public class Crust extends Person {
 		return OK;
 	}
 	
+	/******************************
+	 * Returns the list of interests for this crust
+	 * @return The list of interests for this crust
+	 * @author Michael
+	 ******************************/
 	public LinkedList<Interest> getInterests() {
 		return interests;
 	}
