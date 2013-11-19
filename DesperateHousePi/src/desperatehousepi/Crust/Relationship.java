@@ -59,4 +59,13 @@ public class Relationship {
 		return (chemistry+":"+owner.first_name+" "+owner.last_name);
 	}
 	
+	/*****************************
+	 * Returns the owner of the relationship
+	 * @return The owner crust object of this relationship
+	 * @author Michael
+	 */
+	public void write(){
+		
+	}
+	
 }

@@ -12,8 +12,8 @@ import javax.swing.Timer;
 public class Person {
 	
 	//Set constants
-	private static final int millSecsInDay = 1000*60*60*24;
-	private static final int hungerDecreaseRate = 1000*4; //loses 1 hunger every 4 minutes
+	private static final int millSecsInDay = 1000*60*60*24; 
+	private static final int hungerDecreaseRate = 1000*4;  //loses 1 hunger every 4 minutes
 	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
 	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
 	
@@ -39,11 +39,10 @@ public class Person {
 		Needs.add(new Need("Hunger", hungerDecreaseRate));
 		Needs.add(new Need("Energy", energyDecreaseRate));
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
-		GrowthStages.add(new GrowthStage("Baby", 3));
-		GrowthStages.add(new GrowthStage("Child", 12));
-		GrowthStages.add(new GrowthStage("Teen", 18));
-		GrowthStages.add(new GrowthStage("Adult", 50));
-		GrowthStages.add(new GrowthStage("Elder", 100));
+		GrowthStages.add(new GrowthStage("Baby"));
+		GrowthStages.add(new GrowthStage("Child"));
+		GrowthStages.add(new GrowthStage("Teen"));
+		GrowthStages.add(new GrowthStage("Adult"));
 	}
 	
 	//Create a timer for the aging process
@@ -51,10 +50,6 @@ public class Person {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			incrementAge();
-			//If the crust's age is at the threshold for the next growth stage and not over 100, progresses it to the next stage
-			if (getAge() == GrowthStages.get(growthStageIndex).getMaxAge() && !(getAge() >= 100)) {
-				growthStageIndex++;
-			}
       	}
 	};
 	
@@ -77,6 +72,25 @@ public class Person {
 		System.out.println("Fatal error. Need " + need_name + " not defined.");
 		System.exit(0);
 		return 0;
+		
+	}
+	
+	/* Returns the level of the crust's happiness
+	 * Input: None.
+	 * Output: the crust's overall happiness, an average of all of its needs.
+	 */ 
+	public int getHappiness(){ 
+		
+		int sumAmount = 0;
+		int numOfNeeds = 0;
+		
+		//Iterates through the list of needs
+		for(Need n : Needs) {
+			sumAmount += n.getNeedLevel();
+			numOfNeeds += 1;
+		}
+		
+		return (sumAmount/numOfNeeds);
 		
 	}
 	
