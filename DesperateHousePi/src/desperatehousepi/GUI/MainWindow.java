@@ -35,6 +35,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.util.Vector;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -121,6 +124,8 @@ public class MainWindow {
 		JLabel lblEntertainment;
 		JProgressBar entertainmentBar;
 		JLabel lblHunger;
+		JLabel lbldate;
+		JLabel lbltime;
 		JProgressBar hungerBar;
 	JCheckBox chckbxCrustAi;
 	
@@ -178,6 +183,15 @@ public class MainWindow {
 		
 		//Set the hunger
 		hungerBar.setValue(crust.getNeed("Hunger"));
+		
+		//Set date and time
+		DateTime dt = new DateTime();
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm aa");
+		String theTime = fmt.print(dt);
+		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("MMM dd, yyyy");
+		String theDate = fmt2.print(dt);
+		lbldate.setText(theDate);
+		lbltime.setText(theTime);
 	}
 	private void refreshCrustStats(){
 		
@@ -293,9 +307,9 @@ public class MainWindow {
 		frameMain.getContentPane().add(crustInfo);
 		GridBagLayout gbl_crustInfo = new GridBagLayout();
 		gbl_crustInfo.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_crustInfo.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		crustInfo.setLayout(gbl_crustInfo);
 		createCrustInfo();
 		
@@ -693,5 +707,27 @@ public class MainWindow {
 		gbc_hungerBar.gridx = 1;
 		gbc_hungerBar.gridy = 5;
 		crustInfo.add(hungerBar, gbc_hungerBar);
+		
+		//Create date label
+		lbldate = new JLabel();
+		lbldate.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbldate.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbldate = new GridBagConstraints();
+		gbc_lbldate.anchor = GridBagConstraints.EAST;
+		gbc_lbldate.insets = new Insets(0, 0, 0, 5);
+		gbc_lbldate.gridx = 0;
+		gbc_lbldate.gridy = 6;
+		crustInfo.add(lbldate, gbc_lbldate);
+		
+		//Create time label
+		lbltime = new JLabel();
+		lbltime.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbltime.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbltime = new GridBagConstraints();
+		gbc_lbltime.anchor = GridBagConstraints.EAST;
+		gbc_lbltime.insets = new Insets(0, 0, 0, 5);
+		gbc_lbltime.gridx = 0;
+		gbc_lbltime.gridy = 7;
+		crustInfo.add(lbltime, gbc_lbltime);
 	}
 }
