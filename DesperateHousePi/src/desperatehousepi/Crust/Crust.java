@@ -1,5 +1,7 @@
 package desperatehousepi.Crust;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,6 +12,8 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import javax.swing.Timer;
+
 import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
@@ -17,6 +21,7 @@ import com.google.code.chatterbotapi.ChatterBotType;
 
 import desperatehousepi.Items.ItemSet;
 import desperatehousepi.Items.ItemSet.itemType;
+import desperatehousepi.Server.Server;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -39,6 +44,19 @@ public class Crust extends Person {
 	public static final int FILE_BAD_FORMAT = 2;
 	public static final int NO_ITEM_AVAILABLE = 1;
 	public static final int ITEM_USED = 0;
+	public static final int MAX_NUM_OF_INTERESTS = 10;
+	
+	//Set time constants 
+	private static final int millSecsInDay = 1000*60*60*24; 
+	private static final int hungerDecreaseRate = 1000*4;  //loses 1 hunger every 4 minutes
+	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
+	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
+	
+	//Initialize variables
+	String first_name = "John";
+	String middle_name = "Jacob";
+	String last_name = "Smith";
+	protected int age = 0; //Current age; default value = 0
 	
 	//Object Declarations
 	private PTrait[] traits = new PTrait [16];
@@ -51,8 +69,18 @@ public class Crust extends Person {
 			index = i;
 		}
 	}
+	//Create a timer for the aging process
+	private ActionListener increase_age = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			incrementAge();
+      	}
+	};
+	private LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
+	@SuppressWarnings("unused")
+	private Thread serverThread;
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
@@ -65,12 +93,40 @@ public class Crust extends Person {
 	 * @author Anthony and Michael
 	 ******************************/
 	public Crust(){
+		
 		for(int x = 0; x<16; x++){
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
 		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
+		//TODO: Remove
+		System.out.println("Traits done");
+		
 		crustAI = new CrustAI(this);
+
+		//TODO: Remove
+		System.out.println("AI done");
+		
+		new Thread(new Server(this),"Server");
+		
+		//TODO: Remove
+		System.out.println("Thread made");
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
+		
+		//TODO: Remove
+		System.out.println("Interests done");
+		
 	}
 	
 	/******************************
@@ -91,7 +147,20 @@ public class Crust extends Person {
 			traits[x].setRandomTrait();
 		}
 		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/******************************
@@ -114,7 +183,20 @@ public class Crust extends Person {
 				traits[x].setBase(trait_val[x]);
 			}
 		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/******************************
@@ -143,7 +225,20 @@ public class Crust extends Person {
 				traits[x].setBase(trait_val[x]);
 			}
 		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
 		crustAI = new CrustAI(this);
+		serverThread = new Thread(new Server(this),"Server");
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/*******************************
@@ -180,15 +275,36 @@ public class Crust extends Person {
 	}
 	
 	/******************************
-	 * Saves the crust to a file to be imported later. Is saved as a .crust file
+	 * Saves the crust to a file to be imported later. Saves all of the necessary
+	 * files into a new directory known as [crust name]
 	 * @param filename - The profile name it will be stored under
 	 * @author Michael
 	 * @throws IOException 
 	 ******************************/
 	public void save() throws IOException{
 		
+		//Create profile folder
+		File saveFolder = new File(get("fullName").replace(" ", "_"));
+		if(!saveFolder.exists())
+			saveFolder.mkdir();
+		
+		String folderPath = saveFolder.getAbsolutePath();
+		
+		saveCrust(folderPath);
+		saveOther(folderPath);
+		
+	}
+	
+	/******************************
+	 * Saves the crust object into the crust file. This will have the new form
+	 * of [crust name].crust
+	 * @author Michael
+	 * @throws IOException 
+	 ******************************/
+	private void saveCrust(String folderPath) throws IOException{
+		
 		//Open saveFile
-		File saveFile = new File(get("fullName").replace(" ", "_")+".crust");
+		File saveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".crust");
 		
 		//If file doesn't exist then create it
 		if(!saveFile.exists())
@@ -212,16 +328,98 @@ public class Crust extends Person {
 	}
 	
 	/******************************
-	 * Loads the crust from a file to currently selected Crust.
-	 * @param filename - The profile name of Crust to be Loaded
+	 * Saves the crust's relationships and interests into two new files. These will have
+	 * the form of [crust name].rel and [crust name].int
+	 * @author Michael
+	 * @throws IOException 
+	 ******************************/
+	private void saveOther(String folderPath) throws IOException{
+		
+		//Open relSaveFile
+		File relSaveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".rel");
+		
+		//Open intSaveFile
+		File intSaveFile = new File(folderPath+"/"+get("fullName").replace(" ", "_")+".int");
+		
+		//If files doesn't exist then create it
+		if(!relSaveFile.exists())
+			relSaveFile.createNewFile();
+		if(!intSaveFile.exists())
+			intSaveFile.createNewFile();
+		
+		//Open up the file and create the writers
+		FileWriter rfw = new FileWriter(relSaveFile.getAbsoluteFile());
+		BufferedWriter rbw = new BufferedWriter(rfw);
+		
+		for(Relationship r:relationships){
+			
+			String content = "";
+			
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
+			
+			rbw.write(content);
+			rbw.newLine();
+		}
+		
+		rbw.close();
+		
+		//Open up the file and create the writers
+		FileWriter ifw = new FileWriter(intSaveFile.getAbsoluteFile());
+		BufferedWriter ibw = new BufferedWriter(ifw);
+		
+		for(Interest i:interests){
+			
+			String content = "";
+			
+			content+=i.name.replace(" ", "_")+" "+i.importance;
+			
+			ibw.write(content);
+			ibw.newLine();
+		}
+		
+		ibw.close();
+	}
+	
+	
+	
+	/******************************
+	 * Loads the crust from a folder to currently selected Crust.
+	 * @param folderName - The name of the directory holding the crust information
 	 * @author Anthony and Michael
 	 * @throws IOException 
 	 * @return int: 0 success; 1 file not found; 2 bad file format
 	 ******************************/
-	public int load(String filename) throws IOException{
+	public int load(String folderName) throws IOException{
+		
+		File loadDirectory = new File(folderName);
+		
+		String baseFileName = loadDirectory.getName();
 		
 		//open loadFIle
-		File loadFile = new File(filename);
+		File crustLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".crust");
+		File relLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".rel");
+		File intLoadFile = new File(loadDirectory.getAbsolutePath()+"/"+baseFileName+".int");
+		
+		int loadVal = loadCrust(crustLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		loadVal = loadRel(relLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		loadVal = loadInt(intLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		return OK;
+	}
+	
+	/******************************
+	 * Loads the crust from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadCrust(File loadFile) throws IOException{
 		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
@@ -245,6 +443,88 @@ public class Crust extends Person {
 			br.close();
 			return FILE_BAD_FORMAT;
 		}
+	}
+	
+	/******************************
+	 * Loads a crust's relationships from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadInt(File loadFile) throws IOException{
+		
+		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
+		//'file not found'
+		if(!loadFile.exists())
+			return FILE_NOT_FOUND;
+		
+		//Open the file and create readers
+		FileReader fr = new FileReader(loadFile.getAbsolutePath());
+		BufferedReader br = new BufferedReader(fr);
+		
+		for(String line = br.readLine();line!=null;line=br.readLine()){
+			
+			StringTokenizer tkn = new StringTokenizer(line);
+			
+			if(!tkn.hasMoreTokens()){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			addInterest(Interests.getInterestVal(tkn.nextToken().replace("_", " ")));
+			
+			if(!tkn.hasMoreTokens()){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			interests.getLast().setImportance(Integer.parseInt(tkn.nextToken()));
+		}
+		
+		br.close();
+		
+		return OK;
+	}
+	
+	/******************************
+	 * Loads a crust's relationships from a file to currently selected Crust.
+	 * @param loadFile - The file pointer to the directory holding the crust information
+	 * @author Anthony and Michael
+	 * @throws IOException 
+	 * @return int: 0 success; 1 file not found; 2 bad file format
+	 ******************************/
+	public int loadRel(File loadFile) throws IOException{
+
+		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
+		//'file not found'
+		if(!loadFile.exists())
+			return FILE_NOT_FOUND;
+		
+		//Open the file and create readers
+		FileReader fr = new FileReader(loadFile.getAbsolutePath());
+		BufferedReader br = new BufferedReader(fr);
+		
+		for(String line = br.readLine();line!=null;line=br.readLine()){
+			
+			String[] parsedLine = line.split("|||");
+			StringTokenizer tkn = new StringTokenizer(parsedLine[0]);
+			
+			if(tkn.countTokens()<3){
+				br.close();
+				return FILE_BAD_FORMAT;
+			}
+			
+			Relationship r = new Relationship();
+			r.setContactName(tkn.nextToken());
+			r.setContactAddress(tkn.nextToken());
+			r.setChemistry(Integer.parseInt(tkn.nextToken()));
+			r.setFirstMet(parsedLine[1]);
+			r.setLastMeeting(parsedLine[2]);
+			relationships.add(r);
+		}
+		
+		br.close();
+		
+		return OK;
 	}
 	
 	/******************************
@@ -275,6 +555,60 @@ public class Crust extends Person {
 		}
 		
 		return allNeeds;
+	}
+	
+	/******************************
+	 * Returns the level of the specified need
+	 * Input: the name of the need to be checked.
+	 * Output: the value for the need. If the need is not found in needs returns an error.
+	 * @author Luke
+	 ******************************/
+	public int getNeed(String need_name){ 
+		
+		//Finds the need in the list of needs, then increments it.
+		for(Need n : Needs) {
+			if ( n.getNeedName()==need_name ) {
+				return n.getNeedLevel();
+			}; 
+		}
+		
+		//If need is not defined, return an error.
+		System.out.println("Fatal error. Need " + need_name + " not defined.");
+		System.exit(0);
+		return 0;
+		
+	}
+	
+	
+	/******************************
+	 * Increases the need level of the person
+	 * Input: the number that the need will be incremented by
+	 * @author Luke
+	 ******************************/
+	/*********************************
+	 * Edited 10/18/13 by Mark
+	 *********************************/
+	public void incrementNeed(String need_name, int amount) {
+		for(Need n : Needs){
+			if ( n.getNeedName()==need_name ) {
+				n.incrementNeed(amount);
+				return;
+			}
+		}
+		//If need is not defined, produce error.
+		System.out.println("Fatal error. Need '" + need_name + "' not defined.");
+		System.exit(0);
+	}
+	
+	/******************************
+	 * Increments the crust's age
+	 * @author Luke
+	 ******************************/
+	void incrementAge() {
+		if (age + 1 > 100) 
+			return;
+		else 
+			age += 1;
 	}
 	
 	/******************************
@@ -313,7 +647,7 @@ public class Crust extends Person {
 	 ******************************/
 	public void print(){
 		System.out.println("Name: " + first_name+" "+middle_name+" "+last_name);
-		System.out.println("Age: " + getAge());
+		System.out.println("Age: " + age);
 		System.out.println("Personality:");
 		System.out.println("\tWarmth = " + traits[traitName.warmth.index].getValue());
 		System.out.println("\tReasoning = " + traits[traitName.reasoning.index].getValue());
@@ -340,13 +674,13 @@ public class Crust extends Person {
 			System.out.println("\t" + n.getNeedName() + " = " + n.getNeedLevel());
 		}
 		
-		/*********************************
-		 * Edited 11/5/13 by Luke
-		 *********************************/
-		System.out.println("");
-		
 	}
 	
+	/*****************************
+	 * Give the crust the item that is specified in the parameters
+	 * @param item - The name of the item to be given
+	 * @author Michael
+	 */
 	public void give(String item){
 		itemType itemName = itemType.valueOf(item.toUpperCase());
 		inventory.create(itemName);
@@ -421,8 +755,8 @@ public class Crust extends Person {
 	 * @param value - The initial value of that relationship
 	 * @author Michael
 	 ******************************/
-	public void addRelationship(Crust other, int value){
-		relationships.add(new Relationship(this, other, value));
+	public void addRelationship(String contactName, String address, int value){
+		relationships.add(new Relationship(this, contactName, address, value));
 	}
 	
 	/******************************
@@ -434,6 +768,49 @@ public class Crust extends Person {
 		return relationships;
 	}
 	
+	/******************************
+	 * Prints out all of the interests that this crust has
+	 * @author Michael
+	 ******************************/
+	public void printInterests(){
+		System.out.println("Interests:");
+		for(Interest i : interests)
+			System.out.println("\t"+i.toString());
+	}
+	
+	/******************************
+	 * Adds an interest to the crust's list of interests
+	 * @param value - A value coresponding to the interest desired, -1 for random
+	 * @return Returns -1 if the crust couldn't add the interest
+	 * @author Michael
+	 ******************************/
+	public int addInterest(int value){
+		
+		//If the crust has too many interests return
+		if(interests.size()>MAX_NUM_OF_INTERESTS) return -1;
+		
+		//If the crust is trying to add a static interest that it already has return
+		if(value!=-1 && interests.contains(Interests.getInterest(value))) return -1;
+		
+		//Generate that potential interest
+		Interest potInterests= Interests.getInterest(value);
+		
+		//Check that the crust doesn't have that interest already, if it does then generate a new one
+		while(interests.contains(potInterests))
+			potInterests= Interests.getInterest(value);
+		
+		//Add it to the list of interests
+		interests.add(Interests.getInterest(value));
+		
+		//Return ok
+		return OK;
+	}
+	
+	/******************************
+	 * Returns the list of interests for this crust
+	 * @return The list of interests for this crust
+	 * @author Michael
+	 ******************************/
 	public LinkedList<Interest> getInterests() {
 		return interests;
 	}
