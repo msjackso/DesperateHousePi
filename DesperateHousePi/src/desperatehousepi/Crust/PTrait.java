@@ -9,7 +9,12 @@ import java.util.Random;
  ***************************************/
 
 
-public class PTrait {
+public class PTrait implements java.io.Serializable{
+	
+	/**
+	 * ID for purposes of serialization
+	 */
+	private static final long serialVersionUID = -5297309162746027126L;
 	
 	//Declare base values
 	private int baseVal;
