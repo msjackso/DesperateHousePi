@@ -21,55 +21,47 @@ public class Server implements Runnable{
 	ObjectOutputStream outputStream;
 	static ObjectOutputStream intOutStream;
 	Package recvPackage;
-	static Crust myCrust;
+	Crust myCrust;
 	int mySocket;
+	boolean listening = true;
 	
 	public Server(Crust c, int socketNum){
 		myCrust = c;
 		mySocket = socketNum;
 	}
 	
-	
-	
-	public static int interact(Relationship rel, int socketNum){
+	public int interact(Relationship rel, int socketNum){
 		
-		System.out.println("Start interaction.");
+		Package sendPackage = new Package(myCrust.get("fullName"));
+		sendPackage.setInterests(myCrust.getInterests());
+		sendPackage.setTraits(myCrust.getTraits());
 		
-		Package sendPackage = new Package(rel.getContactName(), rel.getContactAddress());
 		Integer receivePackage = null;
 		
 		//Create the socket
 		try {
 			interactSocket = new Socket(InetAddress.getByName(rel.getContactAddress()), socketNum);
 		} catch (Exception e){ e.printStackTrace(); }
-		System.out.println("Socket made.");
 		
 		//Create the output stream to write to server
 		try {
 			intOutStream = new ObjectOutputStream(interactSocket.getOutputStream());
 		} catch (IOException e) { e.printStackTrace(); }
-		System.out.println("Output made.");
 		
 		//Write the object to the server
 		try {
 			intOutStream.writeObject(sendPackage);
 		} catch (IOException e) { e.printStackTrace(); }
-		System.out.println("Object written.");
 		
 		//Create the input stream to read from the server
 		try {
 			intInStream = new ObjectInputStream(interactSocket.getInputStream());
 		} catch (IOException e) { e.printStackTrace(); }
-		System.out.println("Input made.");
 		
 		//Read from the server
 		try {
 			receivePackage = (Integer) intInStream.readObject();
 		} catch (Exception e){ e.printStackTrace(); }
-		System.out.println("Object read.");
-		
-		//Print the received package
-		System.out.println("CLIENT: "+receivePackage.toString());
 		
 		//Close all of the streams
 		try {
@@ -78,17 +70,17 @@ public class Server implements Runnable{
 			interactSocket.close();
 		} catch (IOException e) { e.printStackTrace(); }
 		
-		return 1;
+		
+		
+		return receivePackage;
 	}
 
-	public int conversate(){
+	public int conversate(Package pack){
 		return 4;
 	}
 
 	@Override
 	public void run() {
-		
-		System.out.println("Starting run.");
 		
 		try{
 			myServer = new ServerSocket(mySocket);
@@ -98,35 +90,37 @@ public class Server implements Runnable{
 		try{
 			
 			while(true){
-				
-				System.out.println("Accepting socket.");
-				
-				clientSocket = myServer.accept();
-				
-				inputStream = new ObjectInputStream(clientSocket.getInputStream());
-				outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-				
-				try {
-					recvPackage = (Package) inputStream.readObject();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				while(listening){
+					
+					clientSocket = myServer.accept();
+					
+					if(!listening) return;
+					
+					inputStream = new ObjectInputStream(clientSocket.getInputStream());
+					outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+					
+					try {
+						recvPackage = (Package) inputStream.readObject();
+					} catch (ClassNotFoundException e) { e.printStackTrace(); }
+					
+					//Generate return package
+					outputStream.writeObject(new Integer(conversate(recvPackage)));
+					
+					inputStream.close();
+					outputStream.close();
+					clientSocket.close();
+					
 				}
-				System.out.println("SERVER: "+recvPackage.toString());
-				
-				//Generate return package
-				outputStream.writeObject(new Integer(conversate()));
-				
-				inputStream.close();
-				outputStream.close();
-				clientSocket.close();
-				
 			}
 		}
 		catch (IOException e){
 			System.out.println(e);
 			
 		}
+	}
+	
+	public void setListening(boolean val){
+		listening = val;
 	}
 	
 }

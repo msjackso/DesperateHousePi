@@ -51,10 +51,18 @@ public class Relationship {
 	public int getChemistry(){ return chemistry; }
 	
 	/*****************************
-	 * Sets the value of the relationship
-	 * @author Michael
-	 */
-	public void setChemistry(int c){ chemistry = c; }
+	 * Sets the value of the relationship, this is bounded by 100 and -100
+	 * @author Brad and Michael
+	 * @Edited 11/24/13
+	 *****************************/
+	public void setChemistry(int c){
+		if(c>100)
+			chemistry = 100;
+		else if(c<-100)
+			chemistry = -100;
+		else
+			chemistry = c;
+	}
 	
 	/*****************************
 	 * Returns the name of the contact

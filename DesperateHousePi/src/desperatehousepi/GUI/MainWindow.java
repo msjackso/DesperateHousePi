@@ -158,6 +158,7 @@ public class MainWindow {
 			refreshAll();
 	   	}
 	};
+	private JCheckBox chckbxServer;
 	
 	//Refresh functions
 	private void refreshAll(){
@@ -358,6 +359,19 @@ public class MainWindow {
 			}
 		});
 		menuBar.add(chckbxCrustAi);
+		
+		chckbxServer = new JCheckBox("Server");
+		chckbxServer.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(chckbxServer.isSelected()){
+					crust.startServer();
+				}else{
+					crust.stopServer();
+				}
+			}
+		});
+		chckbxServer.setSelected(true);
+		menuBar.add(chckbxServer);
 	}
 	
 	//Generate the initial values
