@@ -35,6 +35,7 @@ import desperatehousepi.Server.Server;
  * function from the PTrait object. This will create the values based on a bell curve.
  * @author Anthony and Michael
  ******************************/
+
 public class Crust {
 	
 	//Constant declarations
@@ -45,6 +46,7 @@ public class Crust {
 	public static final int NO_ITEM_AVAILABLE = 1;
 	public static final int ITEM_USED = 0;
 	public static final int MAX_NUM_OF_INTERESTS = 10;
+	public static final int BAD_CALL = -1;
 	
 	//Set time constants 
 	private static final int millSecsInDay = 1000*60*60*24; 
@@ -79,7 +81,6 @@ public class Crust {
 	private LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
-	@SuppressWarnings("unused")
 	private Thread serverThread;
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
@@ -99,6 +100,7 @@ public class Crust {
 			traits[x].setRandomTrait();
 		}
 		
+<<<<<<< HEAD
 		//Edited 11/23/13 by Luke
 		//Creates the person's age
 		new Timer(millSecsInDay, increase_age).start();
@@ -110,23 +112,40 @@ public class Crust {
 		//TODO: Remove
 		System.out.println("Traits done");
 		
+=======
+>>>>>>> S3Crust-Interests.Michael
 		crustAI = new CrustAI(this);
+		
+		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
+		serverThread.start();
 
-		//TODO: Remove
-		System.out.println("AI done");
-		
-		new Thread(new Server(this),"Server");
-		
-		//TODO: Remove
-		System.out.println("Thread made");
-		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
 		
-		//TODO: Remove
-		System.out.println("Interests done");
+	}
+	
+	/******************************
+	 * This constructor will generate a personality randomly. Each trait is determined
+	 * using the setRandomTrait() function from the PTrait object. This will create the
+	 * values based on a bell curve. The server number that is passed in will be the
+	 * socket number that the server thread will use.
+	 * @author Anthony and Michael
+	 ******************************/
+	public Crust(int serverNum){
+		for(int x = 0; x<16; x++){
+			traits[x] = new PTrait(0);
+			traits[x].setRandomTrait();
+		}
 		
+		crustAI = new CrustAI(this);
+		
+		serverThread = new Thread(new Server(this, serverNum),"Server");
+		serverThread.start();
+		
+		for(int x = 0; x<5; x++){
+			addInterest(Interests.RANDOM_VAL);
+		}
 	}
 	
 	/******************************
@@ -156,7 +175,8 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this),"Server");
+		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
+		serverThread.start();
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -192,7 +212,8 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this),"Server");
+		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
+		serverThread.start();
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -234,7 +255,8 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this),"Server");
+		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
+		serverThread.start();
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -379,9 +401,7 @@ public class Crust {
 		
 		ibw.close();
 	}
-	
-	
-	
+		
 	/******************************
 	 * Loads the crust from a folder to currently selected Crust.
 	 * @param folderName - The name of the directory holding the crust information
@@ -446,7 +466,7 @@ public class Crust {
 	}
 	
 	/******************************
-	 * Loads a crust's relationships from a file to currently selected Crust.
+	 * Loads a crust's interests from a file to currently selected Crust.
 	 * @param loadFile - The file pointer to the directory holding the crust information
 	 * @author Anthony and Michael
 	 * @throws IOException 
@@ -737,6 +757,29 @@ public class Crust {
 		inventory.destroy(itemName);
 		history.logAction("Crust has consumed "+itemName.name());
 		return ITEM_USED;
+	}
+	
+	/*****************************
+	 * Calls the server function interact in order to contact the relationship that
+	 * is being referenced by the name that is passed into the function
+	 * @param contactName - The full name of the contact you are trying to reach
+	 * @returns An integer of how the call went. 0 for success and -1 for bad call.
+	 * @author Brad and Michael
+	 *****************************/
+	public int call(String contactName, int socketNum){
+		
+		for(Relationship r : relationships){
+			if(r.getContactName()==contactName){
+				
+				//TO-DO remove
+				System.out.println(r.getContactName()+" found.");
+				
+				Server.interact(r, socketNum);
+				return OK;
+			}
+		}
+		
+		return BAD_CALL;
 	}
 	
 	/******************************
