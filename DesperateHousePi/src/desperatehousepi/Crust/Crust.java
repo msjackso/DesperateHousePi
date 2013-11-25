@@ -85,7 +85,11 @@ public class Crust {
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
+<<<<<<< HEAD
 	public QuestForGrowth destiny = new QuestForGrowth();
+=======
+	Server server;
+>>>>>>> S3Crust-Interests.Michael
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -115,9 +119,7 @@ public class Crust {
 =======
 >>>>>>> S3Crust-Interests.Michael
 		crustAI = new CrustAI(this);
-		
-		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
-		serverThread.start();
+		createServer(Server.SOCKET_DEFAULT);
 
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -139,9 +141,7 @@ public class Crust {
 		}
 		
 		crustAI = new CrustAI(this);
-		
-		serverThread = new Thread(new Server(this, serverNum),"Server");
-		serverThread.start();
+		createServer(serverNum);
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -175,8 +175,7 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
-		serverThread.start();
+		createServer(Server.SOCKET_DEFAULT);
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -212,8 +211,7 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
-		serverThread.start();
+		createServer(Server.SOCKET_DEFAULT);
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
@@ -255,12 +253,40 @@ public class Crust {
 		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
-		serverThread = new Thread(new Server(this, Server.SOCKET_DEFAULT),"Server");
-		serverThread.start();
+		createServer(Server.SOCKET_DEFAULT);
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+	}
+	
+	/*******************************
+	 * Creates a server for the crust to wait for other crust to contact it
+	 * @param serverNum - The port number to connect on
+	 * @author Brad and Michael
+	 *******************************/
+	public void createServer(int serverNum){
+		
+		server = new Server(this, serverNum);
+		serverThread = new Thread(server,"Server");
+		serverThread.start();
+		
+	}
+	
+	/*******************************
+	 * Stops the server from receiving any calls
+	 * @author Brad and Michael
+	 *******************************/
+	public void stopServer(){
+		server.setListening(false);
+	}
+	
+	/*******************************
+	 * Start receiving calls on the server
+	 * @author Brad and Michael
+	 *******************************/
+	public void startServer(){
+		server.setListening(true);
 	}
 	
 	/*******************************
@@ -771,10 +797,8 @@ public class Crust {
 		for(Relationship r : relationships){
 			if(r.getContactName()==contactName){
 				
-				//TO-DO remove
-				System.out.println(r.getContactName()+" found.");
-				
-				Server.interact(r, socketNum);
+				int chemistry = server.interact(r, socketNum);
+				r.setChemistry(r.getChemistry()+chemistry);
 				return OK;
 			}
 		}

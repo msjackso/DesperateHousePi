@@ -14,13 +14,11 @@ public class Package implements java.io.Serializable{
 	private static final long serialVersionUID = 2254804390984390543L;
 	
 	String name;
-	String address;
 	PTrait[] traits = new PTrait[16];
 	LinkedList<Integer> interests;
 	
-	public Package(String n, String a){
+	public Package(String n){
 		name = n;
-		address = a;
 	}
 	
 	public void setTraits(PTrait[] newTraits){
@@ -30,13 +28,16 @@ public class Package implements java.io.Serializable{
 	}
 	
 	public void setInterests(LinkedList<Interest> ints){
+		
+		interests = new LinkedList<Integer>();
+		
 		for(Interest i : ints){
 			interests.add(Interests.getInterestVal(i.getName()));
 		}
 	}
 	
 	public String toString(){
-		return name+": "+address;
+		return name+" is awesome!";
 	}
 	
 }
