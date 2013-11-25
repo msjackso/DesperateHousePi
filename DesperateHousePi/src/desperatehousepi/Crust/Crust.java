@@ -35,7 +35,7 @@ import desperatehousepi.Server.Server;
  * function from the PTrait object. This will create the values based on a bell curve.
  * @author Anthony and Michael
  ******************************/
-public class Crust extends Person {
+public class Crust {
 	
 	//Constant declarations
 	public static final int UNKNOWN = -1000;

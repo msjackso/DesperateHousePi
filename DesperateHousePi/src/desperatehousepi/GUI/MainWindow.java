@@ -321,17 +321,6 @@ public class MainWindow {
 		comboBox.setBounds(10, 238, 134, 20);
 		frameMain.getContentPane().add(comboBox);
 		
-		//Create the give button
-		JButton btnGive = new JButton("Give");
-		btnGive.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				crust.give(comboBox.getSelectedItem().toString());
-			}
-		});
-		btnGive.setBounds(143, 238, 89, 20);
-		frameMain.getContentPane().add(btnGive);
-		
-<<<<<<< HEAD
 		//Create the Request Quest button
 		JButton btnRequestQuest = new JButton("Quest");
 		btnRequestQuest.addActionListener(new ActionListener() {
@@ -351,7 +340,7 @@ public class MainWindow {
 		});
 		btnVerifyQuest.setBounds(143, 298, 89, 20);
 		frameMain.getContentPane().add(btnVerifyQuest);
-=======
+		
 		//Create the give button
 		JButton btnUse = new JButton("Use");
 		btnUse.addActionListener(new ActionListener() {
@@ -361,7 +350,6 @@ public class MainWindow {
 		});
 		btnUse.setBounds(242, 238, 89, 20);
 		frameMain.getContentPane().add(btnUse);
->>>>>>> S3Crust-Interests.Michael
 		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();
