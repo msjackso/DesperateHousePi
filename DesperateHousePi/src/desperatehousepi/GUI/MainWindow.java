@@ -105,6 +105,8 @@ public class MainWindow {
 			JLabel lblStatsTabPerfectionismVal;
 			JLabel lblStatsTabTension;
 			JLabel lblStatsTabTensionVal;
+			JLabel lblStatsTabBday;
+			JLabel lblStatsTabBdayVal;
 		JList<String> interestTab;
 		JPanel chatTab;
 			JTextArea chatTabChatLog;
@@ -185,15 +187,19 @@ public class MainWindow {
 		hungerBar.setValue(crust.getNeed("Hunger"));
 		
 		//Set date and time
-		DateTime dt = new DateTime();
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm aa");
-		String theTime = fmt.print(dt);
-		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("MMM dd, yyyy");
-		String theDate = fmt2.print(dt);
-		lbldate.setText(theDate);
-		lbltime.setText(theTime);
+		DateTime dt = new DateTime(); //gets current time
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
+		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("hh:mm aa");
+		lbldate.setText(fmt.print(dt));
+		lbltime.setText(fmt2.print(dt));
 	}
 	private void refreshCrustStats(){
+		
+		int bdaymonth = crust.getbdaymonth();
+		int birthday = crust.getbirthday();
+		DateTime dt = new DateTime(2000,bdaymonth,birthday,0,0,0);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd");
+		lblStatsTabBdayVal.setText(fmt.print(dt));
 		
 		lblStatsTabWarmthVal.setText(crust.get("warmth"));
 		lblStatsTabReasoningVal.setText(crust.get("reasoning"));
@@ -364,6 +370,14 @@ public class MainWindow {
 	
 	//Generate the initial values
 	private void createStatsTabLabels(){
+		
+		//Create Birthday label
+		lblStatsTabBday = new JLabel("Birthday: ");
+		lblStatsTabBday.setBounds(10,0,136,14);
+		statsTab.add(lblStatsTabBday);
+		lblStatsTabBdayVal = new JLabel("0");
+		lblStatsTabBdayVal.setBounds(156,0,136,14);
+		statsTab.add(lblStatsTabBdayVal);
 		
 		//Create warmth labels
 		lblStatsTabWarmth = new JLabel("Warmth:");

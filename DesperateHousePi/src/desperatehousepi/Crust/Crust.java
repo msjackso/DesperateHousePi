@@ -123,13 +123,20 @@ public class Crust extends Person {
 	 * 16 integers are provided they will be ignored. It will also set each name accordingly.
 	 * This constructor is for creating an entire crust sans relationships.
 	 * @author Michael
+	 * 
+	 * Added month,day integer for birthday
+	 * @author Honloong
 	 ******************************/
-	public Crust(String firstName, String middleName, String lastName, int... trait_val){
+	public Crust(String firstName, String middleName, String lastName,int month,int day, int... trait_val){
 		
 		//Set names
 		first_name = firstName;
 		middle_name = middleName;
 		last_name = lastName;
+		
+		//Set birthday
+		bdaymonth = month;
+		birthday = day;
 		
 		//Get the length of the amount of values passed in
 		int length = (trait_val.length>16) ? 16:trait_val.length;

@@ -65,7 +65,7 @@ public class CreationWindow {
 		//Initialize message label for displaying input errors
 		final JLabel message = new JLabel("");
 		message.setForeground(Color.RED);
-		message.setBounds(27, 154, 414, 14);
+		message.setBounds(27, 198, 414, 14);
 		panel.add(message);
 		
 		//initialize textfields for Crust first, middle, and last name
@@ -80,6 +80,15 @@ public class CreationWindow {
 		final JFormattedTextField lastName = new JFormattedTextField();
 		lastName.setBounds(27, 108, 170, 20);
 		panel.add(lastName);
+		
+		// textfields for month, day of birthday
+		final JFormattedTextField bdaymonth = new JFormattedTextField();
+		bdaymonth.setBounds(62, 152, 30, 20);
+		panel.add(bdaymonth);	
+		
+		final JFormattedTextField birthday = new JFormattedTextField();
+		birthday.setBounds(132, 152, 30, 20);
+		panel.add(birthday);	
 		
 		//initialize textfields for traits
 		final JFormattedTextField warmth = new JFormattedTextField();
@@ -146,7 +155,7 @@ public class CreationWindow {
 		tension.setBounds(361, 410, 80, 20);
 		panel.add(tension);
 		
-		//set values of tdxt fields given newCrust object
+		//set values of text fields given newCrust object
 		warmth.setText(newCrust.get("warmth"));
 		reasoning.setText(newCrust.get("reasoning"));
 		emotionalStability.setText(newCrust.get("emotionalStability"));
@@ -267,6 +276,16 @@ public class CreationWindow {
 					return;
 				}
 				
+				if(bdaymonth.getText().equals("") || birthday.getText().equals("")){
+					message.setText("Must set birthday.");
+					return;
+				}
+				
+				if(!goodDate(bdaymonth.getText(),birthday.getText())){
+					message.setText("Invalid date");
+					return;
+				}
+				
 				//Now check that Personality traits are properly formatted
 				if(!goodFormat(warmth.getText())){validInput = false;}
 				if(!goodFormat(reasoning.getText())){validInput = false;} 
@@ -291,7 +310,8 @@ public class CreationWindow {
 					return;
 				}else{
 					//otherwise input is valid, so create crust and pass it to main window
-					Crust newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), Integer.parseInt(warmth.getText()),
+					Crust newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
+							Integer.parseInt(bdaymonth.getText()),Integer.parseInt(birthday.getText()),Integer.parseInt(warmth.getText()),
 							Integer.parseInt(reasoning.getText()), Integer.parseInt(emotionalStability.getText()),Integer.parseInt(dominance.getText()),
 							Integer.parseInt(liveliness.getText()), Integer.parseInt(ruleConsciousness.getText()), Integer.parseInt(socialBoldness.getText()),
 							Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),
@@ -325,6 +345,24 @@ public class CreationWindow {
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblLastName.setBounds(27, 97, 80, 8);
 		panel.add(lblLastName);
+		
+		JLabel lblBday = new JLabel("Birthday");
+		lblBday.setForeground(Color.BLACK);
+		lblBday.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblBday.setBounds(27, 141, 80, 14);
+		panel.add(lblBday);
+		
+		JLabel lblmonth = new JLabel("Month:");
+		lblmonth.setForeground(Color.BLACK);
+		lblmonth.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblmonth.setBounds(27, 152, 30, 14);
+		panel.add(lblmonth);
+		
+		JLabel lblday = new JLabel("Day:");
+		lblday.setForeground(Color.BLACK);
+		lblday.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblday.setBounds(107, 152, 30, 14);
+		panel.add(lblday);		
 		
 		JLabel lblNewLabel = new JLabel("Personality Traits");
 		lblNewLabel.setForeground(Color.BLACK);
@@ -453,5 +491,36 @@ public class CreationWindow {
 			return false;
 		}
 		
+	}
+	
+	boolean goodDate(String str_month,String str_day){
+		int month,day;
+		try{
+			month = Integer.parseInt(str_month);
+			day = Integer.parseInt(str_day);
+		}catch(Exception e){
+			return false;
+		}
+			
+		if(month < 1 || month > 12 || day < 1) return false;
+
+		switch(month){
+			case 2:
+				if(day < 1 || day > 29) return false;
+				else return true;
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12: 
+				if(day > 31 ) return false;
+				else return true;
+			default:
+				if(day >30) return false;
+				else return true;
+		}
+
 	}
 }

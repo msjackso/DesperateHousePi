@@ -23,6 +23,8 @@ public class Person {
 	String last_name = "Smith";
 	protected int age = 0; //Current age; default value = 0
 	private int growthStageIndex = 0; //stores the index of the current growth stage
+	protected int bdaymonth = 11;
+	protected int birthday = 25;
 	
 	protected LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
 	protected ArrayList<GrowthStage> GrowthStages = new ArrayList<GrowthStage>(); //the person's set of needs
@@ -97,6 +99,18 @@ public class Person {
 	 * Output: the crust's growth stage as a string
 	 */ 
 	String getGrowthStageIndex() { return GrowthStages.get(growthStageIndex).getGrowthStage(); }
+	
+	/* Returns month of birthday
+	 * Input: None
+	 * Output: month of birthday
+	 */
+	public int getbdaymonth(){ return bdaymonth; }
+	
+	/* Returns day of month of birthday
+	 * Input: None
+	 * Output: day of month of birthday
+	 */
+	public int getbirthday(){ return birthday; }
 	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	
