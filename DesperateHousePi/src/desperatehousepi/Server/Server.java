@@ -1,12 +1,17 @@
 package desperatehousepi.Server;
 
 import desperatehousepi.Crust.Crust;
+import desperatehousepi.Crust.Interest;
+import desperatehousepi.Crust.Interests;
 import desperatehousepi.Crust.Relationship;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Random;
 
 public class Server implements Runnable{
 	
@@ -35,6 +40,7 @@ public class Server implements Runnable{
 		Package sendPackage = new Package(myCrust.get("fullName"));
 		sendPackage.setInterests(myCrust.getInterests());
 		sendPackage.setTraits(myCrust.getTraits());
+		sendPackage.setNeeds(myCrust.getNeed("Hunger"), myCrust.getNeed("Energy"), myCrust.getNeed("Entertainment"));
 		
 		Package receivePackage = null;
 		
@@ -61,7 +67,7 @@ public class Server implements Runnable{
 		//Read from the server
 		try {
 			receivePackage = (Package) intInStream.readObject();
-			conversate(receivePackage);
+			conversate(receivePackage, InetAddress.getByName(rel.getContactAddress()));
 		} catch (Exception e){ e.printStackTrace(); }
 		
 		//Close all of the streams
@@ -73,15 +79,15 @@ public class Server implements Runnable{
 	}
 	
 	public double posCorrelation(int A, int B){
-		return ((A+B)/2)/1000;
+		return (100-(A-B))/1000;
 	}
 	
 	public double negCorrelation(int A, int B){
-		return (((A-B)-100)/2)/1000;
+		return ((A-B)-100)/1000;
 	}
 	
 	public double negGivenHigh(int A, int B){
-		return (((-A)-(-B)+100)/2)/1000;
+		return ((-A-B)/2000);
 	}
 	
 	public Factors calcTraitFactors(Package pack, Factors factor){
@@ -219,18 +225,92 @@ public class Server implements Runnable{
 		return factor;
 	}
 	
-	public void conversate(Package pack){
+	public Factors calcInterestFactors(Package pack, Factors factor){
 		
+		Iterator<Integer> interestIter = pack.interests.iterator();
+		Iterator<Integer> intLevelIter = pack.interestLevel.iterator();
+		
+		while(interestIter.hasNext() && intLevelIter.hasNext()){
+			int interestID = interestIter.next();
+			int interestLevel = intLevelIter.next();
+			
+			Interest localInt = Interests.containsValue(myCrust.getInterests(), interestID);
+			
+			if(localInt == null) continue;
+			
+			double result = ((((localInt.getImportance()+interestLevel+200)/2)-100)/1000);
+			if(result<factor.largestFactor){
+				factor.largestFactor = result;
+				factor.largestFactorString = "Interest: "+localInt.getName();
+			}
+			factor.odds+=result;
+		}
+		
+		return factor;
+	}
+	
+	public Factors calcNeedFactors(Package pack, Factors factor){
+		
+		//Apply hunger
+		double result = ((((pack.hunger+myCrust.getNeed("Hunger")+200)/2)-100)/1000);
+		if(result<factor.largestFactor){
+			factor.largestFactor = result;
+			factor.largestFactorString = "Hunger";
+		}
+		factor.odds+=result;
+		
+		//Apply energy
+		result = ((((pack.energy+myCrust.getNeed("Energy")+200)/2)-100)/1000);
+		if(result<factor.largestFactor){
+			factor.largestFactor = result;
+			factor.largestFactorString = "Energy";
+		}
+		factor.odds+=result;
+		
+		//Apply hunger
+		result = ((((pack.entertainment+myCrust.getNeed("Entertainment")+200)/2)-100)/1000);
+		if(result<factor.largestFactor){
+			factor.largestFactor = result;
+			factor.largestFactorString = "Entertainment";
+		}
+		factor.odds+=result;
+		
+		return factor;
+	}
+	
+	public void conversate(Package pack, InetAddress address){
+		
+		boolean interactionStored = false;
 		int chemistry = 0;
-		Factors factor = new Factors(0, Double.POSITIVE_INFINITY, "None");
+		Factors factor = new Factors(Factors.ODDS_BASE, Double.POSITIVE_INFINITY, "None");
 		
 		factor = calcTraitFactors(pack, factor);
+		factor = calcInterestFactors(pack, factor);
+		factor = calcNeedFactors(pack, factor);
 		
+		Random rand = new Random();
+		
+		int interactionResult = rand.nextInt(101);
+		interactionResult*=factor.odds;
+		interactionResult-=Factors.ODDS_BALANCE;
+		interactionResult/=1000;
 		
 		for(Relationship r : myCrust.getRelationships()){
 			if(r.getContactName()==pack.name){
-				r.setChemistry(chemistry);
+				
+				Date d = new Date();
+				
+				r.setChemistry(chemistry+interactionResult);
+				r.log.add("Interacted ["+d.toString()+"] : Result "+interactionResult+" : Biggest Negative Factor: "+factor.largestFactorString);
+				r.setLastMeeting(d.toString());
+				interactionStored = true;
+				break;
 			}
+		}
+		
+		if(!interactionStored){
+			myCrust.addRelationship(pack.name, address.toString(), interactionResult);
+			interactionStored = true;
 		}
 		
 		return;
@@ -258,13 +338,14 @@ public class Server implements Runnable{
 					
 					try {
 						recvPackage = (Package) inputStream.readObject();
-						conversate(recvPackage);
+						conversate(recvPackage, clientSocket.getInetAddress());
 					} catch (ClassNotFoundException e) { e.printStackTrace(); }
 					
 					//Generate return package
 					Package sndPackage = new Package(myCrust.get("fullName"));
 					sndPackage.setInterests(myCrust.getInterests());
 					sndPackage.setTraits(myCrust.getTraits());
+					sndPackage.setNeeds(myCrust.getNeed("Hunger"), myCrust.getNeed("Energy"), myCrust.getNeed("Entertainment"));
 					outputStream.writeObject(sndPackage);
 					
 					inputStream.close();

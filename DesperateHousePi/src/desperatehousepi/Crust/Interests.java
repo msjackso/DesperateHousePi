@@ -1,5 +1,7 @@
 package desperatehousepi.Crust;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Interests{
@@ -144,6 +146,20 @@ public class Interests{
 		
 		return -1;
 		
+	}
+	
+	public static Interest containsValue(LinkedList<Interest> interests, int value){
+		
+		Iterator<Interest> interestIter = interests.iterator();
+		
+		while(interestIter.hasNext()){
+			
+			Interest next = interestIter.next();
+			if(getInterestVal(next.getName())==value) return next;	
+		}
+		
+		
+		return null;
 	}
 	
 	public class Music extends Interest{

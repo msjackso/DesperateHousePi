@@ -16,6 +16,8 @@ public class Package implements java.io.Serializable{
 	public String name;
 	public PTrait[] traits = new PTrait[16];
 	public LinkedList<Integer> interests;
+	public LinkedList<Integer> interestLevel;
+	public int hunger, energy, entertainment;
 	
 	public Package(String n){
 		name = n;
@@ -33,7 +35,14 @@ public class Package implements java.io.Serializable{
 		
 		for(Interest i : ints){
 			interests.add(Interests.getInterestVal(i.getName()));
+			interestLevel.add(i.getImportance());
 		}
+	}
+	
+	public void setNeeds(int h, int ene, int ent){
+		hunger = h;
+		energy = ene;
+		entertainment = ent;
 	}
 	
 	public String toString(){
