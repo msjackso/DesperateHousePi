@@ -662,8 +662,7 @@ public class Crust extends Person{
 		for(Relationship r : relationships){
 			if(r.getContactName()==contactName){
 				
-				int chemistry = server.interact(r, socketNum);
-				r.setChemistry(r.getChemistry()+chemistry);
+				server.interact(r, socketNum);
 				return OK;
 			}
 		}

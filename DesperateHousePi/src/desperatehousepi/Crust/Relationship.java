@@ -13,7 +13,7 @@ public class Relationship {
 	String addressOfContact;
 	Date firstMet;
 	Date lastMeeting;
-	LinkedList<String> log;
+	public LinkedList<String> log;
 	
 	int chemistry;
 	

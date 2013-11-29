@@ -13,9 +13,9 @@ public class Package implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 2254804390984390543L;
 	
-	String name;
-	PTrait[] traits = new PTrait[16];
-	LinkedList<Integer> interests;
+	public String name;
+	public PTrait[] traits = new PTrait[16];
+	public LinkedList<Integer> interests;
 	
 	public Package(String n){
 		name = n;
