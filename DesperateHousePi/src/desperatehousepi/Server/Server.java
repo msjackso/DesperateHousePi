@@ -281,6 +281,7 @@ public class Server implements Runnable{
 	public void conversate(Package pack, InetAddress address){
 		
 		boolean interactionStored = false;
+		Date d = new Date();
 		int chemistry = 0;
 		Factors factor = new Factors(Factors.ODDS_BASE, Double.POSITIVE_INFINITY, "None");
 		
@@ -298,8 +299,6 @@ public class Server implements Runnable{
 		for(Relationship r : myCrust.getRelationships()){
 			if(r.getContactName()==pack.name){
 				
-				Date d = new Date();
-				
 				r.setChemistry(chemistry+interactionResult);
 				r.log.add("Interacted ["+d.toString()+"] : Result "+interactionResult+" : Biggest Negative Factor: "+factor.largestFactorString);
 				r.setLastMeeting(d.toString());
@@ -310,6 +309,8 @@ public class Server implements Runnable{
 		
 		if(!interactionStored){
 			myCrust.addRelationship(pack.name, address.toString(), interactionResult);
+			myCrust.getRelationships().getLast().setFirstMet(d.toString());
+			myCrust.getRelationships().getLast().setLastMeeting(d.toString());
 			interactionStored = true;
 		}
 		
