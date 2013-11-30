@@ -13,9 +13,9 @@ public class Relationship {
 	String addressOfContact;
 	Date firstMet;
 	Date lastMeeting;
-	LinkedList<String> log;
+	public LinkedList<String> log;
 	
-	int chemistry;
+	double chemistry;
 	
 	/******************************
 	 * A relationship is a set of contacts that the owner has
@@ -48,7 +48,7 @@ public class Relationship {
 	 * @return The value of this relationship
 	 * @author Michael
 	 */
-	public int getChemistry(){ return chemistry; }
+	public double getChemistry(){ return chemistry; }
 	
 	/*****************************
 	 * Sets the value of the relationship, this is bounded by 100 and -100

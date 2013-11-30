@@ -34,7 +34,12 @@ public class Interest {
 	}
 	
 	public void setImportance(int i){
-		importance = i;
+		if(i>100)
+			importance = 100;
+		else if(i<-100)
+			importance = -100;
+		else
+			importance = i;
 	}
 	
 	public String toString(){
