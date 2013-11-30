@@ -1,6 +1,5 @@
 package desperatehousepi.GUI;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -31,9 +30,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JList;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.util.Vector;
 
@@ -51,6 +47,7 @@ import javax.swing.Timer;
 import desperatehousepi.Crust.Crust;
 import desperatehousepi.Crust.Interest;
 import desperatehousepi.Crust.Relationship;
+import desperatehousepi.Items.ItemSet.Item;
 import desperatehousepi.Items.ItemSet.itemType;
 
 import javax.swing.JCheckBox;
@@ -69,7 +66,16 @@ public class MainWindow {
 	JTabbedPane tabbedPane;
 		JTextArea alertTab;
 		JScrollPane alertTabPane;
-		JTree relationshipTree;
+		JPanel relationshipPanel;
+		JScrollPane friendScrollPane;
+		JScrollPane acquaintancesScrollPane;
+		JScrollPane enemiesScrollPane;
+		JList<String> friendsList;
+		JList<String> acquaintancesList;
+		JList<String> enemiesList;
+		DefaultListModel<String> friendsListModel;
+		DefaultListModel<String> acquaintancesListModel;
+		DefaultListModel<String> enemiesListModel;
 		JPanel statsTab;
 			JLabel lblStatsTabWarmth;
 			JLabel lblStatsTabWarmthVal;
@@ -104,6 +110,9 @@ public class MainWindow {
 			JLabel lblStatsTabTension;
 			JLabel lblStatsTabTensionVal;
 		JList<String> interestTab;
+		DefaultListModel<String> interestList;
+		JList<String> inventoryTab;
+		DefaultListModel<String> inventoryList;
 		JPanel chatTab;
 			JTextArea chatTabChatLog;
 			JTextArea textField;
@@ -143,20 +152,20 @@ public class MainWindow {
 			refreshEssentials();
 	   	}
 	};
-	
-	//ActionListeners
 	private ActionListener refreshMeAll = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			refreshAll();
 	   	}
 	};
+	private JCheckBox chckbxServer;
 	
 	//Refresh functions
 	private void refreshAll(){
 		refreshRelationships();
 		refreshInterests();
 		refreshEssentials();
+		refreshInventory();
 	}
 	private void refreshEssentials(){
 		refreshCrustInfo();
@@ -170,9 +179,6 @@ public class MainWindow {
 		
 		//Set the age
 		lblAgeVal.setText(crust.get("age"));
-		
-		//Set the growth stage
-		lblStageVal.setText(crust.getStage());
 		
 		//Set the energy
 		energyBar.setValue(crust.getNeed("Energy"));
@@ -204,42 +210,36 @@ public class MainWindow {
 	}
 	private void refreshRelationships(){
 		
-		relationshipTree.removeAll();
-		
-		DefaultMutableTreeNode relationshipNode =
-		        new DefaultMutableTreeNode("Relationships");
-		
-		DefaultMutableTreeNode friendNode =
-		        new DefaultMutableTreeNode("Friends");
-		DefaultMutableTreeNode acquaintanceNode =
-		        new DefaultMutableTreeNode("Acquaintances");
-		DefaultMutableTreeNode enemyNode =
-		        new DefaultMutableTreeNode("Enemies");
-		
-		relationshipNode.add(friendNode);
-		relationshipNode.add(acquaintanceNode);
-		relationshipNode.add(enemyNode);
+		enemiesListModel.clear();
+		acquaintancesListModel.clear();
+		friendsListModel.clear();
 		
 		for(Relationship r : crust.getRelationships()){
 			
-			//if(r.getValue()<-25)
-				//enemyNode.add(new DefaultMutableTreeNode((r.getOther().get("fullName"))));
-			
+			if(r.getChemistry()<-25)
+				enemiesListModel.addElement(r.getContactName());
+			else if(r.getChemistry()<25)
+				acquaintancesListModel.addElement(r.getContactName());
+			else
+				friendsListModel.addElement(r.getContactName());
 		}
-		
-		relationshipTree = new JTree(relationshipNode);
 	}
 	private void refreshInterests(){
+			
+			interestList.clear();
+			
+			for(Interest i : crust.getInterests()){
+				interestList.addElement(i.toString());
+			} 
+		}
+	private void refreshInventory(){
 		
-		interestTab.removeAll();
+		inventoryList.clear();
 		
-		DefaultListModel<String> interestList = new DefaultListModel<String>();
-		
-		for(Interest i : crust.getInterests()){
-			interestList.addElement(i.toString());
+		for(Item i : crust.inventory.encyclopedia.values()){
+			if(i.alive)
+				inventoryList.addElement(i.item.name);
 		} 
-		
-		interestTab = new JList<String>(interestList);
 	}
 	private void refreshAlerts() throws IOException{
 		
@@ -281,15 +281,13 @@ public class MainWindow {
 		tabbedPane.setBounds(0, 366, 491, 240);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
-
+		
 		//Create the crust's image in the top left hand corner
 		crustImage = new JPanel();
 		crustImage.setBorder(new MatteBorder(0, 0, 3, 3, (Color) new Color(0, 0, 0)));
 		crustImage.setBackground(Color.RED);
 		crustImage.setBounds(0, 0, 185, 226);
-
 		frameMain.getContentPane().add(crustImage);
-		
 		
 		//Create the crust information
 		crustInfo = new JPanel();
@@ -323,31 +321,20 @@ public class MainWindow {
 		btnGive.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				crust.give(comboBox.getSelectedItem().toString());
-				crust.use(comboBox.getSelectedItem().toString());
 			}
 		});
 		btnGive.setBounds(143, 238, 89, 20);
 		frameMain.getContentPane().add(btnGive);
 		
-		//Create the Request Quest button
-		JButton btnRequestQuest = new JButton("Quest");
-		btnRequestQuest.addActionListener(new ActionListener() {
+		//Create the give button
+		JButton btnUse = new JButton("Use");
+		btnUse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				crust.requestGrowthQuest(crust.getStage());
+				crust.use(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnRequestQuest.setBounds(143, 268, 89, 20);
-		frameMain.getContentPane().add(btnRequestQuest);
-		
-		//Create the Verify Quest button
-		JButton btnVerifyQuest = new JButton("Verify");
-		btnVerifyQuest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				crust.requestQuestVerification();
-			}
-		});
-		btnVerifyQuest.setBounds(143, 298, 89, 20);
-		frameMain.getContentPane().add(btnVerifyQuest);
+		btnUse.setBounds(242, 238, 89, 20);
+		frameMain.getContentPane().add(btnUse);
 		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();
@@ -360,7 +347,7 @@ public class MainWindow {
             public void actionPerformed(ActionEvent event) {
                 try {
 					crust.save();
-				} catch (IOException e) { }
+				} catch (Exception e) { System.out.print(e.toString()); }
             }
         });
 		mnFile.add(mntmSave);
@@ -372,6 +359,19 @@ public class MainWindow {
 			}
 		});
 		menuBar.add(chckbxCrustAi);
+		
+		chckbxServer = new JCheckBox("Server");
+		chckbxServer.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(chckbxServer.isSelected()){
+					crust.startServer();
+				}else{
+					crust.stopServer();
+				}
+			}
+		});
+		chckbxServer.setSelected(true);
+		menuBar.add(chckbxServer);
 	}
 	
 	//Generate the initial values
@@ -554,27 +554,50 @@ public class MainWindow {
 		tabbedPane.addTab("Alerts", null, alertTabPane, null);
 		tabbedPane.setEnabledAt(0, true);
 		
-		//Create the tab for relationships
-		relationshipTree = new JTree();
-		relationshipTree.setModel(new DefaultTreeModel(
-			new DefaultMutableTreeNode("Relationships") {
-				private static final long serialVersionUID = 1L;
-
-				{
-					DefaultMutableTreeNode node_1;
-					node_1 = new DefaultMutableTreeNode("Friends");
-						node_1.add(new DefaultMutableTreeNode(""));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("Acquaintances");
-						node_1.add(new DefaultMutableTreeNode(""));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("Enemies");
-						node_1.add(new DefaultMutableTreeNode(""));
-					add(node_1);
-				}
-			}
-		));
-		tabbedPane.addTab("Relationships", null, relationshipTree, null);
+		//Create relationships panel
+		relationshipPanel = new JPanel();
+		tabbedPane.addTab("Relationships", null, relationshipPanel, null);
+		relationshipPanel.setLayout(null);
+		
+		//Create the relationship labels
+		JLabel lblFriends = new JLabel("Friends");
+		lblFriends.setBounds(0, 0, 162, 22);
+		lblFriends.setHorizontalAlignment(SwingConstants.CENTER);
+		relationshipPanel.add(lblFriends);
+		JLabel lblAcquaintances = new JLabel("Acquaintances");
+		lblAcquaintances.setBounds(162, 0, 162, 22);
+		lblAcquaintances.setHorizontalAlignment(SwingConstants.CENTER);
+		relationshipPanel.add(lblAcquaintances);
+		JLabel lblEnemies = new JLabel("Enemies");
+		lblEnemies.setBounds(324, 0, 162, 22);
+		lblEnemies.setHorizontalAlignment(SwingConstants.CENTER);
+		relationshipPanel.add(lblEnemies);
+		
+		//Create the friends list
+		friendsListModel = new DefaultListModel<String>();
+		friendsList = new JList<String>(friendsListModel);
+		
+		acquaintancesListModel = new DefaultListModel<String>();
+		acquaintancesList = new JList<String>(acquaintancesListModel);
+		
+		enemiesListModel = new DefaultListModel<String>();
+		enemiesList = new JList<String>(enemiesListModel);
+		
+		//Create scroll panes
+		friendScrollPane = new JScrollPane();
+		friendScrollPane.setBounds(0, 22, 162, 190);
+		relationshipPanel.add(friendScrollPane);
+		friendScrollPane.setViewportView(friendsList);
+		
+		acquaintancesScrollPane = new JScrollPane();
+		acquaintancesScrollPane.setBounds(162, 22, 162, 190);
+		relationshipPanel.add(acquaintancesScrollPane);
+		acquaintancesScrollPane.setViewportView(acquaintancesList);
+		
+		enemiesScrollPane = new JScrollPane();
+		enemiesScrollPane.setBounds(324, 22, 162, 190);
+		relationshipPanel.add(enemiesScrollPane);
+		enemiesScrollPane.setViewportView(enemiesList);
 		
 		//Create the tab that holds all of the stats
 		statsTab = new JPanel();
@@ -583,8 +606,14 @@ public class MainWindow {
 		createStatsTabLabels();
 		
 		//Create the tab that holds all of the interests
-		interestTab = new JList<String>();
+		interestList = new DefaultListModel<String>();
+		interestTab = new JList<String>(interestList);
 		tabbedPane.addTab("Interests", null, interestTab, null);
+		
+		//Create the tab that holds the inventory
+		inventoryList = new DefaultListModel<String>();
+		inventoryTab = new JList<String>(inventoryList);
+		tabbedPane.addTab("Inventory", null, inventoryTab, null);
 		
 		//Create the chat tab
 		chatTab = new JPanel();

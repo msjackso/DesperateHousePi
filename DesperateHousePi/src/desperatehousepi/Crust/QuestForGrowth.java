@@ -12,6 +12,12 @@ public class QuestForGrowth {
 	private boolean quest2enabled;
 	private boolean quest2completed;
 	
+	//edited 11/23/13 by Luke
+	//traits that are reset every level
+	private int[] posTraitsEncountered = new int [16];
+	private int[] negTraitsEncountered = new int [16];
+	int numInteractions = 0;
+	
 	public static enum quest1reqs{
 		JAR("JAR"), LID("LID"), SIGNATURE("SIGNATURE");
 		
@@ -202,6 +208,42 @@ public class QuestForGrowth {
 		} 
 		else
 			return;
+	}
+	
+	/***************************************
+	 * returns the values of the list of traits that will be generated.
+	 * @author Luke
+	 ***************************************/
+	int[] calculateTraits() {
+		int[] newTraitVals = new int [16];
+		int[] sums = new int [16];
+		float[] percentages = new float [16];
+		int totalTraitVals = 0;
+		int numToDistribute;
+		
+		//Figure out raw counts for each trait based on interactions
+		for (int i = 0; i < 16; i++) {
+			newTraitVals[i] = posTraitsEncountered[i] - negTraitsEncountered[i];
+			totalTraitVals += Math.abs(newTraitVals[i]);
+		}
+		
+		//Assigns a number of points to distribute based on the number of interactions this level
+		if (numInteractions <= 25) {
+			numToDistribute = 30;
+		}
+		
+		else {
+			numToDistribute = 40;
+		}
+		
+		//Calculates the percentage of points that should be assigned to each trait
+		for (int i = 0; i < 16; i++) {
+			percentages[i] = newTraitVals[i]/totalTraitVals;
+			newTraitVals[i] = (int) percentages[i] * numToDistribute;
+		}
+		
+		return newTraitVals;
+		
 	}
 	
 }

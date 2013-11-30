@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 import desperatehousepi.Items.ItemSet.itemType;
 
-public class CrustAI {
+public class CrustAI{
 	
 	Crust crust;
 	ActionListener crustAI = new ActionListener(){

@@ -89,6 +89,7 @@ public class Intro {
 				
 				//Create a file chooser
 				fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int returnVal = fc.showDialog(intro_frame, "Load");
 				
 				//If a valid file was loaded
