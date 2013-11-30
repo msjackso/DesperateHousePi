@@ -1,6 +1,5 @@
 package desperatehousepi.GUI;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -181,9 +180,6 @@ public class MainWindow {
 		//Set the age
 		lblAgeVal.setText(crust.get("age"));
 		
-		//Set the growth stage
-		lblStageVal.setText(crust.getStage());
-		
 		//Set the energy
 		energyBar.setValue(crust.getNeed("Energy"));
 		
@@ -285,15 +281,13 @@ public class MainWindow {
 		tabbedPane.setBounds(0, 366, 491, 240);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
-
+		
 		//Create the crust's image in the top left hand corner
 		crustImage = new JPanel();
 		crustImage.setBorder(new MatteBorder(0, 0, 3, 3, (Color) new Color(0, 0, 0)));
 		crustImage.setBackground(Color.RED);
 		crustImage.setBounds(0, 0, 185, 226);
-
 		frameMain.getContentPane().add(crustImage);
-		
 		
 		//Create the crust information
 		crustInfo = new JPanel();
@@ -322,25 +316,15 @@ public class MainWindow {
 		comboBox.setBounds(10, 238, 134, 20);
 		frameMain.getContentPane().add(comboBox);
 		
-		//Create the Request Quest button
-		JButton btnRequestQuest = new JButton("Quest");
-		btnRequestQuest.addActionListener(new ActionListener() {
+		//Create the give button
+		JButton btnGive = new JButton("Give");
+		btnGive.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				crust.requestGrowthQuest(crust.getStage());
+				crust.give(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnRequestQuest.setBounds(143, 268, 89, 20);
-		frameMain.getContentPane().add(btnRequestQuest);
-		
-		//Create the Verify Quest button
-		JButton btnVerifyQuest = new JButton("Verify");
-		btnVerifyQuest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				crust.requestQuestVerification();
-			}
-		});
-		btnVerifyQuest.setBounds(143, 298, 89, 20);
-		frameMain.getContentPane().add(btnVerifyQuest);
+		btnGive.setBounds(143, 238, 89, 20);
+		frameMain.getContentPane().add(btnGive);
 		
 		//Create the give button
 		JButton btnUse = new JButton("Use");

@@ -85,11 +85,8 @@ public class Crust {
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
-<<<<<<< HEAD
 	public QuestForGrowth destiny = new QuestForGrowth();
-=======
 	Server server;
->>>>>>> S3Crust-Interests.Michael
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -104,7 +101,6 @@ public class Crust {
 			traits[x].setRandomTrait();
 		}
 		
-<<<<<<< HEAD
 		//Edited 11/23/13 by Luke
 		//Creates the person's age
 		new Timer(millSecsInDay, increase_age).start();
@@ -116,8 +112,6 @@ public class Crust {
 		//TODO: Remove
 		System.out.println("Traits done");
 		
-=======
->>>>>>> S3Crust-Interests.Michael
 		crustAI = new CrustAI(this);
 		createServer(Server.SOCKET_DEFAULT);
 
