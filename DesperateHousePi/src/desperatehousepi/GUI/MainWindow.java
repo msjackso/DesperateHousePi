@@ -158,7 +158,7 @@ public class MainWindow {
 		refreshAll();
 		new Timer(refreshTime, refreshMeEssential).start();
 		new Timer(refreshTime*5, refreshMeAll).start();
-		new Timer(refreshTime, refreshMeAnimation).start();
+		new Timer(refreshTime/20, refreshMeAnimation).start();
 		frameMain.setVisible(true);
 	}
 	
@@ -281,7 +281,21 @@ public class MainWindow {
 		
 		if(((currentLoc.x - targetLoc.x) <= movementSpeed && (currentLoc.x - targetLoc.x) >= -movementSpeed) &&
 				((currentLoc.y - targetLoc.y) <= movementSpeed && (currentLoc.y - targetLoc.y) >= -movementSpeed)){
-			targetLoc = new Point(rand.nextInt(bgImage.getWidth()),rand.nextInt(bgImage.getHeight()));
+			int targetX = rand.nextInt(bgImage.getWidth())+bgImage.getX();
+			int targetY = rand.nextInt(bgImage.getHeight())+bgImage.getY();
+			if(targetX < 60+bgImage.getX()){
+				targetX = 60+bgImage.getX();
+			}
+			if(targetX > bgImage.getWidth()-60+bgImage.getX()){
+				targetX = bgImage.getWidth()-60+bgImage.getX();
+			}
+			if(targetY < 100+bgImage.getY()){
+				targetY = 100+bgImage.getY();
+			}
+			if(targetY > bgImage.getHeight()-100+bgImage.getY()){
+				targetY = bgImage.getHeight()-100+bgImage.getY();
+			}
+			targetLoc = new Point(targetX, targetY);
 		}else{
 			if(targetLoc.x > currentLoc.x){
 				currentLoc.x += movementSpeed;
@@ -383,7 +397,7 @@ public class MainWindow {
 		//initialize variables for animation
 		currentLoc = crustImage.getLocation();
 		targetLoc = new Point(rand.nextInt(bgImage.getWidth()),rand.nextInt(bgImage.getHeight()));
-		movementSpeed = 5;
+		movementSpeed = 2;
 		
 		//Create the crust information
 		crustInfo = new JPanel();
@@ -851,57 +865,57 @@ public class MainWindow {
 			case BLUEBERRYPIE:
 				if(c.getStage() == "Adult"){
 					crustImage.setIcon(blue3);
-					crustImage.setBounds(50, 50, blue3.getIconWidth(),blue3.getIconHeight());
+					crustImage.setBounds(150, 150, blue3.getIconWidth(),blue3.getIconHeight());
 				}
 				else if(c.getStage() == "Teen"){
 					crustImage.setIcon(blue2);
-					crustImage.setBounds(50, 50, blue2.getIconWidth(),blue2.getIconHeight());	
+					crustImage.setBounds(150, 150, blue2.getIconWidth(),blue2.getIconHeight());	
 				}
 				else{
 					crustImage.setIcon(blue1);
-					crustImage.setBounds(50, 50, blue1.getIconWidth(),blue1.getIconHeight());
+					crustImage.setBounds(150, 150, blue1.getIconWidth(),blue1.getIconHeight());
 				}
 				break;
 			case CHERRYPIE:
 				if(c.getStage() == "Adult"){
 					crustImage.setIcon(cherry3);
-					crustImage.setBounds(50, 50, cherry3.getIconWidth(),cherry3.getIconHeight());
+					crustImage.setBounds(150, 150, cherry3.getIconWidth(),cherry3.getIconHeight());
 				}
 				else if(c.getStage() == "Teen"){
 					crustImage.setIcon(cherry2);
-					crustImage.setBounds(50, 50, cherry2.getIconWidth(),cherry2.getIconHeight());	
+					crustImage.setBounds(150, 150, cherry2.getIconWidth(),cherry2.getIconHeight());	
 				}
 				else{
 					crustImage.setIcon(cherry1);
-					crustImage.setBounds(50, 50, cherry1.getIconWidth(),cherry1.getIconHeight());
+					crustImage.setBounds(150, 150, cherry1.getIconWidth(),cherry1.getIconHeight());
 				}
 				break;
 			case CHOCOLATEPIE:
 				if(c.getStage() == "Adult"){
 					crustImage.setIcon(choc3);
-					crustImage.setBounds(50, 50, choc3.getIconWidth(),choc3.getIconHeight());
+					crustImage.setBounds(150, 150, choc3.getIconWidth(),choc3.getIconHeight());
 				}
 				else if(c.getStage() == "Teen"){
 					crustImage.setIcon(choc2);
-					crustImage.setBounds(50, 50, choc2.getIconWidth(),choc2.getIconHeight());	
+					crustImage.setBounds(150, 150, choc2.getIconWidth(),choc2.getIconHeight());	
 				}
 				else{
 					crustImage.setIcon(choc1);
-					crustImage.setBounds(50, 50, choc1.getIconWidth(),choc1.getIconHeight());
+					crustImage.setBounds(150, 150, choc1.getIconWidth(),choc1.getIconHeight());
 				}
 				break;
 			case PECANPIE:
 				if(c.getStage() == "Adult"){
 					crustImage.setIcon(pecan3);
-					crustImage.setBounds(50, 50, pecan3.getIconWidth(),pecan3.getIconHeight());
+					crustImage.setBounds(150, 150, pecan3.getIconWidth(),pecan3.getIconHeight());
 				}
 				else if(c.getStage() == "Teen"){
 					crustImage.setIcon(pecan2);
-					crustImage.setBounds(50, 50, pecan2.getIconWidth(),pecan2.getIconHeight());	
+					crustImage.setBounds(150, 150, pecan2.getIconWidth(),pecan2.getIconHeight());	
 				}
 				else{
 					crustImage.setIcon(pecan1);
-					crustImage.setBounds(50, 50, pecan1.getIconWidth(),pecan1.getIconHeight());
+					crustImage.setBounds(150, 150, pecan1.getIconWidth(),pecan1.getIconHeight());
 				}
 				break;
 		}
