@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -31,10 +32,12 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -62,6 +65,17 @@ public class MainWindow {
 	private Crust crust;
 	private File logFile;
 	private BufferedReader logFileReader;
+	
+	//animation variables
+	private Point targetLoc;
+	private Point currentLoc;
+	private int movementSpeed;
+	Random rand = new Random();
+	
+	ImageIcon background1, background2, energyIcon, entertainmentIcon, hungerIcon, blue1, blue2, blue3, cherry1, cherry2,
+		cherry3, choc1, choc2, choc3, pecan1, pecan2, pecan3, appleIcon, ballIcon, bedIcon, butterIcon, coffeeIcon, fishIcon, 
+		flourIcon, jarIcon, lidIcon, panIcon, rasberryIcon, recipieIcon, rollingPinIcon, saltIcon, shardIcon, signatureIcon, 
+		sugarIcon, tvIcon, waterIcon; 
 	
 	JTabbedPane tabbedPane;
 		JTextArea alertTab;
@@ -118,7 +132,8 @@ public class MainWindow {
 			JTextArea textField;
 			JTextField chatTabSendText;
 			JButton chatTabSendBtn;
-	JPanel crustImage;
+	JLabel crustImage;
+	JLabel bgImage;
 	JPanel crustInfo;
 		JLabel lblName;
 		JLabel lblFullName;
@@ -138,10 +153,12 @@ public class MainWindow {
 	
 	public MainWindow(Crust c) throws FileNotFoundException {
 		crust = c;
+		loadGraphics();
 		initialize();
 		refreshAll();
 		new Timer(refreshTime, refreshMeEssential).start();
 		new Timer(refreshTime*5, refreshMeAll).start();
+		new Timer(refreshTime, refreshMeAnimation).start();
 		frameMain.setVisible(true);
 	}
 	
@@ -157,6 +174,12 @@ public class MainWindow {
 		public void actionPerformed(ActionEvent evt) {
 			refreshAll();
 	   	}
+	};
+	private ActionListener refreshMeAnimation = new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent evt){
+			refreshAnimation();
+		}
 	};
 	private JCheckBox chckbxServer;
 	
@@ -254,6 +277,70 @@ public class MainWindow {
 		alertTab.setCaretPosition(alertTab.getDocument().getLength());
 		
 	}
+	private void refreshAnimation(){
+		
+		if(((currentLoc.x - targetLoc.x) <= movementSpeed && (currentLoc.x - targetLoc.x) >= -movementSpeed) &&
+				((currentLoc.y - targetLoc.y) <= movementSpeed && (currentLoc.y - targetLoc.y) >= -movementSpeed)){
+			targetLoc = new Point(rand.nextInt(bgImage.getWidth()),rand.nextInt(bgImage.getHeight()));
+		}else{
+			if(targetLoc.x > currentLoc.x){
+				currentLoc.x += movementSpeed;
+				crustImage.setLocation(currentLoc);
+			}else{
+				currentLoc.x -= movementSpeed;
+				crustImage.setLocation(currentLoc);
+			}
+			if(targetLoc.y > currentLoc.y){
+				currentLoc.y += movementSpeed;
+				crustImage.setLocation(currentLoc);
+			}else{
+				currentLoc.y -= movementSpeed;
+				crustImage.setLocation(currentLoc);
+			}
+			
+		}
+	}
+	
+	//Load all of the graphics into ImageIcons
+	//added by Tony 11/30/13
+	private void loadGraphics() throws FileNotFoundException{
+		background1 = new ImageIcon("images/Backgrounds/theCounter_color.png");
+		background2 = new ImageIcon("images/Backgrounds/ancientPieMap_color.png");
+		energyIcon = new ImageIcon("images/icons/color/energyIcon.png");
+		entertainmentIcon = new ImageIcon("images/icons/color/entertainmentIcon.png");
+		hungerIcon = new ImageIcon("images/icons/color/hungerIcon.png");
+		blue1 = new ImageIcon("images/chars/color/blue1_color.png");
+		blue2 = new ImageIcon("images/chars/color/blue2_color.png");
+		blue3 = new ImageIcon("images/chars/color/blue3_color.png");
+		cherry1 = new ImageIcon("images/chars/color/cherry1_color.png");
+		cherry2 = new ImageIcon("images/chars/color/cherry2_color.png");
+		cherry3 = new ImageIcon("images/chars/color/cherry3_color.png");
+		choc1 = new ImageIcon("images/chars/color/choc1_color.png");
+		choc2 = new ImageIcon("images/chars/color/choc2_color.png");
+		choc3 = new ImageIcon("images/chars/color/choc3_color.png");
+		pecan1 = new ImageIcon("images/chars/color/pecan1_color.png");
+		pecan2 = new ImageIcon("images/chars/color/pecan2_color.png");
+		pecan3 = new ImageIcon("images/chars/color/pecan3_color.png");
+		appleIcon = new ImageIcon("images/items/color/apple.png");
+		ballIcon = new ImageIcon("images/items/color/ball.png");
+		bedIcon = new ImageIcon("images/items/color/bed.png");
+		butterIcon = new ImageIcon("images/items/color/butter.png");
+		coffeeIcon = new ImageIcon("images/items/color/coffee.png");
+		fishIcon = new ImageIcon("images/items/color/fish.png");
+		flourIcon = new ImageIcon("images/items/color/flour.png");
+		jarIcon = new ImageIcon("images/items/color/jar.png");
+		lidIcon = new ImageIcon("images/items/color/lid.png");
+		panIcon = new ImageIcon("images/items/color/pan.png");
+		rasberryIcon = new ImageIcon("images/items/color/rasberry.png");
+		recipieIcon = new ImageIcon("images/items/color/recipie.png");
+		rollingPinIcon = new ImageIcon("images/items/color/rollingpin.png");
+		saltIcon = new ImageIcon("images/items/color/salt.png"); 
+		shardIcon = new ImageIcon("images/items/color/shard.png");
+		signatureIcon = new ImageIcon("images/items/color/signature.png"); 
+		sugarIcon = new ImageIcon("images/items/color/sugar.png");
+		tvIcon = new ImageIcon("images/items/color/tv.png");
+		waterIcon= new ImageIcon("images/items/color/water.png"); 
+	}
 	
 	//Initialize the whole window
 	private void initialize() throws FileNotFoundException {
@@ -270,7 +357,7 @@ public class MainWindow {
 		frameMain.getContentPane().setBackground(Color.GREEN);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/com/sun/java/swing/plaf/motif/icons/DesktopIcon.gif")));
 		frameMain.setTitle("Main");
-		frameMain.setBounds(100, 100, 510, 669);
+		frameMain.setBounds(100, 100, 870, 669);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.getContentPane().setLayout(null);
 		
@@ -278,22 +365,31 @@ public class MainWindow {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setForeground(Color.BLACK);
 		tabbedPane.setBackground(Color.GREEN);
-		tabbedPane.setBounds(0, 366, 491, 240);
+		tabbedPane.setBounds(0, 366, 854, 240);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
 		
 		//Create the crust's image in the top left hand corner
-		crustImage = new JPanel();
-		crustImage.setBorder(new MatteBorder(0, 0, 3, 3, (Color) new Color(0, 0, 0)));
-		crustImage.setBackground(Color.RED);
-		crustImage.setBounds(0, 0, 185, 226);
+		crustImage = new JLabel();
+		setCrustGraphics(crust);
 		frameMain.getContentPane().add(crustImage);
+		
+		//Create Background Image
+		bgImage = new JLabel();
+		bgImage.setBounds(10, 11, 463, 331);
+		bgImage.setIcon(background1);
+		frameMain.getContentPane().add(bgImage);
+		
+		//initialize variables for animation
+		currentLoc = crustImage.getLocation();
+		targetLoc = new Point(rand.nextInt(bgImage.getWidth()),rand.nextInt(bgImage.getHeight()));
+		movementSpeed = 5;
 		
 		//Create the crust information
 		crustInfo = new JPanel();
 		crustInfo.setBackground(Color.GREEN);
 		crustInfo.setBorder(new MatteBorder(0, 0, 3, 0, (Color) new Color(0, 0, 0)));
-		crustInfo.setBounds(184, 0, 307, 226);
+		crustInfo.setBounds(537, 11, 307, 226);
 		frameMain.getContentPane().add(crustInfo);
 		GridBagLayout gbl_crustInfo = new GridBagLayout();
 		gbl_crustInfo.columnWidths = new int[]{0, 0, 0, 0, 0};
@@ -313,7 +409,7 @@ public class MainWindow {
 		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(comboBoxItems);
 		final JComboBox<String> comboBox = new JComboBox<String>(model);
 		comboBox.setEditable(true);
-		comboBox.setBounds(10, 238, 134, 20);
+		comboBox.setBounds(581, 257, 134, 20);
 		frameMain.getContentPane().add(comboBox);
 		
 		//Create the give button
@@ -323,7 +419,7 @@ public class MainWindow {
 				crust.give(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnGive.setBounds(143, 238, 89, 20);
+		btnGive.setBounds(728, 256, 89, 20);
 		frameMain.getContentPane().add(btnGive);
 		
 		//Create the give button
@@ -333,7 +429,7 @@ public class MainWindow {
 				crust.use(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnUse.setBounds(242, 238, 89, 20);
+		btnUse.setBounds(728, 287, 89, 20);
 		frameMain.getContentPane().add(btnUse);
 		
 		//Create the menu items
@@ -748,5 +844,66 @@ public class MainWindow {
 		gbc_hungerBar.gridx = 1;
 		gbc_hungerBar.gridy = 5;
 		crustInfo.add(hungerBar, gbc_hungerBar);
+	}
+	//set appropriate crust icon given stage and type
+	private void setCrustGraphics(Crust c){
+		switch(c.getPieType()){
+			case BLUEBERRYPIE:
+				if(c.getStage() == "Adult"){
+					crustImage.setIcon(blue3);
+					crustImage.setBounds(50, 50, blue3.getIconWidth(),blue3.getIconHeight());
+				}
+				else if(c.getStage() == "Teen"){
+					crustImage.setIcon(blue2);
+					crustImage.setBounds(50, 50, blue2.getIconWidth(),blue2.getIconHeight());	
+				}
+				else{
+					crustImage.setIcon(blue1);
+					crustImage.setBounds(50, 50, blue1.getIconWidth(),blue1.getIconHeight());
+				}
+				break;
+			case CHERRYPIE:
+				if(c.getStage() == "Adult"){
+					crustImage.setIcon(cherry3);
+					crustImage.setBounds(50, 50, cherry3.getIconWidth(),cherry3.getIconHeight());
+				}
+				else if(c.getStage() == "Teen"){
+					crustImage.setIcon(cherry2);
+					crustImage.setBounds(50, 50, cherry2.getIconWidth(),cherry2.getIconHeight());	
+				}
+				else{
+					crustImage.setIcon(cherry1);
+					crustImage.setBounds(50, 50, cherry1.getIconWidth(),cherry1.getIconHeight());
+				}
+				break;
+			case CHOCOLATEPIE:
+				if(c.getStage() == "Adult"){
+					crustImage.setIcon(choc3);
+					crustImage.setBounds(50, 50, choc3.getIconWidth(),choc3.getIconHeight());
+				}
+				else if(c.getStage() == "Teen"){
+					crustImage.setIcon(choc2);
+					crustImage.setBounds(50, 50, choc2.getIconWidth(),choc2.getIconHeight());	
+				}
+				else{
+					crustImage.setIcon(choc1);
+					crustImage.setBounds(50, 50, choc1.getIconWidth(),choc1.getIconHeight());
+				}
+				break;
+			case PECANPIE:
+				if(c.getStage() == "Adult"){
+					crustImage.setIcon(pecan3);
+					crustImage.setBounds(50, 50, pecan3.getIconWidth(),pecan3.getIconHeight());
+				}
+				else if(c.getStage() == "Teen"){
+					crustImage.setIcon(pecan2);
+					crustImage.setBounds(50, 50, pecan2.getIconWidth(),pecan2.getIconHeight());	
+				}
+				else{
+					crustImage.setIcon(pecan1);
+					crustImage.setBounds(50, 50, pecan1.getIconWidth(),pecan1.getIconHeight());
+				}
+				break;
+		}
 	}
 }
