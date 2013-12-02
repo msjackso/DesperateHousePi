@@ -147,6 +147,16 @@ public class QuestForGrowth {
 		else
 			return "Child";	
 	}
+	
+	public String getGrowthStageAsNum(){
+		if (quest2completed)
+			return "3";
+		else if (quest1completed)
+			return "2";
+		else
+			return "1";	
+	}
+	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	/***************************************
 	 * given the stage of the crust, the appropriate quest will be enabled

@@ -34,6 +34,7 @@ import javax.swing.JList;
 
 import java.util.Random;
 import java.util.Vector;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -75,8 +76,7 @@ public class MainWindow {
 	private int movementSpeed;
 	Random rand = new Random();
 	
-	ImageIcon background1, background2, energyIcon, entertainmentIcon, hungerIcon, blue1, blue2, blue3, cherry1, cherry2,
-		cherry3, choc1, choc2, choc3, pecan1, pecan2, pecan3, appleIcon, ballIcon, bedIcon, butterIcon, coffeeIcon, fishIcon, 
+	ImageIcon background1, background2, energyIcon, entertainmentIcon, hungerIcon, appleIcon, ballIcon, bedIcon, butterIcon, coffeeIcon, fishIcon, 
 		flourIcon, jarIcon, lidIcon, panIcon, rasberryIcon, recipieIcon, rollingPinIcon, saltIcon, shardIcon, signatureIcon, 
 		sugarIcon, tvIcon, waterIcon; 
 	
@@ -343,18 +343,6 @@ public class MainWindow {
 		energyIcon = new ImageIcon("images/icons/color/energyIcon.png");
 		entertainmentIcon = new ImageIcon("images/icons/color/entertainmentIcon.png");
 		hungerIcon = new ImageIcon("images/icons/color/hungerIcon.png");
-		blue1 = new ImageIcon("images/chars/color/blue1_color.png");
-		blue2 = new ImageIcon("images/chars/color/blue2_color.png");
-		blue3 = new ImageIcon("images/chars/color/blue3_color.png");
-		cherry1 = new ImageIcon("images/chars/color/cherry1_color.png");
-		cherry2 = new ImageIcon("images/chars/color/cherry2_color.png");
-		cherry3 = new ImageIcon("images/chars/color/cherry3_color.png");
-		choc1 = new ImageIcon("images/chars/color/choc1_color.png");
-		choc2 = new ImageIcon("images/chars/color/choc2_color.png");
-		choc3 = new ImageIcon("images/chars/color/choc3_color.png");
-		pecan1 = new ImageIcon("images/chars/color/pecan1_color.png");
-		pecan2 = new ImageIcon("images/chars/color/pecan2_color.png");
-		pecan3 = new ImageIcon("images/chars/color/pecan3_color.png");
 		appleIcon = new ImageIcon("images/items/color/apple.png");
 		ballIcon = new ImageIcon("images/items/color/ball.png");
 		bedIcon = new ImageIcon("images/items/color/bed.png");
@@ -911,64 +899,11 @@ public class MainWindow {
 	}
 	
 	//Set appropriate crust icon given stage and type
+	//edited 12/2 1:02AM by Mark
 	private void setCrustGraphics(Crust c){
-		switch(c.getPieType()){
-			case BLUEBERRYPIE:
-				if(c.getStage() == "Adult"){
-					crustImage.setIcon(blue3);
-					crustImage.setBounds(150, 150, blue3.getIconWidth(),blue3.getIconHeight());
-				}
-				else if(c.getStage() == "Teen"){
-					crustImage.setIcon(blue2);
-					crustImage.setBounds(150, 150, blue2.getIconWidth(),blue2.getIconHeight());	
-				}
-				else{
-					crustImage.setIcon(blue1);
-					crustImage.setBounds(150, 150, blue1.getIconWidth(),blue1.getIconHeight());
-				}
-				break;
-			case CHERRYPIE:
-				if(c.getStage() == "Adult"){
-					crustImage.setIcon(cherry3);
-					crustImage.setBounds(150, 150, cherry3.getIconWidth(),cherry3.getIconHeight());
-				}
-				else if(c.getStage() == "Teen"){
-					crustImage.setIcon(cherry2);
-					crustImage.setBounds(150, 150, cherry2.getIconWidth(),cherry2.getIconHeight());	
-				}
-				else{
-					crustImage.setIcon(cherry1);
-					crustImage.setBounds(150, 150, cherry1.getIconWidth(),cherry1.getIconHeight());
-				}
-				break;
-			case CHOCOLATEPIE:
-				if(c.getStage() == "Adult"){
-					crustImage.setIcon(choc3);
-					crustImage.setBounds(150, 150, choc3.getIconWidth(),choc3.getIconHeight());
-				}
-				else if(c.getStage() == "Teen"){
-					crustImage.setIcon(choc2);
-					crustImage.setBounds(150, 150, choc2.getIconWidth(),choc2.getIconHeight());	
-				}
-				else{
-					crustImage.setIcon(choc1);
-					crustImage.setBounds(150, 150, choc1.getIconWidth(),choc1.getIconHeight());
-				}
-				break;
-			case PECANPIE:
-				if(c.getStage() == "Adult"){
-					crustImage.setIcon(pecan3);
-					crustImage.setBounds(150, 150, pecan3.getIconWidth(),pecan3.getIconHeight());
-				}
-				else if(c.getStage() == "Teen"){
-					crustImage.setIcon(pecan2);
-					crustImage.setBounds(150, 150, pecan2.getIconWidth(),pecan2.getIconHeight());	
-				}
-				else{
-					crustImage.setIcon(pecan1);
-					crustImage.setBounds(150, 150, pecan1.getIconWidth(),pecan1.getIconHeight());
-				}
-				break;
-		}
+		String path = "images/chars/color/"+c.getPieType().filename+c.getStageAsNum()+"_color.png";
+		ImageIcon image = new ImageIcon(path);
+		crustImage.setIcon(image);
+		crustImage.setBounds(150, 150, image.getIconWidth(),image.getIconHeight());
 	}
 }

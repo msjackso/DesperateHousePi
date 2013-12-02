@@ -55,7 +55,13 @@ public class Crust {
 	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
 	
 	public enum CrustType{
-		BLUEBERRYPIE, CHERRYPIE, CHOCOLATEPIE, PECANPIE;
+		BLUEBERRYPIE("blue"), CHERRYPIE("cherry"), CHOCOLATEPIE("choc"), PECANPIE("pecan");
+		
+		//edited 12/2 1:02AM by Mark
+		public String filename;
+		CrustType(String n){
+			filename = n;
+		}
 	}
 	
 	//Initialize variables
@@ -65,7 +71,6 @@ public class Crust {
 	protected int age = 0; //Current age; default value = 0
 	protected int bdaymonth = 11;
 	protected int birthday = 25;
-	CrustType typeOfPie;
 	Random rand;
 	
 	//Object Declarations
@@ -95,7 +100,7 @@ public class Crust {
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
 	public QuestForGrowth destiny = new QuestForGrowth();
-	public String flavor = generateFlavor();
+	public CrustType typeOfPie;
 	Server server;
 	
 	/******************************
@@ -125,10 +130,6 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
-		
-		//Added by Tony: 11/30/2013
-		typeOfPie = setRandomPieType();
-		
 	}
 	
 	/* Returns month of birthday
@@ -142,23 +143,6 @@ public class Crust {
 	 * Output: day of month of birthday
 	 */
 	public int getbirthday(){ return birthday; }
-	
-	/******************************
-	 * Returns 1 of the 4 flavors available.
-	 * @author Mark
-	 ******************************/
-	private String generateFlavor() {
-		Random generator = new Random();
-		int randomNum = generator.nextInt(4);
-		
-		switch (randomNum) {
-			case 0: return "blue";
-			case 1: return "cherry"; 
-			case 2: return "choc"; 
-			case 3: return "pecan"; 
-			default: return "error, in generateFlavor()";
-		}
-	}
 
 	/******************************
 	 * This constructor will generate a personality randomly. Each trait is determined
@@ -179,9 +163,6 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
-		
-		//Added by Tony: 11/30/2013
-		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -216,9 +197,6 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
-		
-		//Added by Tony: 11/30/2013
-		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -255,9 +233,6 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
-		
-		//Added by Tony: 11/30/2013
-		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -307,9 +282,6 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
-		
-		//Added by Tony: 11/30/2013
-		typeOfPie = setRandomPieType();
 	}
 	
 	/*******************************
@@ -795,6 +767,10 @@ public class Crust {
 		return destiny.getGrowthStage();
 	}
 	
+	public String getStageAsNum(){
+		return destiny.getGrowthStageAsNum();
+	}
+	
 	/*******************************
 	 * Tells the crust to use the item that is passed in
 	 * @param item - The string containing the name of the item
@@ -986,22 +962,6 @@ public class Crust {
 		try{
 			traits[traitName.valueOf(trait).index].setMod(Integer.parseInt(value));
 		}catch(Exception e){ }
-	}
-	
-	/******************************
-	 * Randomly determines the type of pie
-	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
-	 * CHOCOLATEPIE, or PECANPIE
-	 * @author Tony
-	 * 11/30/2013
-	 ******************************/
-	public CrustType setRandomPieType(){
-		Random rand = new Random();
-		int i = rand.nextInt(4);
-		if (i == 0)			{return CrustType.BLUEBERRYPIE;}
-		else if (i == 1)	{return CrustType.CHERRYPIE;}
-		else if (i == 2)	{return CrustType.CHOCOLATEPIE;}
-		else				{return CrustType.PECANPIE;}
 	}
 	
 	/******************************

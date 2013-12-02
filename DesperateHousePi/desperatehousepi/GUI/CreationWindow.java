@@ -14,6 +14,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 
 import desperatehousepi.Crust.Crust;
+import desperatehousepi.Crust.Crust.CrustType;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,9 @@ public class CreationWindow {
 
 	private JFrame creation_frame;
 	private Crust newCrust;
+	
+	//edited 12/2 1:02AM by Mark
+	private CrustType pieType = setRandomPieType();
 
 	/**
 	 * Open window to create new Crust
@@ -62,6 +66,14 @@ public class CreationWindow {
 		panel.setBackground(Color.GREEN);
 		creation_frame.getContentPane().add(panel);
 		panel.setLayout(null);
+		
+		
+		//character preview
+		//edited 12/2 1:02AM by Mark
+		String path = "images/chars/color/"+pieType.filename+"1_color.png";
+		JLabel picLabel = new JLabel(new ImageIcon(path));
+		picLabel.setBounds(313, 44, 150, 150);
+		panel.add(picLabel);
 		
 		//Initialize message label for displaying input errors
 		final JLabel message = new JLabel("");
@@ -156,13 +168,7 @@ public class CreationWindow {
 		tension.setBounds(361, 410, 80, 20);
 		panel.add(tension);
 		
-		//character preview
-		String path = "images/chars/color/"+newCrust.flavor+"1_color.png";
-		JLabel picLabel = new JLabel(new ImageIcon(path));
-		picLabel.setBounds(313, 44, 150, 150);
-		panel.add(picLabel);
-		
-		//set values of tdxt fields given newCrust object
+		//set values of txt fields given newCrust object
 		warmth.setText(newCrust.get("warmth"));
 		reasoning.setText(newCrust.get("reasoning"));
 		emotionalStability.setText(newCrust.get("emotionalStability"));
@@ -324,6 +330,11 @@ public class CreationWindow {
 							Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),
 							Integer.parseInt(privateness.getText()), Integer.parseInt(apprehensivness.getText()), Integer.parseInt(opennessToChange.getText()),
 							Integer.parseInt(selfReliance.getText()), Integer.parseInt(perfectionism.getText()), Integer.parseInt(tension.getText()));
+					
+					//edited 12/2/2013 1:02AM by Mark
+					newCrust.typeOfPie = pieType;
+					//
+					
 					creation_frame.setVisible(false);
 					try { new MainWindow(newCrust); } catch (FileNotFoundException e) { }							
 					return;
@@ -530,4 +541,21 @@ public class CreationWindow {
 		}
 
 	}
+	
+	/******************************
+	 * Randomly determines the type of pie
+	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
+	 * CHOCOLATEPIE, or PECANPIE
+	 * @author Tony
+	 * 11/30/2013
+	 ******************************/
+	public CrustType setRandomPieType(){
+		Random rand = new Random();
+		int i = rand.nextInt(4);
+		if (i == 0)			{return CrustType.BLUEBERRYPIE;}
+		else if (i == 1)	{return CrustType.CHERRYPIE;}
+		else if (i == 2)	{return CrustType.CHOCOLATEPIE;}
+		else				{return CrustType.PECANPIE;}
+	}
 }
+
