@@ -54,6 +54,10 @@ public class Crust {
 	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
 	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
 	
+	public enum CrustType{
+		BLUEBERRYPIE, CHERRYPIE, CHOCOLATEPIE, PECANPIE;
+	}
+	
 	//Initialize variables
 	String first_name = "John";
 	String middle_name = "Jacob";
@@ -61,6 +65,8 @@ public class Crust {
 	protected int age = 0; //Current age; default value = 0
 	protected int bdaymonth = 11;
 	protected int birthday = 25;
+	CrustType typeOfPie;
+	Random rand;
 	
 	//Object Declarations
 	private PTrait[] traits = new PTrait [16];
@@ -73,6 +79,7 @@ public class Crust {
 			index = i;
 		}
 	}
+	
 	//Create a timer for the aging process
 	private ActionListener increase_age = new ActionListener() {
 		@Override
@@ -118,6 +125,9 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//Added by Tony: 11/30/2013
+		typeOfPie = setRandomPieType();
 		
 	}
 	
@@ -169,6 +179,9 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//Added by Tony: 11/30/2013
+		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -203,6 +216,9 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//Added by Tony: 11/30/2013
+		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -239,6 +255,9 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//Added by Tony: 11/30/2013
+		typeOfPie = setRandomPieType();
 	}
 	
 	/******************************
@@ -288,6 +307,9 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		
+		//Added by Tony: 11/30/2013
+		typeOfPie = setRandomPieType();
 	}
 	
 	/*******************************
@@ -964,6 +986,34 @@ public class Crust {
 		try{
 			traits[traitName.valueOf(trait).index].setMod(Integer.parseInt(value));
 		}catch(Exception e){ }
+	}
+	
+	/******************************
+	 * Randomly determines the type of pie
+	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
+	 * CHOCOLATEPIE, or PECANPIE
+	 * @author Tony
+	 * 11/30/2013
+	 ******************************/
+	public CrustType setRandomPieType(){
+		Random rand = new Random();
+		int i = rand.nextInt(4);
+		if (i == 0)			{return CrustType.BLUEBERRYPIE;}
+		else if (i == 1)	{return CrustType.CHERRYPIE;}
+		else if (i == 2)	{return CrustType.CHOCOLATEPIE;}
+		else				{return CrustType.PECANPIE;}
+	}
+	
+	/******************************
+	 * Returns the enumerated type of pie
+	 * @param c - the Crust object to be passed in
+	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
+	 * CHOCOLATEPIE, or PECANPIE
+	 * @author Tony
+	 * 11/30/2013
+	 ******************************/
+	public CrustType getPieType(){
+		return typeOfPie;
 	}
 	
 	/******************************
