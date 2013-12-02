@@ -93,4 +93,12 @@ public class TestCrust {
 		testSet();
 	}
 
+	@Test
+	public void testTime(){
+		Crust tCrust = new Crust("John","Jacob","Smith",10,20);
+		assertNotNull(tCrust);
+		assertTrue(tCrust.getbdaymonth()==10);
+		assertTrue(tCrust.getbirthday()==20);
+	}
+	
 }
