@@ -396,9 +396,7 @@ public class Crust {
 		for(Relationship r:relationships){
 			
 			String content = "";
-			
-			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
-			
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.getFirstMet()+" ||| "+r.getLastMeeting();
 			rbw.write(content);
 			rbw.newLine();
 		}
@@ -816,7 +814,7 @@ public class Crust {
 	 * @author Michael
 	 ******************************/
 	public void addRelationship(String contactName, String address, int value){
-		relationships.add(new Relationship(this, contactName, address, value));
+		relationships.add(new Relationship(get("fullName").replace(" ", "_"), contactName, address, value));
 	}
 	
 	/******************************
