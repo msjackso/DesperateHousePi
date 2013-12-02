@@ -1,4 +1,4 @@
-package desperatehousepi.Crust;
+package src.desperatehousepi.Crust;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,9 +20,9 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 
-import desperatehousepi.Items.ItemSet;
-import desperatehousepi.Items.ItemSet.itemType;
-import desperatehousepi.Server.Server;
+import src.desperatehousepi.Items.ItemSet;
+import src.desperatehousepi.Items.ItemSet.itemType;
+import src.desperatehousepi.Server.Server;
 
 /******************************
  * A crust is a personality with which interactions can be made. Every value in the
@@ -240,13 +240,20 @@ public class Crust {
 	 * 16 integers are provided they will be ignored. It will also set each name accordingly.
 	 * This constructor is for creating an entire crust sans relationships.
 	 * @author Michael
+	 * 
+	 * Added month,day integer for birthday
+	 * @author Honloong
 	 ******************************/
-	public Crust(String firstName, String middleName, String lastName, int... trait_val){
+	public Crust(String firstName, String middleName, String lastName,int month,int day, int... trait_val){
 		
 		//Set names
 		first_name = firstName;
 		middle_name = middleName;
 		last_name = lastName;
+		
+		//Set birthday
+		bdaymonth = month;
+		birthday = day;
 		
 		//Get the length of the amount of values passed in
 		int length = (trait_val.length>16) ? 16:trait_val.length;

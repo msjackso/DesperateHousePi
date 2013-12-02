@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import org.joda.time.DateTime;
+
 import desperatehousepi.Items.ItemSet.itemType;
 
 public class CrustAI{
@@ -13,9 +15,16 @@ public class CrustAI{
 	ActionListener crustAI = new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e){
+
+
 			
 			//If the user wants the crust not to think for itself
 			if(!selfThink) return;
+			
+			//check birthday
+			DateTime dt = new DateTime();
+			if(checkDate(dt,crust.getbdaymonth(),crust.getbirthday()))
+				crust.history.logAction("My Birthday!");
 			
 			//CASE: Hunger<49
 			if( crust.getNeed("Hunger")<49 ){
@@ -85,6 +94,14 @@ public class CrustAI{
 	
 	public void setSelfThink(boolean val){
 		selfThink = val;
+	}
+	
+	//generic function to check holidays and birthdays
+	boolean checkDate(DateTime dt,int month,int day){
+		if(dt.getMonthOfYear()==month && dt.getDayOfMonth()==day){
+			if(dt.getSecondOfMinute()%60==0) return true;
+		}
+		return false;
 	}
 	
 }

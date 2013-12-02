@@ -1,9 +1,9 @@
-package desperatehousepi.Server;
+package src.desperatehousepi.Server;
 
-import desperatehousepi.Crust.Crust;
-import desperatehousepi.Crust.Interest;
-import desperatehousepi.Crust.Interests;
-import desperatehousepi.Crust.Relationship;
+import src.desperatehousepi.Crust.Crust;
+import src.desperatehousepi.Crust.Interest;
+import src.desperatehousepi.Crust.Interests;
+import src.desperatehousepi.Crust.Relationship;
 
 import java.io.BufferedWriter;
 import java.io.File;

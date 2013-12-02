@@ -32,6 +32,9 @@ import javax.swing.JTextArea;
 import javax.swing.JList;
 
 import java.util.Vector;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -109,6 +112,8 @@ public class MainWindow {
 			JLabel lblStatsTabPerfectionismVal;
 			JLabel lblStatsTabTension;
 			JLabel lblStatsTabTensionVal;
+			JLabel lblStatsTabBday;
+			JLabel lblStatsTabBdayVal;
 		JList<String> interestTab;
 		DefaultListModel<String> interestList;
 		JList<String> inventoryTab;
@@ -131,6 +136,8 @@ public class MainWindow {
 		JLabel lblEntertainment;
 		JProgressBar entertainmentBar;
 		JLabel lblHunger;
+		JLabel lbldate;
+		JLabel lbltime;
 		JProgressBar hungerBar;
 	JCheckBox chckbxCrustAi;
 	
@@ -188,8 +195,21 @@ public class MainWindow {
 		
 		//Set the hunger
 		hungerBar.setValue(crust.getNeed("Hunger"));
+		
+		//Set date and time
+		DateTime dt = new DateTime(); //gets current time
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
+		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("hh:mm aa");
+		lbldate.setText(fmt.print(dt));
+		lbltime.setText(fmt2.print(dt));
 	}
 	private void refreshCrustStats(){
+		
+		int bdaymonth = crust.getbdaymonth();
+		int birthday = crust.getbirthday();
+		DateTime dt = new DateTime(2000,bdaymonth,birthday,0,0,0);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd");
+		lblStatsTabBdayVal.setText(fmt.print(dt));
 		
 		lblStatsTabWarmthVal.setText(crust.get("warmth"));
 		lblStatsTabReasoningVal.setText(crust.get("reasoning"));
@@ -297,9 +317,9 @@ public class MainWindow {
 		frameMain.getContentPane().add(crustInfo);
 		GridBagLayout gbl_crustInfo = new GridBagLayout();
 		gbl_crustInfo.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_crustInfo.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		crustInfo.setLayout(gbl_crustInfo);
 		createCrustInfo();
 		
@@ -376,6 +396,14 @@ public class MainWindow {
 	
 	//Generate the initial values
 	private void createStatsTabLabels(){
+		
+		//Create Birthday label
+		lblStatsTabBday = new JLabel("Birthday: ");
+		lblStatsTabBday.setBounds(10,0,136,14);
+		statsTab.add(lblStatsTabBday);
+		lblStatsTabBdayVal = new JLabel("0");
+		lblStatsTabBdayVal.setBounds(156,0,136,14);
+		statsTab.add(lblStatsTabBdayVal);
 		
 		//Create warmth labels
 		lblStatsTabWarmth = new JLabel("Warmth:");
@@ -748,5 +776,27 @@ public class MainWindow {
 		gbc_hungerBar.gridx = 1;
 		gbc_hungerBar.gridy = 5;
 		crustInfo.add(hungerBar, gbc_hungerBar);
+		
+		//Create date label
+		lbldate = new JLabel();
+		lbldate.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbldate.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbldate = new GridBagConstraints();
+		gbc_lbldate.anchor = GridBagConstraints.EAST;
+		gbc_lbldate.insets = new Insets(0, 0, 0, 5);
+		gbc_lbldate.gridx = 0;
+		gbc_lbldate.gridy = 6;
+		crustInfo.add(lbldate, gbc_lbldate);
+		
+		//Create time label
+		lbltime = new JLabel();
+		lbltime.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbltime.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbltime = new GridBagConstraints();
+		gbc_lbltime.anchor = GridBagConstraints.EAST;
+		gbc_lbltime.insets = new Insets(0, 0, 0, 5);
+		gbc_lbltime.gridx = 0;
+		gbc_lbltime.gridy = 7;
+		crustInfo.add(lbltime, gbc_lbltime);
 	}
 }

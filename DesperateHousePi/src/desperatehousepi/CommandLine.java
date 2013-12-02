@@ -1,9 +1,9 @@
-package desperatehousepi;
+package src.desperatehousepi;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import desperatehousepi.Crust.Crust;
+import src.desperatehousepi.Crust.Crust;
 
 public class CommandLine {
 	

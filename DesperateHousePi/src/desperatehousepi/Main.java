@@ -1,6 +1,6 @@
-package desperatehousepi;
+package src.desperatehousepi;
 
-import desperatehousepi.Crust.Crust;
+import src.desperatehousepi.Crust.Crust;
 
 public class Main {
 	
