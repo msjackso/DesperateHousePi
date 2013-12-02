@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.swing.Timer;
@@ -86,6 +87,7 @@ public class Crust {
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
 	public QuestForGrowth destiny = new QuestForGrowth();
+	public String flavor = generateFlavor();
 	Server server;
 	
 	/******************************
@@ -121,6 +123,24 @@ public class Crust {
 		
 	}
 	
+	
+	/******************************
+	 * Returns 1 of the 4 flavors available.
+	 * @author Mark
+	 ******************************/
+	private String generateFlavor() {
+		Random generator = new Random();
+		int randomNum = generator.nextInt(4);
+		
+		switch (randomNum) {
+			case 0: return "blue";
+			case 1: return "cherry"; 
+			case 2: return "choc"; 
+			case 3: return "pecan"; 
+			default: return "error, in generateFlavor()";
+		}
+	}
+
 	/******************************
 	 * This constructor will generate a personality randomly. Each trait is determined
 	 * using the setRandomTrait() function from the PTrait object. This will create the

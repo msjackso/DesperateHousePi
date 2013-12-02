@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -145,6 +146,12 @@ public class CreationWindow {
 		final JFormattedTextField tension = new JFormattedTextField();
 		tension.setBounds(361, 410, 80, 20);
 		panel.add(tension);
+		
+		//character preview
+		String path = "images/chars/color/"+newCrust.flavor+"1_color.png";
+		JLabel picLabel = new JLabel(new ImageIcon(path));
+		picLabel.setBounds(313, 44, 150, 150);
+		panel.add(picLabel);
 		
 		//set values of tdxt fields given newCrust object
 		warmth.setText(newCrust.get("warmth"));
