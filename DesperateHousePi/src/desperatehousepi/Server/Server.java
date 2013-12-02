@@ -5,6 +5,9 @@ import desperatehousepi.Crust.Interest;
 import desperatehousepi.Crust.Interests;
 import desperatehousepi.Crust.Relationship;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -41,6 +44,7 @@ public class Server implements Runnable{
 		sendPackage.setInterests(myCrust.getInterests());
 		sendPackage.setTraits(myCrust.getTraits());
 		sendPackage.setNeeds(myCrust.getNeed("Hunger"), myCrust.getNeed("Energy"), myCrust.getNeed("Entertainment"));
+		sendPackage.setRelationships(myCrust.getRelationships());
 		
 		Package receivePackage = null;
 		
@@ -68,6 +72,7 @@ public class Server implements Runnable{
 		try {
 			receivePackage = (Package) intInStream.readObject();
 			conversate(receivePackage, InetAddress.getByName(rel.getContactAddress()));
+			getContacts(receivePackage, rel.getContactAddress());
 		} catch (Exception e){ e.printStackTrace(); }
 		
 		//Close all of the streams
@@ -267,7 +272,7 @@ public class Server implements Runnable{
 		}
 		factor.odds+=result;
 		
-		//Apply hunger
+		//Apply entertainment
 		result = ((((pack.entertainment+myCrust.getNeed("Entertainment")+200)/2)-100)/1000);
 		if(result<factor.largestFactor){
 			factor.largestFactor = result;
@@ -347,6 +352,7 @@ public class Server implements Runnable{
 					sndPackage.setInterests(myCrust.getInterests());
 					sndPackage.setTraits(myCrust.getTraits());
 					sndPackage.setNeeds(myCrust.getNeed("Hunger"), myCrust.getNeed("Energy"), myCrust.getNeed("Entertainment"));
+					sndPackage.setRelationships(myCrust.getRelationships());
 					outputStream.writeObject(sndPackage);
 					
 					inputStream.close();
@@ -364,6 +370,30 @@ public class Server implements Runnable{
 	
 	public void setListening(boolean val){
 		listening = val;
+	}
+	
+	public void getContacts(Package pack, String contactAddress) throws IOException {
+		
+		File snfolder = new File("socialnetwork");
+		String snfolderpath = snfolder.getAbsolutePath();
+		
+		File relSaveFile = new File(snfolderpath+"/"+contactAddress+"_"+pack.name+".rel");
+		
+		//If files doesn't exist then create it
+		if(!relSaveFile.exists())
+			relSaveFile.createNewFile();
+		
+		//Open up the file and create the writers
+		FileWriter rfw = new FileWriter(relSaveFile.getAbsoluteFile());
+		BufferedWriter rbw = new BufferedWriter(rfw);
+		
+		for(Relationship r:pack.relationships) {
+			String content = "";
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.getFirstMet()+" ||| "+r.getLastMeeting();
+			rbw.write(content);
+			rbw.newLine();
+		}
+		rbw.close();
 	}
 	
 }

@@ -1,13 +1,18 @@
 package desperatehousepi.Crust;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+
+import javax.swing.Timer;
 
 import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
@@ -30,7 +35,8 @@ import desperatehousepi.Server.Server;
  * function from the PTrait object. This will create the values based on a bell curve.
  * @author Anthony and Michael
  ******************************/
-public class Crust extends Person{
+
+public class Crust {
 	
 	//Constant declarations
 	public static final int UNKNOWN = -1000;
@@ -41,6 +47,18 @@ public class Crust extends Person{
 	public static final int ITEM_USED = 0;
 	public static final int MAX_NUM_OF_INTERESTS = 10;
 	public static final int BAD_CALL = -1;
+	
+	//Set time constants 
+	private static final int millSecsInDay = 1000*60*60*24; 
+	private static final int hungerDecreaseRate = 1000*4;  //loses 1 hunger every 4 minutes
+	private static final int energyDecreaseRate = 1000*15; //loses 1 energy every 15 minutes
+	private static final int entertainmentDecreateRate = 1000*10; //loses 1 entertainment every 10 minutes
+	
+	//Initialize variables
+	String first_name = "John";
+	String middle_name = "Jacob";
+	String last_name = "Smith";
+	protected int age = 0; //Current age; default value = 0
 	
 	//Object Declarations
 	private PTrait[] traits = new PTrait [16];
@@ -53,12 +71,21 @@ public class Crust extends Person{
 			index = i;
 		}
 	}
+	//Create a timer for the aging process
+	private ActionListener increase_age = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			incrementAge();
+      	}
+	};
+	private LinkedList<Need> Needs = new LinkedList<Need>(); //the person's set of needs
 	private LinkedList<Relationship> relationships = new LinkedList<Relationship>();
 	private LinkedList<Interest> interests = new LinkedList<Interest>();
 	private Thread serverThread;
 	public ItemSet inventory = new ItemSet();
 	public ActionLog history = new ActionLog(this);
 	public CrustAI crustAI;
+	public QuestForGrowth destiny = new QuestForGrowth();
 	Server server;
 	
 	/******************************
@@ -73,6 +100,17 @@ public class Crust extends Person{
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
+		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
+		//TODO: Remove
+		System.out.println("Traits done");
 		
 		crustAI = new CrustAI(this);
 		createServer(Server.SOCKET_DEFAULT);
@@ -122,6 +160,14 @@ public class Crust extends Person{
 			traits[x].setRandomTrait();
 		}
 		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
+		
 		crustAI = new CrustAI(this);
 		createServer(Server.SOCKET_DEFAULT);
 		
@@ -149,6 +195,14 @@ public class Crust extends Person{
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
 		createServer(Server.SOCKET_DEFAULT);
@@ -183,6 +237,14 @@ public class Crust extends Person{
 				traits[x] = new PTrait(0);
 				traits[x].setBase(trait_val[x]);
 			}
+		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
 		createServer(Server.SOCKET_DEFAULT);
@@ -334,9 +396,7 @@ public class Crust extends Person{
 		for(Relationship r:relationships){
 			
 			String content = "";
-			
-			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.firstMet.toString()+" ||| "+r.lastMeeting.toString();
-			
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.getFirstMet()+" ||| "+r.getLastMeeting();
 			rbw.write(content);
 			rbw.newLine();
 		}
@@ -536,6 +596,60 @@ public class Crust extends Person{
 	}
 	
 	/******************************
+	 * Returns the level of the specified need
+	 * Input: the name of the need to be checked.
+	 * Output: the value for the need. If the need is not found in needs returns an error.
+	 * @author Luke
+	 ******************************/
+	public int getNeed(String need_name){ 
+		
+		//Finds the need in the list of needs, then increments it.
+		for(Need n : Needs) {
+			if ( n.getNeedName()==need_name ) {
+				return n.getNeedLevel();
+			}; 
+		}
+		
+		//If need is not defined, return an error.
+		System.out.println("Fatal error. Need " + need_name + " not defined.");
+		System.exit(0);
+		return 0;
+		
+	}
+	
+	
+	/******************************
+	 * Increases the need level of the person
+	 * Input: the number that the need will be incremented by
+	 * @author Luke
+	 ******************************/
+	/*********************************
+	 * Edited 10/18/13 by Mark
+	 *********************************/
+	public void incrementNeed(String need_name, int amount) {
+		for(Need n : Needs){
+			if ( n.getNeedName()==need_name ) {
+				n.incrementNeed(amount);
+				return;
+			}
+		}
+		//If need is not defined, produce error.
+		System.out.println("Fatal error. Need '" + need_name + "' not defined.");
+		System.exit(0);
+	}
+	
+	/******************************
+	 * Increments the crust's age
+	 * @author Luke
+	 ******************************/
+	void incrementAge() {
+		if (age + 1 > 100) 
+			return;
+		else 
+			age += 1;
+	}
+	
+	/******************************
 	 * Returns all of the traits for this crust
 	 * @author Michael
 	 ******************************/
@@ -571,7 +685,7 @@ public class Crust extends Person{
 	 ******************************/
 	public void print(){
 		System.out.println("Name: " + first_name+" "+middle_name+" "+last_name);
-		System.out.println("Age: " + getAge());
+		System.out.println("Age: " + age);
 		System.out.println("Personality:");
 		System.out.println("\tWarmth = " + traits[traitName.warmth.index].getValue());
 		System.out.println("\tReasoning = " + traits[traitName.reasoning.index].getValue());
@@ -598,11 +712,6 @@ public class Crust extends Person{
 			System.out.println("\t" + n.getNeedName() + " = " + n.getNeedLevel());
 		}
 		
-		/*********************************
-		 * Edited 11/5/13 by Luke
-		 *********************************/
-		System.out.println("");
-		
 	}
 	
 	/*****************************
@@ -613,6 +722,19 @@ public class Crust extends Person{
 	public void give(String item){
 		itemType itemName = itemType.valueOf(item.toUpperCase());
 		inventory.create(itemName);
+	}
+	
+	public void requestGrowthQuest(String stage){
+		String status = destiny.assign(stage);
+		history.logAction(status);
+	}
+	
+	public void requestQuestVerification(){
+		String status = destiny.verifyCurrentQuest();
+		history.logAction(status);
+	}
+	public String getStage(){
+		return destiny.getGrowthStage();
 	}
 	
 	/*******************************
@@ -632,7 +754,12 @@ public class Crust extends Person{
 		
 		//Apply item to crust
 		for( String need : inventory.getItem(itemName).getNeeds() ){
-			incrementNeed(need, inventory.getItem(itemName).getValue(need));
+			if (need=="Quest"){
+				String status = destiny.receive(itemName.name);
+				history.logAction(status);
+			}
+			else
+				incrementNeed(need, inventory.getItem(itemName).getValue(need));
 		}
 		
 		//Check if item is consumable
@@ -687,7 +814,7 @@ public class Crust extends Person{
 	 * @author Michael
 	 ******************************/
 	public void addRelationship(String contactName, String address, int value){
-		relationships.add(new Relationship(this, contactName, address, value));
+		relationships.add(new Relationship(get("fullName").replace(" ", "_"), contactName, address, value));
 	}
 	
 	/******************************

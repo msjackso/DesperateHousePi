@@ -2,9 +2,11 @@ package desperatehousepi.Server;
 
 import java.util.LinkedList;
 
+import desperatehousepi.Crust.Crust;
 import desperatehousepi.Crust.Interest;
 import desperatehousepi.Crust.Interests;
 import desperatehousepi.Crust.PTrait;
+import desperatehousepi.Crust.Relationship;
 
 public class Package implements java.io.Serializable{
 	
@@ -15,6 +17,7 @@ public class Package implements java.io.Serializable{
 	
 	public String name;
 	public PTrait[] traits = new PTrait[16];
+	public LinkedList<Relationship> relationships;
 	public LinkedList<Integer> interests;
 	public LinkedList<Integer> interestLevel;
 	public int hunger, energy, entertainment;
@@ -36,6 +39,15 @@ public class Package implements java.io.Serializable{
 		for(Interest i : ints){
 			interests.add(Interests.getInterestVal(i.getName()));
 			interestLevel.add(i.getImportance());
+		}
+	}
+	
+	public void setRelationships(LinkedList<Relationship> rels){
+		
+		relationships = new LinkedList<Relationship>();
+		
+		for(Relationship r : rels){
+			relationships.add(new Relationship (name, r.getContactName().replace(" ", "_"), r.getContactAddress(), r.getChemistry()));
 		}
 	}
 	

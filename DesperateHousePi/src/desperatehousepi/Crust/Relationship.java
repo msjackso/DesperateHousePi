@@ -8,14 +8,14 @@ import java.util.LinkedList;
 
 public class Relationship {
 	
-	Crust owner;
+	String owner;
 	String nameOfContact;
 	String addressOfContact;
 	Date firstMet;
 	Date lastMeeting;
 	public LinkedList<String> log;
 	
-	double chemistry;
+	int chemistry;
 	
 	/******************************
 	 * A relationship is a set of contacts that the owner has
@@ -25,7 +25,7 @@ public class Relationship {
 	 * @param new_value - The inital value of the relationship
 	 * @author Michael
 	 ******************************/
-	public Relationship(Crust new_owner, String contactName, String address, int new_value){
+	public Relationship(String new_owner, String contactName, String address, int new_value){
 		owner = new_owner;
 		nameOfContact = contactName;
 		addressOfContact = address;
@@ -48,7 +48,7 @@ public class Relationship {
 	 * @return The value of this relationship
 	 * @author Michael
 	 */
-	public double getChemistry(){ return chemistry; }
+	public int getChemistry(){ return chemistry; }
 	
 	/*****************************
 	 * Sets the value of the relationship, this is bounded by 100 and -100
@@ -145,6 +145,15 @@ public class Relationship {
 	
 	public String toString(){
 		return (chemistry+":"+owner.first_name+" "+owner.last_name+ "->"+nameOfContact);
+	}
+	
+	/*****************************
+	 * Returns the owner of the relationship
+	 * @return The owner crust object of this relationship
+	 * @author Michael
+	 */
+	public void write(){
+		
 	}
 	
 }

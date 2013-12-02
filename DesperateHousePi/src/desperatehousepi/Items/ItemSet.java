@@ -13,7 +13,21 @@ public class ItemSet {
 	 *********************************/
 	//Available items
 	public static enum itemType{
-		APPLE("APPLE"), RASBERRY("RASBERRY"), FISH("FISH"), BED("BED"), COFFEE("COFFEE"), TV("TV"), BALL("BALL");
+		//Consumables
+		APPLE("APPLE"), RASBERRY("RASBERRY"), FISH("FISH"), 
+		//Energy-related
+		BED("BED"), COFFEE("COFFEE"), 
+		//Entertainment-related
+		TV("TV"), BALL("BALL"),
+		
+		//Quest 1 Items
+		GLASS("GLASS"), 
+		LID("LID"), JAR("JAR"), SIGNATURE("SIGNATURE"),
+		//Quest 2 Items
+		RECIPIE("RECIPIE"),
+		FLOUR("FLOUR"), SALT("SALT"), SUGAR("SUGAR"), BUTTER("BUTTER"), WATER("WATER"), 
+		ROLLINGPIN("ROLLINGPIN"), PAN("PAN");
+		
 		
 		public String name;
 		itemType(String n){
@@ -62,7 +76,44 @@ public class ItemSet {
 		stats.clear();
 		stats.put("Entertainment", 15);
 		encyclopedia.put(itemType.BALL, new Item( itemType.BALL, stats ));
+	
+		//GLASS
+		stats.clear();
+		stats.put("Quest", 1);
+		encyclopedia.put(itemType.GLASS, new Item( itemType.GLASS, stats ));
 		
+		//JAR
+		stats.clear();
+		stats.put("Quest", 20);
+		encyclopedia.put(itemType.JAR, new Item( itemType.JAR, stats ));
+		//LID
+		stats.clear();
+		stats.put("Quest", 20);
+		encyclopedia.put(itemType.LID, new Item( itemType.LID, stats ));
+		//SIGNATURE
+		stats.clear();
+		stats.put("Quest", 10);
+		encyclopedia.put(itemType.SIGNATURE, new Item( itemType.SIGNATURE, stats ));
+
+		//RECIPIE
+		stats.clear();
+		stats.put("Quest", 10);
+		encyclopedia.put(itemType.RECIPIE, new Item( itemType.RECIPIE, stats ));
+
+		//FLOUR
+		encyclopedia.put(itemType.FLOUR, new Item( itemType.FLOUR, stats ));
+		//SALT
+		encyclopedia.put(itemType.SALT, new Item( itemType.SALT, stats ));
+		//SUGAR
+		encyclopedia.put(itemType.SUGAR, new Item( itemType.SUGAR, stats ));
+		//BUTTER
+		encyclopedia.put(itemType.BUTTER, new Item( itemType.BUTTER, stats ));
+		//WATER
+		encyclopedia.put(itemType.WATER, new Item( itemType.WATER, stats ));
+		//ROLLINGPIN
+		encyclopedia.put(itemType.ROLLINGPIN, new Item( itemType.ROLLINGPIN, stats ));
+		//PAN
+		encyclopedia.put(itemType.PAN, new Item( itemType.PAN, stats ));	
 	}
 	
 	// Generic Item inner class
