@@ -25,6 +25,7 @@ public class CreationWindow {
 
 	private JFrame creation_frame;
 	private Crust newCrust;
+	private String newFlavor;
 
 	/**
 	 * Open window to create new Crust
@@ -32,6 +33,7 @@ public class CreationWindow {
 	 */
 	public CreationWindow() {
 		newCrust = new Crust();
+		newFlavor = newCrust.get("flavor");
 		initialize();
 		creation_frame.setVisible(true);
 	}
@@ -42,6 +44,7 @@ public class CreationWindow {
 	 **************************************/
 	public CreationWindow(Crust c){
 		newCrust = c;
+		newFlavor = newCrust.get("flavor");
 		initialize();
 		creation_frame.setVisible(true);	
 	}
@@ -72,22 +75,27 @@ public class CreationWindow {
 		//initialize textfields for Crust first, middle, and last name
 		final JFormattedTextField firstName = new JFormattedTextField();
 		firstName.setBounds(27, 25, 170, 20);
+		firstName.setText(newCrust.get("firstName"));
 		panel.add(firstName);
 		
 		final JFormattedTextField middleName = new JFormattedTextField();
 		middleName.setBounds(27, 66, 170, 20);
+		middleName.setText(newCrust.get("middleName"));
 		panel.add(middleName);
 		
 		final JFormattedTextField lastName = new JFormattedTextField();
 		lastName.setBounds(27, 108, 170, 20);
+		lastName.setText(newCrust.get("lastName"));
 		panel.add(lastName);
 		
 		// textfields for month, day of birthday
 		final JFormattedTextField bdaymonth = new JFormattedTextField();
+		bdaymonth.setText(Integer.toString(newCrust.getbdaymonth()));
 		bdaymonth.setBounds(62, 152, 30, 20);
 		panel.add(bdaymonth);	
 		
 		final JFormattedTextField birthday = new JFormattedTextField();
+		birthday.setText(Integer.toString(newCrust.getbirthday()));
 		birthday.setBounds(132, 152, 30, 20);
 		panel.add(birthday);	
 		
@@ -253,8 +261,15 @@ public class CreationWindow {
 		testBtn.setBackground(Color.RED);
 		testBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
+						Integer.parseInt(bdaymonth.getText()),Integer.parseInt(birthday.getText()), newFlavor, Integer.parseInt(warmth.getText()),
+						Integer.parseInt(reasoning.getText()), Integer.parseInt(emotionalStability.getText()),Integer.parseInt(dominance.getText()),
+						Integer.parseInt(liveliness.getText()), Integer.parseInt(ruleConsciousness.getText()), Integer.parseInt(socialBoldness.getText()),
+						Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),
+						Integer.parseInt(privateness.getText()), Integer.parseInt(apprehensivness.getText()), Integer.parseInt(opennessToChange.getText()),
+						Integer.parseInt(selfReliance.getText()), Integer.parseInt(perfectionism.getText()), Integer.parseInt(tension.getText()));
 				creation_frame.setVisible(false);
-				new PersonalityTestWindow();
+				new PersonalityTestWindow(newCrust);
 			}
 		});
 		testBtn.setBounds(333, 195, 108, 23);
@@ -317,8 +332,8 @@ public class CreationWindow {
 					return;
 				}else{
 					//otherwise input is valid, so create crust and pass it to main window
-					Crust newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
-							Integer.parseInt(bdaymonth.getText()),Integer.parseInt(birthday.getText()),Integer.parseInt(warmth.getText()),
+					newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
+							Integer.parseInt(bdaymonth.getText()),Integer.parseInt(birthday.getText()), newFlavor, Integer.parseInt(warmth.getText()),
 							Integer.parseInt(reasoning.getText()), Integer.parseInt(emotionalStability.getText()),Integer.parseInt(dominance.getText()),
 							Integer.parseInt(liveliness.getText()), Integer.parseInt(ruleConsciousness.getText()), Integer.parseInt(socialBoldness.getText()),
 							Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),

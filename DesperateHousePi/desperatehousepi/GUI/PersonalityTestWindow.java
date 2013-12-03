@@ -25,7 +25,7 @@ public class PersonalityTestWindow {
 	JTextArea question;
 	JTextArea heading;
 	
-	Crust newCrust = new Crust();
+	Crust newCrust;
 	int currentTrait = 0;
 	String[] tArray;
 	String[] qArray;
@@ -33,8 +33,14 @@ public class PersonalityTestWindow {
 
 	/**
 	 * Opens up personality test window
+	 * 
+	 * @param c - Crust object to pass in
+	 * 
+	 * @author Tony 12/01/13:
+	 * Made it pass Crust so other name/birthday/flavor are saved upon return
 	 */
-	public PersonalityTestWindow() {
+	public PersonalityTestWindow(Crust c) {
+		newCrust = c;
 		initialize();
 		PTest_frame.setVisible(true);
 	}
@@ -58,9 +64,6 @@ public class PersonalityTestWindow {
 		panel.setBackground(Color.GREEN);
 		PTest_frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		
-		//initialize Crust object
-		newCrust = new Crust();
 		
 		//Initialize tArray to hold the String name for the 16 traits
         tArray = new String[16];
