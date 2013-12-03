@@ -104,15 +104,6 @@ public class PersonalityTestWindow {
         qArray[14] = "People are generally good (-5) \nOR People are generally bad (5) \n";
         qArray[15] = "I am reserved (-5) \nOR I am outgoing (5) \n";
 		
-        //initialize button for displaying Test instructions
-        JButton instructionsBtn = new JButton("Instructions");
-        instructionsBtn.setToolTipText("Display Personality Test Instructions");
-		instructionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		instructionsBtn.setBackground(Color.RED);
-		instructionsBtn.setForeground(Color.WHITE);
-		instructionsBtn.setBounds(531, 11, 143, 62);
-		panel.add(instructionsBtn);
-		
 		/**********************************************
 		 * Initialize buttons for answering questions
 		 * as well as their associated listeners, which
@@ -320,7 +311,7 @@ public class PersonalityTestWindow {
 		question.setLineWrap(true);
 		question.setBackground(Color.GREEN);
 		question.setFont(new Font("Tahoma", Font.PLAIN, 32));
-		question.setBounds(10, 98, 660, 198);
+		question.setBounds(10, 107, 660, 198);
 		panel.add(question);	
 		
 	}

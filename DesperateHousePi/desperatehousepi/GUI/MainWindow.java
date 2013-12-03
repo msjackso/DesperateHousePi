@@ -68,12 +68,15 @@ public class MainWindow {
 	private Crust crust;
 	private File logFile;
 	private BufferedReader logFileReader;
+	private JComboBox<String> comboBox;
 	
 	//animation variables
 	private Point targetLoc;
 	private Point currentLoc;
 	private int movementSpeed;
 	Random rand = new Random();
+	String currentItem;
+	ImageIcon currentItemIcon;
 	
 	ImageIcon background1, background2, energyIcon, entertainmentIcon, hungerIcon, blue1, blue2, blue3, cherry1, cherry2,
 		cherry3, choc1, choc2, choc3, pecan1, pecan2, pecan3, appleIcon, ballIcon, bedIcon, butterIcon, coffeeIcon, fishIcon, 
@@ -139,6 +142,7 @@ public class MainWindow {
 			JButton chatTabSendBtn;
 	JLabel crustImage;
 	JLabel bgImage;
+	JLabel itemImage;
 	JPanel crustInfo;
 		JLabel lblName;
 		JLabel lblFullName;
@@ -225,6 +229,14 @@ public class MainWindow {
 		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("hh:mm aa");
 		lbldate.setText(fmt.print(dt));
 		lbltime.setText(fmt2.print(dt));
+		
+		//get current item selected
+		currentItem = (String)comboBox.getSelectedItem();
+		currentItemIcon = new ImageIcon("images/items/color/" + currentItem.toLowerCase() + ".png");
+		
+		//Label containing Item Image
+		itemImage.setIcon(currentItemIcon);
+		itemImage.setBounds(627, 319, currentItemIcon.getIconWidth(), currentItemIcon.getIconHeight());
 	}
 	private void refreshCrustStats(){
 		
@@ -355,25 +367,6 @@ public class MainWindow {
 		pecan1 = new ImageIcon("images/chars/color/pecan1_color.png");
 		pecan2 = new ImageIcon("images/chars/color/pecan2_color.png");
 		pecan3 = new ImageIcon("images/chars/color/pecan3_color.png");
-		appleIcon = new ImageIcon("images/items/color/apple.png");
-		ballIcon = new ImageIcon("images/items/color/ball.png");
-		bedIcon = new ImageIcon("images/items/color/bed.png");
-		butterIcon = new ImageIcon("images/items/color/butter.png");
-		coffeeIcon = new ImageIcon("images/items/color/coffee.png");
-		fishIcon = new ImageIcon("images/items/color/fish.png");
-		flourIcon = new ImageIcon("images/items/color/flour.png");
-		jarIcon = new ImageIcon("images/items/color/jar.png");
-		lidIcon = new ImageIcon("images/items/color/lid.png");
-		panIcon = new ImageIcon("images/items/color/pan.png");
-		rasberryIcon = new ImageIcon("images/items/color/rasberry.png");
-		recipieIcon = new ImageIcon("images/items/color/recipie.png");
-		rollingPinIcon = new ImageIcon("images/items/color/rollingpin.png");
-		saltIcon = new ImageIcon("images/items/color/salt.png"); 
-		shardIcon = new ImageIcon("images/items/color/shard.png");
-		signatureIcon = new ImageIcon("images/items/color/signature.png"); 
-		sugarIcon = new ImageIcon("images/items/color/sugar.png");
-		tvIcon = new ImageIcon("images/items/color/tv.png");
-		waterIcon= new ImageIcon("images/items/color/water.png"); 
 	}
 	
 	//Initialize the whole window
@@ -441,10 +434,19 @@ public class MainWindow {
 		}
 	    
 		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(comboBoxItems);
-		final JComboBox<String> comboBox = new JComboBox<String>(model);
+		comboBox = new JComboBox<String>(model);
 		comboBox.setEditable(true);
 		comboBox.setBounds(581, 257, 134, 20);
 		frameMain.getContentPane().add(comboBox);
+		
+		//get current item selected
+		currentItem = (String)comboBox.getSelectedItem();
+		currentItemIcon = new ImageIcon("images/items/color/" + currentItem.toLowerCase() + ".png");
+		
+		//Label containing Item Image
+		itemImage = new JLabel(currentItemIcon);
+		itemImage.setBounds(627, 319, currentItemIcon.getIconWidth(), currentItemIcon.getIconHeight());
+		frameMain.getContentPane().add(itemImage);
 		
 		//Create the give button
 		JButton btnGive = new JButton("Give");
@@ -829,7 +831,7 @@ public class MainWindow {
 		crustInfo.add(lblStageVal, gbc_lblStageVal);
 		
 		//Create the energy label
-		lblEnergy = new JLabel("Energy: ");
+		lblEnergy = new JLabel("Energy: ",energyIcon, JLabel.CENTER);
 		lblEnergy.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEnergy.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblEnergy = new GridBagConstraints();
@@ -849,7 +851,7 @@ public class MainWindow {
 		crustInfo.add(energyBar, gbc_energyBar);
 		
 		//Create the entertainment label
-		lblEntertainment = new JLabel("Entertainment: ");
+		lblEntertainment = new JLabel("Entertainment: ", entertainmentIcon, JLabel.CENTER);
 		lblEntertainment.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEntertainment.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblEntertainment = new GridBagConstraints();
@@ -869,7 +871,7 @@ public class MainWindow {
 		crustInfo.add(entertainmentBar, gbc_entertainmentBar);
 		
 		//Create the hunger label
-		lblHunger = new JLabel("Hunger: ");
+		lblHunger = new JLabel("Hunger: ", hungerIcon, JLabel.CENTER);
 		lblHunger.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHunger.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblHunger = new GridBagConstraints();
