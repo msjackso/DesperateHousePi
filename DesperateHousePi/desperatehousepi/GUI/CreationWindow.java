@@ -28,8 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
-import net.miginfocom.swing.MigLayout;
-
 public class CreationWindow {
 
 	private JFrame creation_frame;
@@ -133,89 +131,8 @@ public class CreationWindow {
 		JPanel panel = new JPanel();
 		creation_frame.getContentPane().add(panel);
 		
-		//Set background image
-		try {
-			creation_frame.setContentPane(new JPanel() {
-			    BufferedImage background = ImageIO.read(new File("images/backgrounds/creationMap.png"));
-			    public void paintComponent(Graphics g) {
-			        super.paintComponent(g);
-			        g.drawImage(background, 0, 0, 425, 680, this);
-			    }
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		initComponents();
-		
-		//Begin placing components using MigLayout
-		creation_frame.setLayout(new MigLayout());
-		creation_frame.add(lblFirstName, "pos 6 3");
-		creation_frame.add(firstName, "wrap,gapy 2");
-		creation_frame.add(lblMiddleName, "pos 6 49");
-		creation_frame.add(middleName, "wrap,gapy 10");
-		creation_frame.add(lblLastName, "pos 6 96");
-		creation_frame.add(lastName, "wrap,gapy 10");
-		
-		creation_frame.add(lblBirthday, "pos 6 146");
-		creation_frame.add(lblBirthdayMonth, "pos 26 170");
-		creation_frame.add(birthdayMonth, "pos 75 168");
-		creation_frame.add(lblBirthdayDay, "pos 122 170");
-		creation_frame.add(birthdayDay, "pos 153 168");
-		
-		creation_frame.add(crustPreview, "pos 170 270");
-		
-		String col1a = "20";  String col1b = "20";
-		String col2a = "120"; String col2b = "120";
-		String col3a = "220"; String col3b = "220";
-		String col4a = "320"; String col4b = "320";
-		
-		// Column 1
-		creation_frame.add(lblWarmth, "pos "+col1a+" 446");
-		creation_frame.add(warmth, "pos "+col1b+" 470");
-		creation_frame.add(lblReasoning, "pos "+col1a+" 496");
-		creation_frame.add(reasoning, "pos "+col1b+" 520");
-		creation_frame.add(lblEmotionalStability, "pos "+col1a+" 546");
-		creation_frame.add(emotionalStability, "pos "+col1b+" 570");
-		creation_frame.add(lblDominance, "pos "+col1a+" 596");
-		creation_frame.add(dominance, "pos "+col1b+" 620");
-
-		// Column 2
-		creation_frame.add(lblLiveliness, "pos "+col2a+" 446");
-		creation_frame.add(liveliness, "pos "+col2b+" 470");
-		creation_frame.add(lblRuleConsciousness, "pos "+col2a+" 496");
-		creation_frame.add(ruleConsciousness, "pos "+col2b+" 520");
-		creation_frame.add(lblSocialBoldness, "pos "+col2a+" 546");
-		creation_frame.add(socialBoldness, "pos "+col2b+" 570");
-		creation_frame.add(lblSensitivity, "pos "+col2a+" 596");
-		creation_frame.add(sensitivity, "pos "+col2b+" 620");
-		
-		// Column 3
-		creation_frame.add(lblVigilance, "pos "+col3a+" 446");
-		creation_frame.add(vigilance, "pos "+col3b+" 470");
-		creation_frame.add(lblAbstractedness, "pos "+col3a+" 496");
-		creation_frame.add(abstractedness, "pos "+col3b+" 520");
-		creation_frame.add(lblPrivateness, "pos "+col3a+" 546");
-		creation_frame.add(privateness, "pos "+col3b+" 570");
-		creation_frame.add(lblApprehensivness, "pos "+col3a+" 596");
-		creation_frame.add(apprehensivness, "pos "+col3b+" 620");
-		
-		// Column 4
-		creation_frame.add(lblOpennessToChange, "pos "+col4a+" 446");
-		creation_frame.add(opennessToChange, "pos "+col4b+" 470");
-		creation_frame.add(lblSelfReliance, "pos "+col4a+" 496");
-		creation_frame.add(selfReliance, "pos "+col4b+" 520");
-		creation_frame.add(lblPerfectionism, "pos "+col4a+" 546");
-		creation_frame.add(perfectionism, "pos "+col4b+" 570");
-		creation_frame.add(lblTension, "pos "+col4a+" 596");
-		creation_frame.add(tension, "pos "+col4b+" 620");
-		
-		// Buttons
-		creation_frame.add(message, "pos 6 300");
-		creation_frame.add(testBtn, "pos 6 406");
-		creation_frame.add(randomBtn, "pos 186 406");
-		creation_frame.add(clearBtn, "pos 298 406");
-		creation_frame.add(createBtn, "pos 238 340");
+		refreshComponents();
 		
 	}
 	
@@ -253,11 +170,26 @@ public class CreationWindow {
             e.printStackTrace();
         }
 		
+		//Set background image
+		try {
+			creation_frame.setContentPane(new JPanel() {
+			    BufferedImage background = ImageIO.read(new File("images/backgrounds/creationMap_color.png"));
+			    public void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        g.drawImage(background, 0, 0, 425, 680, this);
+			    }
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		// Initialize textfields for Crust first, middle, and last name
 		int n = 13;
 		
 		lblFirstName = new JLabel("First Name");
 		lblFirstName.setFont(font);
+		
 		firstName = new JFormattedTextField();
 		firstName.setColumns(n);
 
@@ -324,6 +256,7 @@ public class CreationWindow {
 		lblTension = new JLabel("<html><br>Tension</html>");
 		lblTension.setFont(fontSmall);
 		
+		//Initialize Fields
 		warmth = new JFormattedTextField();
 		warmth.setColumns(2);
 		reasoning = new JFormattedTextField();
@@ -357,7 +290,7 @@ public class CreationWindow {
 		tension = new JFormattedTextField();
 		tension.setColumns(2);
 		
-		//set values of txt fields given newCrust object
+		//Set values of txt fields given newCrust object
 		warmth.setText(newCrust.get("warmth"));
 		reasoning.setText(newCrust.get("reasoning"));
 		emotionalStability.setText(newCrust.get("emotionalStability"));
@@ -378,9 +311,7 @@ public class CreationWindow {
 		//Initialize message label for displaying input errors
 		message = new JLabel("");
 		message.setForeground(Color.RED);
-		message.setBounds(27, 198, 414, 14);
 		
-
 		//Button opens new personality test window
 		testBtn = new JButton("Take Personality Test");
 		testBtn.setToolTipText("Take a personality test to determine base trait values");
@@ -415,7 +346,6 @@ public class CreationWindow {
 				new PersonalityTestWindow(newCrust);
 			}
 		});
-		testBtn.setBounds(333, 195, 108, 23);
 		
 		//Button for clearing trait values from text boxes
 		clearBtn = new JButton("Clear");
@@ -447,7 +377,6 @@ public class CreationWindow {
 				tension.setText("");
 			}
 		});
-		clearBtn.setBounds(333, 227, 108, 23);
 		
 		//button for giving traits random values in text boxes
 		randomBtn = new JButton("Randomize");
@@ -479,7 +408,6 @@ public class CreationWindow {
 				tension.setText(String.valueOf(getRandomTraitValue()));
 			}
 		});
-		randomBtn.setBounds(28, 227, 108, 23);
 		
 		//Button to create crust with given traits
 		createBtn = new JButton("Create Crust");
@@ -569,7 +497,6 @@ public class CreationWindow {
 				}
 			}
 		});
-		createBtn.setBounds(323, 24, 118, 63);
 	}
 	
 	//Function to get random bell curve value between -100 and 100
@@ -636,13 +563,143 @@ public class CreationWindow {
 	 * @author Tony
 	 * 11/30/2013
 	 ******************************/
-	public CrustType setRandomPieType(){
+	private CrustType setRandomPieType(){
 		Random rand = new Random();
 		int i = rand.nextInt(4);
 		if (i == 0)			{return CrustType.BLUEBERRYPIE;}
 		else if (i == 1)	{return CrustType.CHERRYPIE;}
 		else if (i == 2)	{return CrustType.CHOCOLATEPIE;}
 		else				{return CrustType.PECANPIE;}
+	}
+	
+	private void refreshComponents() {
+		creation_frame.setLayout(null);
+		
+		int colXa = 6; int colXb = 24; int colY = 24; 
+		int size1 = 150; int size2 = 35; int height = 26;
+		lblFirstName.setBounds(colXa, 6+(0*colY), size1, height);
+		creation_frame.add(lblFirstName);
+		firstName.setBounds(colXb, 6+(1*colY), size1, height);
+		creation_frame.add(firstName);
+		
+		lblMiddleName.setBounds(colXa, 6+(2*colY), size1, height);
+		creation_frame.add(lblMiddleName);
+		middleName.setBounds(colXb, 6+(3*colY), size1, height);
+		creation_frame.add(middleName);
+		
+		lblLastName.setBounds(colXa, 6+(4*colY), size1, height);
+		creation_frame.add(lblLastName);
+		lastName.setBounds(colXb, 6+(5*colY), size1, height);
+		creation_frame.add(lastName);
+		
+		
+		lblBirthday.setBounds(colXa, 6+(6*colY), size1, height);
+		creation_frame.add(lblBirthday);
+		
+		lblBirthdayMonth.setBounds(colXb+4, 6+(7*colY), size2+50, height);
+		creation_frame.add(lblBirthdayMonth);
+		birthdayMonth.setBounds(colXb+48, 6+(7*colY), size2, height);
+		creation_frame.add(birthdayMonth);
+
+		lblBirthdayDay.setBounds(colXb+88, 6+(7*colY), size2, height);
+		creation_frame.add(lblBirthdayDay);
+		birthdayDay.setBounds(colXb+115, 6+(7*colY), size2, height);
+		creation_frame.add(birthdayDay);
+		
+		
+		testBtn.setBounds(6, 380, size1+20, height);
+		creation_frame.add(testBtn);
+		randomBtn.setBounds(174, 380, size1, height);
+		creation_frame.add(randomBtn);
+		clearBtn.setBounds(321, 380, size1-50, height);
+		creation_frame.add(clearBtn);
+		createBtn.setBounds(300, 200, 118, 63);
+		creation_frame.add(createBtn);
+		
+		crustPreview.setBounds(150, 250, 118, 63);
+		creation_frame.add(crustPreview);
+
+		
+		int base = 420; int delta = 60;
+		int col1a = 20;  int col1b = 20;
+		int col2a = 120; int col2b = 120;
+		int col3a = 220; int col3b = 220;
+		int col4a = 320; int col4b = 320;
+		
+		// Column 1
+		lblWarmth.setBounds(col1a, base, size1, height);
+		creation_frame.add(lblWarmth);
+		warmth.setBounds(col1b, base+height, size2, height);
+		creation_frame.add(warmth);
+		lblReasoning.setBounds(col1a, base+(1*delta), size1, height);
+		creation_frame.add(lblReasoning);
+		reasoning.setBounds(col1b, base+height+(1*delta), size2, height);
+		creation_frame.add(reasoning);
+		lblEmotionalStability.setBounds(col1a, base+(2*delta), size1, height);
+		creation_frame.add(lblEmotionalStability);
+		emotionalStability.setBounds(col1b, base+height+(2*delta), size2, height);
+		creation_frame.add(emotionalStability);
+		lblDominance.setBounds(col1a, base+(3*delta), size1, height);
+		creation_frame.add(lblDominance);
+		dominance.setBounds(col1b, base+height+(3*delta), size2, height);
+		creation_frame.add(dominance);
+
+		// Column 2
+		lblLiveliness.setBounds(col2a, base, size1, height);
+		creation_frame.add(lblLiveliness);
+		liveliness.setBounds(col2b, base+height, size2, height);
+		creation_frame.add(liveliness);
+		lblRuleConsciousness.setBounds(col2a, base+(1*delta), size1, height);
+		creation_frame.add(lblRuleConsciousness);
+		ruleConsciousness.setBounds(col2b, base+height+(1*delta), size2, height);
+		creation_frame.add(ruleConsciousness);
+		lblSocialBoldness.setBounds(col2a, base+(2*delta), size1, height);
+		creation_frame.add(lblSocialBoldness);
+		socialBoldness.setBounds(col2b, base+height+(2*delta), size2, height);
+		creation_frame.add(socialBoldness);
+		lblSensitivity.setBounds(col2a, base+(3*delta), size1, height);
+		creation_frame.add(lblSensitivity);
+		sensitivity.setBounds(col2b, base+height+(3*delta), size2, height);
+		creation_frame.add(sensitivity);
+		
+		// Column 3
+		lblVigilance.setBounds(col3a, base, size1, height);
+		creation_frame.add(lblVigilance);
+		vigilance.setBounds(col3b, base+height, size2, height);
+		creation_frame.add(vigilance);
+		lblAbstractedness.setBounds(col3a, base+(1*delta), size1, height);
+		creation_frame.add(lblAbstractedness);
+		abstractedness.setBounds(col3b, base+height+(1*delta), size2, height);
+		creation_frame.add(abstractedness);
+		lblPrivateness.setBounds(col3a, base+(2*delta), size1, height);
+		creation_frame.add(lblPrivateness);
+		privateness.setBounds(col3b, base+height+(2*delta), size2, height);
+		creation_frame.add(privateness);
+		lblApprehensivness.setBounds(col3a, base+(3*delta), size1, height);
+		creation_frame.add(lblApprehensivness);
+		apprehensivness.setBounds(col3b, base+height+(3*delta), size2, height);
+		creation_frame.add(apprehensivness);
+		
+		// Column 4
+		lblOpennessToChange.setBounds(col4a, base, size1, height);
+		creation_frame.add(lblOpennessToChange);
+		opennessToChange.setBounds(col4b, base+height, size2, height);
+		creation_frame.add(opennessToChange);
+		lblSelfReliance.setBounds(col4a, base+(1*delta), size1, height);
+		creation_frame.add(lblSelfReliance);
+		selfReliance.setBounds(col4b, base+height+(1*delta), size2, height);
+		creation_frame.add(selfReliance);
+		lblPerfectionism.setBounds(col4a, base+(2*delta), size1, height);
+		creation_frame.add(lblPerfectionism);
+		perfectionism.setBounds(col4b, base+height+(2*delta), size2, height);
+		creation_frame.add(perfectionism);
+		lblTension.setBounds(col4a, base+(3*delta), size1, height);
+		creation_frame.add(lblTension);
+		tension.setBounds(col4b, base+height+(3*delta), size2, height);
+		creation_frame.add(tension);
+		
+		message.setBounds(27, 349, 414, 14);
+		creation_frame.add(message);
 	}
 }
 

@@ -472,6 +472,7 @@ public class MainWindow {
 		JButton btnAncient = new JButton("Ancient Pie");
 		btnAncient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e1) {
+				frameMain.setVisible(false);
 				try { new AncientPie(crust); } catch (FileNotFoundException e2) { }
 			}
 		});
