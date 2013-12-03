@@ -1,7 +1,9 @@
 package desperatehousepi.GUI;
 
 import java.awt.EventQueue;
+import java.awt.Graphics;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -22,6 +24,7 @@ import desperatehousepi.Crust.Crust;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,6 +33,10 @@ public class Intro {
 
 	private JFrame intro_frame;
 	private JFileChooser fc;
+
+	private JButton newBtn;
+	private JButton loadBtn;
+	private JButton helpBtn;
 	
 	/**
 	 * Launch the application.
@@ -39,7 +46,6 @@ public class Intro {
 			public void run() {
 				try {
 					Intro window = new Intro();
-					window.intro_frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,41 +58,73 @@ public class Intro {
 	 */
 	public Intro() {
 		initialize();
+		intro_frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//initialize the window with given size, title, and layout
 		intro_frame = new JFrame();
-		intro_frame.setForeground(Color.RED);
-		intro_frame.setBackground(Color.RED);
-		intro_frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Intro.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
-		intro_frame.setTitle("Desperate House Pi");
-		intro_frame.setBounds(100, 100, 500, 200);
+		intro_frame.setTitle("Ancient Pie");
+		
+		//(x, y, w, h)
+		intro_frame.setBounds(200, 100, 425, 680);
 		intro_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.GREEN);
-		intro_frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
+		intro_frame.getContentPane().add(panel);
+
+		initIntroComponents();
 		
-		JButton newBtn = new JButton("New");
+
+		intro_frame.setLayout(null);
+		intro_frame.add(newBtn);
+		intro_frame.add(loadBtn);
+		intro_frame.add(helpBtn);
+	}
+	
+	private void initIntroComponents() {
+		
+		//Background Image
+		try {
+			intro_frame.setContentPane(new JPanel() {
+			    BufferedImage background = ImageIO.read(new File("images/backgrounds/welcomeScreen.png"));
+			    public void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        g.drawImage(background, 0, 0, 425, 680, this);
+			    }
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		int baseY = 340;
+		int baseX = 150;
+		
+		//Create a new Crust			
+		newBtn = new JButton("New");
+		newBtn.setToolTipText("Start a new adventure!");
+		newBtn.setForeground(Color.BLACK);
+		newBtn.setBackground(Color.RED);
 		newBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				intro_frame.setVisible(false);
 				new CreationWindow();
 			}
 		});
-		newBtn.setForeground(Color.WHITE);
-		newBtn.setBackground(Color.RED);
-		newBtn.setBounds(175, 37, 150, 23);
-		panel.add(newBtn);
+		newBtn.setBounds(baseX, baseY, 150, 26);
 		
-		JButton loadBtn = new JButton("Load");
+		//Load a previously created Crust
+		loadBtn = new JButton("Load");
+		loadBtn.setToolTipText("Load a previously saved file");
+		loadBtn.setForeground(Color.BLACK);
+		loadBtn.setBackground(Color.RED);
 		loadBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				//Create a file chooser
 				fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -106,23 +144,20 @@ public class Intro {
 					} catch (FileNotFoundException e) { }
 		            
 		        }
-			}
+			}			
 		});
-		loadBtn.setForeground(Color.WHITE);
-		loadBtn.setBackground(Color.RED);
-		loadBtn.setBounds(175, 71, 150, 23);
-		panel.add(loadBtn);
+		loadBtn.setBounds(baseX, baseY+40, 150, 26);
 		
-		JButton helpBtn = new JButton("Help");
+		//Get help
+		helpBtn = new JButton("Help");
+		helpBtn.setToolTipText("View the documentation");
+		helpBtn.setForeground(Color.BLACK);
+		helpBtn.setBackground(Color.RED);
 		helpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new HelpWindow();
-			}
+			}			
 		});
-		helpBtn.setForeground(Color.WHITE);
-		helpBtn.setBackground(Color.RED);
-		helpBtn.setBounds(175, 105, 150, 23);
-		panel.add(helpBtn);
-		intro_frame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{intro_frame.getContentPane(), panel}));
+		helpBtn.setBounds(baseX, baseY+80, 150, 26);
 	}
 }

@@ -34,6 +34,7 @@ import javax.swing.JList;
 
 import java.util.Random;
 import java.util.Vector;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -457,7 +458,7 @@ public class MainWindow {
 		btnGive.setBounds(728, 256, 89, 20);
 		frameMain.getContentPane().add(btnGive);
 		
-		//Create the give button
+		//Create the use button
 		JButton btnUse = new JButton("Use");
 		btnUse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -466,6 +467,16 @@ public class MainWindow {
 		});
 		btnUse.setBounds(728, 287, 89, 20);
 		frameMain.getContentPane().add(btnUse);
+		
+		//Create the Ancient button
+		JButton btnAncient = new JButton("Ancient Pie");
+		btnAncient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e1) {
+				try { new AncientPie(crust); } catch (FileNotFoundException e2) { }
+			}
+		});
+		btnAncient.setBounds(728, 318, 89, 20);
+		frameMain.getContentPane().add(btnAncient);
 		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();

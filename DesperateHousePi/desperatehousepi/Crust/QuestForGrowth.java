@@ -126,12 +126,14 @@ public class QuestForGrowth {
 			if (quest2completed)
 				return "Congratulations! You have reached the end of your journey";
 			else
+				//Return list of items still needed
 				return "You are still lacking, young one";
 		}
 		else if (quest1enabled){
 			if (quest1completed)
 				return "Congratulations! You have proven yourself worthy to progress further";
 			else
+				//Return list of items still needed
 				return "You are still lacking, young one";
 		}
 		else
@@ -166,14 +168,14 @@ public class QuestForGrowth {
 		switch( stage.toUpperCase() ){
 			case "CHILD":
 				quest1enabled = true;
-				return "Crust has taken GROWTH QUEST 1";
+				return "You have accepted GROWTH QUEST 1";
 			case "TEEN":
 				if (quest1completed){
 					quest2enabled = true;
-					return "Crust has taken GROWTH QUEST 2";
+					return "You have accepted GROWTH QUEST 2";
 				}
 			default:
-				return "Your journey is complete";
+				return "Congratulations!";
 		}
 	}
 	

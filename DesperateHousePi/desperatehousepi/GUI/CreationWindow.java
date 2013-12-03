@@ -380,6 +380,7 @@ public class CreationWindow {
 		message.setForeground(Color.RED);
 		message.setBounds(27, 198, 414, 14);
 		
+
 		//Button opens new personality test window
 		testBtn = new JButton("Take Personality Test");
 		testBtn.setToolTipText("Take a personality test to determine base trait values");

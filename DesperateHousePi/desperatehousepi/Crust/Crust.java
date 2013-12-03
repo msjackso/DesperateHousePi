@@ -802,14 +802,16 @@ public class Crust {
 		inventory.create(itemName);
 	}
 	
-	public void requestGrowthQuest(String stage){
+	public String requestGrowthQuest(String stage){
 		String status = destiny.assign(stage);
 		history.logAction(status);
+		return status;
 	}
 	
-	public void requestQuestVerification(){
+	public String requestQuestVerification(){
 		String status = destiny.verifyCurrentQuest();
 		history.logAction(status);
+		return status;
 	}
 	public String getStage(){
 		return destiny.getGrowthStage();
