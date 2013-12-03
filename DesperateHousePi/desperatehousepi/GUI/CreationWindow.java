@@ -1,8 +1,13 @@
 package desperatehousepi.GUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
@@ -19,8 +24,13 @@ import desperatehousepi.Crust.Crust.CrustType;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Random;
+
+import net.miginfocom.swing.MigLayout;
 
 public class CreationWindow {
 
@@ -30,6 +40,18 @@ public class CreationWindow {
 	//edited 12/2 1:02AM by Mark
 	private CrustType pieType = setRandomPieType();
 
+	private JLabel empty;
+	
+
+	private JLabel firstName;
+	private JFormattedTextField firstNameField;
+	private JLabel middleName;
+	private JFormattedTextField middleNameField;
+	private JLabel lastName;
+	private JFormattedTextField lastNameField;
+	
+	
+	
 	/**
 	 * Open window to create new Crust
 	 * @wbp.parser.constructor 
@@ -54,27 +76,103 @@ public class CreationWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
 		//initialize the window with given size, title, and layout
 		creation_frame = new JFrame();
 		creation_frame.setTitle("Create a new Crust");
-		creation_frame.setBounds(100, 100, 500, 500);
+		
+		//(x, y, w, h)
+		creation_frame.setBounds(200, 100, 425, 680);
 		creation_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		creation_frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JPanel panel = new JPanel();
+		creation_frame.getContentPane().add(panel);
+		
+		//Set background image
+		try {
+			creation_frame.setContentPane(new JPanel() {
+			    BufferedImage background = ImageIO.read(new File("images/backgrounds/creationMap.png"));
+			    public void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        g.drawImage(background, 0, 0, 425, 680, this);
+			    }
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		initComponents();
+		
+		//Begin placing components using MigLayout
+		creation_frame.setLayout(new MigLayout());
+		creation_frame.add(firstName, "pos 6 3");
+		creation_frame.add(firstNameField, "wrap,gapy 2");
+		creation_frame.add(middleName, "pos 6 49");
+		creation_frame.add(middleNameField, "wrap,gapy 10");
+		creation_frame.add(lastName, "pos 6 96");
+		creation_frame.add(lastNameField, "wrap,gapy 10");
+		
+	}
+	
+	private void initComponents() {
+		
+		// Load the custom font
+		Font font = null;
+		try {
+            //create the font to use. Specify the size!
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/CaviarDreams.ttf")).deriveFont(16f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/CaviarDreams.ttf")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch(FontFormatException e)
+        {
+            e.printStackTrace();
+        }
+		
+		// Initialize textfields for Crust first, middle, and last name
+		int n = 13;
+		
+		firstName = new JLabel("First Name");
+		firstName.setFont(font);
+		firstNameField = new JFormattedTextField();
+		firstNameField.setColumns(n);
+
+		middleName = new JLabel("Middle Name");
+		middleName.setFont(font);
+		middleNameField = new JFormattedTextField();
+		middleNameField.setColumns(n);
+
+		lastName = new JLabel("Last Name");
+		lastName.setFont(font);
+		lastNameField = new JFormattedTextField();
+		lastNameField.setColumns(n);
+	}
+
+	/*
+	 * 		
+		//initialize the window with given size, title, and layout
+		creation_frame = new JFrame();
+		creation_frame.setTitle("Create a new Crust");
+		creation_frame.setBounds(100, 100, 425, 680);
+		creation_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GREEN);
 		creation_frame.getContentPane().add(panel);
 		panel.setLayout(null);
-		
-		
+	
+		String path;
+		Image background;
 		//character preview
 		//edited 12/2 1:02AM by Mark
-		String path = "images/chars/color/"+pieType.filename+"1_color.png";
+		path = "images/chars/color/"+pieType.filename+"1_color.png";
 		JLabel picLabel = new JLabel(new ImageIcon(path));
-		picLabel.setBounds(313, 44, 150, 150);
-		panel.add(picLabel);
-		
+		picLabel.setBounds(240, 220, 150, 150);
+		creation_frame.add(picLabel);
+
+
 		//Initialize message label for displaying input errors
 		final JLabel message = new JLabel("");
 		message.setForeground(Color.RED);
@@ -83,12 +181,13 @@ public class CreationWindow {
 		
 		//initialize textfields for Crust first, middle, and last name
 		final JFormattedTextField firstName = new JFormattedTextField();
-		firstName.setBounds(27, 25, 170, 20);
-		panel.add(firstName);
+		firstName.setLocation(300, 200);
+		firstName.setSize(200, 20);
+		creation_frame.add(firstName);
 		
 		final JFormattedTextField middleName = new JFormattedTextField();
 		middleName.setBounds(27, 66, 170, 20);
-		panel.add(middleName);
+		creation_frame.add(middleName);
 		
 		final JFormattedTextField lastName = new JFormattedTextField();
 		lastName.setBounds(27, 108, 170, 20);
@@ -483,8 +582,8 @@ public class CreationWindow {
 		lblTension.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblTension.setBounds(361, 394, 46, 14);
 		panel.add(lblTension);
-	}
-	
+	 * 
+	 */
 	//Function to get random bell curve value between -100 and 100
 	public int getRandomTraitValue(){
 		
