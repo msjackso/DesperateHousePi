@@ -50,7 +50,13 @@ public class CreationWindow {
 	private JLabel lastName;
 	private JFormattedTextField lastNameField;
 	
+	private JLabel birthdayTitle;
+	private JFormattedTextField birthdayMonthField;
+	private JLabel birthdayMonth;
+	private JFormattedTextField birthdayDayField;
+	private JLabel birthdayDay;
 	
+	private JLabel crustPreview;
 	
 	/**
 	 * Open window to create new Crust
@@ -99,7 +105,7 @@ public class CreationWindow {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		initComponents();
 		
 		//Begin placing components using MigLayout
@@ -111,6 +117,13 @@ public class CreationWindow {
 		creation_frame.add(lastName, "pos 6 96");
 		creation_frame.add(lastNameField, "wrap,gapy 10");
 		
+		creation_frame.add(birthdayTitle, "pos 6 146");
+		creation_frame.add(birthdayMonth, "pos 26 170");
+		creation_frame.add(birthdayMonthField, "pos 75 168");
+		creation_frame.add(birthdayDay, "pos 122 170");
+		creation_frame.add(birthdayDayField, "pos 153 168");
+		
+		creation_frame.add(crustPreview, "pos 170 270");
 	}
 	
 	private void initComponents() {
@@ -148,30 +161,30 @@ public class CreationWindow {
 		lastName.setFont(font);
 		lastNameField = new JFormattedTextField();
 		lastNameField.setColumns(n);
+		
+		
+		// textfields for month, day of birthday
+		birthdayTitle = new JLabel("Birthday");
+		birthdayTitle.setFont(font);
+		
+		birthdayMonth = new JLabel("Month");
+		birthdayMonth.setFont(font);
+		birthdayMonthField = new JFormattedTextField();
+		birthdayMonthField.setColumns(2);
+		
+		birthdayDay = new JLabel("Day");
+		birthdayDay.setFont(font);
+		birthdayDayField = new JFormattedTextField();
+		birthdayDayField.setColumns(2);
+		
+		String path = "images/chars/color/"+pieType.filename+"1_color.png";
+		crustPreview = new JLabel(new ImageIcon(path));
+		
 	}
 
 	/*
 	 * 		
-		//initialize the window with given size, title, and layout
-		creation_frame = new JFrame();
-		creation_frame.setTitle("Create a new Crust");
-		creation_frame.setBounds(100, 100, 425, 680);
-		creation_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GREEN);
-		creation_frame.getContentPane().add(panel);
-		panel.setLayout(null);
 	
-		String path;
-		Image background;
-		//character preview
-		//edited 12/2 1:02AM by Mark
-		path = "images/chars/color/"+pieType.filename+"1_color.png";
-		JLabel picLabel = new JLabel(new ImageIcon(path));
-		picLabel.setBounds(240, 220, 150, 150);
-		creation_frame.add(picLabel);
-
 
 		//Initialize message label for displaying input errors
 		final JLabel message = new JLabel("");
@@ -192,15 +205,7 @@ public class CreationWindow {
 		final JFormattedTextField lastName = new JFormattedTextField();
 		lastName.setBounds(27, 108, 170, 20);
 		panel.add(lastName);
-		
-		// textfields for month, day of birthday
-		final JFormattedTextField bdaymonth = new JFormattedTextField();
-		bdaymonth.setBounds(62, 152, 30, 20);
-		panel.add(bdaymonth);	
-		
-		final JFormattedTextField birthday = new JFormattedTextField();
-		birthday.setBounds(132, 152, 30, 20);
-		panel.add(birthday);	
+
 		
 		//initialize textfields for traits
 		final JFormattedTextField warmth = new JFormattedTextField();
