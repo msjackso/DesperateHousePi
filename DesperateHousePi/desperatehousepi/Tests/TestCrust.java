@@ -40,6 +40,7 @@ public class TestCrust {
 	public void testCrustStringArray() {
 		Crust tCrust = new Crust("John");
 		assertNotNull(tCrust);
+		tCrust.stopServer();
 		
 		assertTrue(tCrust.get("firstName").equals("John"));
 		
@@ -92,7 +93,12 @@ public class TestCrust {
 	public void testGet() {
 		testSet();
 	}
-
+	
+	@Test
+	public void testAddInterest(){
+		
+	}
+	
 	@Test
 	public void testTime(){
 		Crust tCrust = new Crust("John","Jacob","Smith",10,20);

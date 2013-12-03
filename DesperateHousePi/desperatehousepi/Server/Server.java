@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Random;
@@ -60,6 +62,7 @@ public class Server implements Runnable{
 		
 		//Write the object to the server
 		try {
+			
 			intOutStream.writeObject(sendPackage);
 		} catch (IOException e) { e.printStackTrace(); }
 		
@@ -71,6 +74,7 @@ public class Server implements Runnable{
 		//Read from the server
 		try {
 			receivePackage = (Package) intInStream.readObject();
+			
 			conversate(receivePackage, InetAddress.getByName(rel.getContactAddress()));
 			getContacts(receivePackage, rel.getContactAddress());
 		} catch (Exception e){ e.printStackTrace(); }
@@ -84,21 +88,19 @@ public class Server implements Runnable{
 	}
 	
 	public double posCorrelation(int A, int B){
-		return (100-(A-B))/1000;
+		return (100.0-(-B))/1000.0;
 	}
-	
 	public double negCorrelation(int A, int B){
-		return ((A-B)-100)/1000;
-	}
-	
+		return ((A-B)-100.0)/1000.0;
+	}	
 	public double negGivenHigh(int A, int B){
-		return ((-A-B)/2000);
+		return ((-A-B)/2000.0);
 	}
 	
 	public Factors calcTraitFactors(Package pack, Factors factor){
 		
 		double result;
-		
+
 		//Warmth is a positive correlation trait
 		result = posCorrelation(pack.traits[0].getValue(), myCrust.getTraits()[0].getValue());
 		if(result<factor.largestFactor){
@@ -287,7 +289,7 @@ public class Server implements Runnable{
 		
 		boolean interactionStored = false;
 		Date d = new Date();
-		int chemistry = 0;
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Factors factor = new Factors(Factors.ODDS_BASE, Double.POSITIVE_INFINITY, "None");
 		
 		factor = calcTraitFactors(pack, factor);
@@ -296,28 +298,31 @@ public class Server implements Runnable{
 		
 		Random rand = new Random();
 		
-		int interactionResult = rand.nextInt(101);
+		double interactionResult = rand.nextInt(101);
 		interactionResult*=factor.odds;
 		interactionResult-=Factors.ODDS_BALANCE;
-		interactionResult/=1000;
+		interactionResult/=1000.0;
 		
 		for(Relationship r : myCrust.getRelationships()){
-			if(r.getContactName()==pack.name){
+			if(r.getContactName().equals(pack.name)){
 				
-				r.setChemistry(chemistry+interactionResult);
+				r.setChemistry(r.getChemistry()+interactionResult);
 				r.log.add("Interacted ["+d.toString()+"] : Result "+interactionResult+" : Biggest Negative Factor: "+factor.largestFactorString);
-				r.setLastMeeting(d.toString());
+				r.setLastMeeting(df.format(d));
 				interactionStored = true;
 				break;
 			}
 		}
 		
 		if(!interactionStored){
-			myCrust.addRelationship(pack.name, address.toString(), interactionResult);
-			myCrust.getRelationships().getLast().setFirstMet(d.toString());
-			myCrust.getRelationships().getLast().setLastMeeting(d.toString());
+			myCrust.addRelationship(pack.name, address.toString().substring(1, address.toString().length()), interactionResult);
+			myCrust.getRelationships().getLast().setFirstMet(df.format(d));
+			myCrust.getRelationships().getLast().setLastMeeting(df.format(d));
+			myCrust.getRelationships().getLast().log.add("Interacted ["+d.toString()+"] : Result "+interactionResult+" : Biggest Negative Factor: "+factor.largestFactorString);
 			interactionStored = true;
 		}
+		
+		myCrust.history.logAction("Interacted with "+pack.name+" ["+d.toString()+"] : Result "+interactionResult+" : Biggest Negative Factor: "+factor.largestFactorString);
 		
 		return;
 	}
@@ -353,6 +358,7 @@ public class Server implements Runnable{
 					sndPackage.setTraits(myCrust.getTraits());
 					sndPackage.setNeeds(myCrust.getNeed("Hunger"), myCrust.getNeed("Energy"), myCrust.getNeed("Entertainment"));
 					sndPackage.setRelationships(myCrust.getRelationships());
+					
 					outputStream.writeObject(sndPackage);
 					
 					inputStream.close();
@@ -375,6 +381,9 @@ public class Server implements Runnable{
 	public void getContacts(Package pack, String contactAddress) throws IOException {
 		
 		File snfolder = new File("socialnetwork");
+		if(!snfolder.exists())
+			snfolder.mkdir();
+		
 		String snfolderpath = snfolder.getAbsolutePath();
 		
 		File relSaveFile = new File(snfolderpath+"/"+contactAddress+"_"+pack.name+".rel");

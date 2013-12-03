@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +36,7 @@ import javax.swing.JList;
 
 import java.util.Random;
 import java.util.Vector;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -55,6 +58,7 @@ import desperatehousepi.Crust.Interest;
 import desperatehousepi.Crust.Relationship;
 import desperatehousepi.Items.ItemSet.Item;
 import desperatehousepi.Items.ItemSet.itemType;
+import desperatehousepi.Server.Server;
 
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
@@ -189,6 +193,9 @@ public class MainWindow {
 		}
 	};
 	private JCheckBox chckbxServer;
+	private JTextField contactNameInput;
+	private JTextField contactAddressInput;
+	private JLabel errorLabel;
 	
 	//Refresh functions
 	private void refreshAll(){
@@ -266,6 +273,9 @@ public class MainWindow {
 			else
 				friendsListModel.addElement(r.getContactName());
 		}
+		
+		
+		
 	}
 	private void refreshInterests(){
 			
@@ -509,10 +519,10 @@ public class MainWindow {
 		
 		//Create Birthday label
 		lblStatsTabBday = new JLabel("Birthday: ");
-		lblStatsTabBday.setBounds(10,0,136,14);
+		lblStatsTabBday.setBounds(534,11,136,14);
 		statsTab.add(lblStatsTabBday);
 		lblStatsTabBdayVal = new JLabel("0");
-		lblStatsTabBdayVal.setBounds(156,0,136,14);
+		lblStatsTabBdayVal.setBounds(586,11,136,14);
 		statsTab.add(lblStatsTabBdayVal);
 		
 		//Create warmth labels
@@ -651,7 +661,7 @@ public class MainWindow {
 				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		textField.setLineWrap(true);
 		textField.setEditable(false);
-		chatTabChatLog.setBounds(0, 0, 486, 172);
+		chatTabChatLog.setBounds(0, 0, 849, 172);
 		chatTab.add(chatTabChatLog);
 		
 		//Create the field for user input
@@ -665,7 +675,7 @@ public class MainWindow {
                 }
             }
 		});
-		chatTabSendText.setBounds(0, 183, 404, 29);
+		chatTabSendText.setBounds(0, 183, 758, 29);
 		chatTab.add(chatTabSendText);
 		chatTabSendText.setColumns(10);
 		
@@ -678,7 +688,7 @@ public class MainWindow {
 				chatTabSendText.setText("");
 			}
 		});
-		chatTabSendBtn.setBounds(405, 183, 81, 29);
+		chatTabSendBtn.setBounds(759, 183, 90, 29);
 		chatTab.add(chatTabSendBtn);
 		
 	}
@@ -736,6 +746,85 @@ public class MainWindow {
 		enemiesScrollPane.setBounds(324, 22, 162, 190);
 		relationshipPanel.add(enemiesScrollPane);
 		enemiesScrollPane.setViewportView(enemiesList);
+		
+		contactNameInput = new JTextField();
+		contactNameInput.setBounds(529, 48, 187, 20);
+		relationshipPanel.add(contactNameInput);
+		contactNameInput.setColumns(10);
+		
+		contactAddressInput = new JTextField();
+		contactAddressInput.setBounds(529, 79, 187, 20);
+		relationshipPanel.add(contactAddressInput);
+		contactAddressInput.setColumns(10);
+		
+		//Create the controllers for adding new relationships to the list
+		JLabel lblAddNewRelationship = new JLabel("Add New Relationship:");
+		lblAddNewRelationship.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddNewRelationship.setBounds(529, 24, 187, 14);
+		relationshipPanel.add(lblAddNewRelationship);
+		
+		//Set error label
+		errorLabel = new JLabel("");
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setBounds(529, 144, 187, 14);
+		relationshipPanel.add(errorLabel);
+		
+		JButton btnAddRel = new JButton("Add");
+		btnAddRel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(contactNameInput.getText().equals("")){
+					errorLabel.setText("Contact name required.");
+					return;
+				}else if(contactAddressInput.getText().equals("")){
+					errorLabel.setText("Contact address required.");
+					return;
+				}
+				
+				crust.addRelationship(contactNameInput.getText(), contactAddressInput.getText(), 0);
+				errorLabel.setText("");
+			}
+		});
+		btnAddRel.setBounds(529, 110, 187, 23);
+		relationshipPanel.add(btnAddRel);
+		
+		//Add listeners for making the crusts call one another
+		acquaintancesList.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        
+		    	@SuppressWarnings("unchecked")
+				JList<String> list = (JList<String>) evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		        	crust.call(list.getSelectedValue(), Server.SOCKET_DEFAULT);
+		        }else if (evt.isControlDown()){
+		        	crust.removeRelationship(list.getSelectedValue());
+		        }
+		    }
+		});
+		enemiesList.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        
+		    	@SuppressWarnings("unchecked")
+				JList<String> list = (JList<String>) evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		        	crust.call(list.getSelectedValue(), Server.SOCKET_DEFAULT);
+		        }else if (evt.isControlDown()){
+		        	crust.removeRelationship(list.getSelectedValue());
+		        }
+		    }
+		});
+		friendsList.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        
+		    	@SuppressWarnings("unchecked")
+				JList<String> list = (JList<String>) evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		        	crust.call(list.getSelectedValue(), Server.SOCKET_DEFAULT);
+		        }else if (evt.isControlDown()){
+		        	crust.removeRelationship(list.getSelectedValue());
+		        }
+		    }
+		});
 		
 		//Create the tab that holds all of the stats
 		statsTab = new JPanel();
