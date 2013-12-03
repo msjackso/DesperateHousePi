@@ -124,14 +124,14 @@ public class QuestForGrowth {
 		updateJourney();
 		if (quest2enabled){
 			if (quest2completed)
-				return "Congratulations! You have reached the end of your journey";
+				return "<html>Congratulations!<br>You have reached the end of<br>your journey</html>";
 			else
 				//Return list of items still needed
 				return "You are still lacking, young one";
 		}
 		else if (quest1enabled){
 			if (quest1completed)
-				return "Congratulations! You have proven yourself worthy to progress further";
+				return "<html>Congratulations!<br>You have proven yourself worthy<br>to progress further</html>";
 			else
 				//Return list of items still needed
 				return "You are still lacking, young one";

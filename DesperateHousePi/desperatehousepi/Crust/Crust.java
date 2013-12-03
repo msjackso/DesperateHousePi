@@ -823,7 +823,7 @@ public class Crust {
 		
 		//Check if item is consumable
 		for( String need : inventory.getItem(itemName).getNeeds() ){
-			if( need=="Hunger" )
+			if( need=="Hunger" || need=="Quest")
 				break;
 			else{
 				//if not, do not destroy

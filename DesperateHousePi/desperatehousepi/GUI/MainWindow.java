@@ -318,11 +318,11 @@ public class MainWindow {
 			if(targetX > bgImage.getWidth()-60+bgImage.getX()){
 				targetX = bgImage.getWidth()-60+bgImage.getX();
 			}
-			if(targetY < 100+bgImage.getY()){
-				targetY = 100+bgImage.getY();
+			if(targetY < 120+bgImage.getY()){
+				targetY = 120+bgImage.getY();
 			}
-			if(targetY > bgImage.getHeight()-100+bgImage.getY()){
-				targetY = bgImage.getHeight()-100+bgImage.getY();
+			if(targetY > bgImage.getHeight()-300+bgImage.getY()){
+				targetY = bgImage.getHeight()-300+bgImage.getY();
 			}
 			targetLoc = new Point(targetX, targetY);
 		}else{
@@ -906,7 +906,7 @@ public class MainWindow {
 		crustInfo.add(lblStage, gbc_lblStage);
 		
 		//Create the stage value label
-		lblStageVal = new JLabel("Child");
+		lblStageVal = new JLabel(crust.getStage());
 		lblStageVal.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblStageVal = new GridBagConstraints();
 		gbc_lblStageVal.anchor = GridBagConstraints.WEST;

@@ -165,6 +165,6 @@ public class AncientPie {
 		String path = "images/chars/color/"+c.getPieType().filename+c.getStageAsNum()+"_color.png";
 		ImageIcon image = new ImageIcon(path);
 		crustImage.setIcon(image);
-		crustImage.setBounds(60, 480, image.getIconWidth(),image.getIconHeight());
+		crustImage.setBounds(60, 440, image.getIconWidth(),image.getIconHeight());
 	}
 }
