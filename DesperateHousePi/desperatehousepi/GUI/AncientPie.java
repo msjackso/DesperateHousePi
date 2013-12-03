@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.miginfocom.swing.MigLayout;
 import desperatehousepi.Crust.Crust;
 
 public class AncientPie {

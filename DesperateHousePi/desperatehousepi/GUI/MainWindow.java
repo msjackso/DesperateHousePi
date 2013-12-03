@@ -396,7 +396,7 @@ public class MainWindow {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setForeground(Color.BLACK);
 		tabbedPane.setBackground(Color.GREEN);
-		tabbedPane.setBounds(0, 366, 854, 240);
+		tabbedPane.setBounds(0, 455, 854, 176);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
 		
@@ -407,7 +407,7 @@ public class MainWindow {
 		
 		//Create Background Image
 		bgImage = new JLabel();
-		bgImage.setBounds(10, 11, 463, 331);
+		bgImage.setBounds(0, 0, 425, 680);
 		bgImage.setIcon(background1);
 		frameMain.getContentPane().add(bgImage);
 		
@@ -462,6 +462,18 @@ public class MainWindow {
 		});
 		btnUse.setBounds(728, 287, 89, 20);
 		frameMain.getContentPane().add(btnUse);
+		
+		//Create the Ancient button
+		JButton btnAncient = new JButton("Ancient Pie");
+		btnAncient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e1) {
+				frameMain.setVisible(false);
+				try { new AncientPie(crust); } catch (FileNotFoundException e2) { }
+			}
+		});
+		btnAncient.setBounds(728, 318, 89, 20);
+		frameMain.getContentPane().add(btnAncient);
+
 		
 		//Create the menu items
 		JMenuBar menuBar = new JMenuBar();
