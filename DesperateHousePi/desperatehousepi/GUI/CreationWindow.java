@@ -43,53 +43,60 @@ public class CreationWindow {
 	private JLabel empty;
 	
 
-	private JLabel firstName;
-	private JFormattedTextField firstNameField;
-	private JLabel middleName;
-	private JFormattedTextField middleNameField;
-	private JLabel lastName;
-	private JFormattedTextField lastNameField;
+	private JLabel lblFirstName;
+	private JFormattedTextField firstName;
+	private JLabel lblMiddleName;
+	private JFormattedTextField middleName;
+	private JLabel lblLastName;
+	private JFormattedTextField lastName;
 	
-	private JLabel birthdayTitle;
-	private JFormattedTextField birthdayMonthField;
-	private JLabel birthdayMonth;
-	private JFormattedTextField birthdayDayField;
-	private JLabel birthdayDay;
+	private JLabel lblBirthday;
+	private JFormattedTextField birthdayMonth;
+	private JLabel lblBirthdayMonth;
+	private JFormattedTextField birthdayDay;
+	private JLabel lblBirthdayDay;
 	
 	private JLabel crustPreview;
 	
-	private JLabel warmth;
-	private JLabel reasoning;
-	private JLabel emotionalStability;
-	private JLabel dominance;
-	private JLabel liveliness;
-	private JLabel ruleConsciousness;
-	private JLabel socialBoldness;
-	private JLabel sensitivity;
-	private JLabel vigilance;
-	private JLabel abstractedness;
-	private JLabel privateness;
-	private JLabel apprehensivness;
-	private JLabel opennessToChange;
-	private JLabel selfReliance;
-	private JLabel perfectionism;
-	private JLabel tension;
-	private JFormattedTextField warmthField;
-	private JFormattedTextField reasoningField;
-	private JFormattedTextField emotionalStabilityField;
-	private JFormattedTextField dominanceField;
-	private JFormattedTextField livelinessField;
-	private JFormattedTextField ruleConsciousnessField;
-	private JFormattedTextField socialBoldnessField;
-	private JFormattedTextField sensitivityField;
-	private JFormattedTextField vigilanceField;
-	private JFormattedTextField abstractednessField;
-	private JFormattedTextField privatenessField;
-	private JFormattedTextField apprehensivnessField;
-	private JFormattedTextField opennessToChangeField;
-	private JFormattedTextField selfRelianceField;
-	private JFormattedTextField perfectionismField;
-	private JFormattedTextField tensionField;
+	private JLabel lblWarmth;
+	private JLabel lblReasoning;
+	private JLabel lblEmotionalStability;
+	private JLabel lblDominance;
+	private JLabel lblLiveliness;
+	private JLabel lblRuleConsciousness;
+	private JLabel lblSocialBoldness;
+	private JLabel lblSensitivity;
+	private JLabel lblVigilance;
+	private JLabel lblAbstractedness;
+	private JLabel lblPrivateness;
+	private JLabel lblApprehensivness;
+	private JLabel lblOpennessToChange;
+	private JLabel lblSelfReliance;
+	private JLabel lblPerfectionism;
+	private JLabel lblTension;
+	private JFormattedTextField warmth;
+	private JFormattedTextField reasoning;
+	private JFormattedTextField emotionalStability;
+	private JFormattedTextField dominance;
+	private JFormattedTextField liveliness;
+	private JFormattedTextField ruleConsciousness;
+	private JFormattedTextField socialBoldness;
+	private JFormattedTextField sensitivity;
+	private JFormattedTextField vigilance;
+	private JFormattedTextField abstractedness;
+	private JFormattedTextField privateness;
+	private JFormattedTextField apprehensivness;
+	private JFormattedTextField opennessToChange;
+	private JFormattedTextField selfReliance;
+	private JFormattedTextField perfectionism;
+	private JFormattedTextField tension;
+	
+	private JLabel message;
+	
+	private JButton testBtn;
+	private JButton randomBtn;
+	private JButton clearBtn;
+	private JButton createBtn;
 	
 	/**
 	 * Open window to create new Crust
@@ -143,18 +150,18 @@ public class CreationWindow {
 		
 		//Begin placing components using MigLayout
 		creation_frame.setLayout(new MigLayout());
-		creation_frame.add(firstName, "pos 6 3");
-		creation_frame.add(firstNameField, "wrap,gapy 2");
-		creation_frame.add(middleName, "pos 6 49");
-		creation_frame.add(middleNameField, "wrap,gapy 10");
-		creation_frame.add(lastName, "pos 6 96");
-		creation_frame.add(lastNameField, "wrap,gapy 10");
+		creation_frame.add(lblFirstName, "pos 6 3");
+		creation_frame.add(firstName, "wrap,gapy 2");
+		creation_frame.add(lblMiddleName, "pos 6 49");
+		creation_frame.add(middleName, "wrap,gapy 10");
+		creation_frame.add(lblLastName, "pos 6 96");
+		creation_frame.add(lastName, "wrap,gapy 10");
 		
-		creation_frame.add(birthdayTitle, "pos 6 146");
-		creation_frame.add(birthdayMonth, "pos 26 170");
-		creation_frame.add(birthdayMonthField, "pos 75 168");
-		creation_frame.add(birthdayDay, "pos 122 170");
-		creation_frame.add(birthdayDayField, "pos 153 168");
+		creation_frame.add(lblBirthday, "pos 6 146");
+		creation_frame.add(lblBirthdayMonth, "pos 26 170");
+		creation_frame.add(birthdayMonth, "pos 75 168");
+		creation_frame.add(lblBirthdayDay, "pos 122 170");
+		creation_frame.add(birthdayDay, "pos 153 168");
 		
 		creation_frame.add(crustPreview, "pos 170 270");
 		
@@ -164,44 +171,52 @@ public class CreationWindow {
 		String col4a = "320"; String col4b = "320";
 		
 		// Column 1
-		creation_frame.add(warmth, "pos "+col1a+" 446");
-		creation_frame.add(warmthField, "pos "+col1b+" 470");
-		creation_frame.add(reasoning, "pos "+col1a+" 496");
-		creation_frame.add(reasoningField, "pos "+col1b+" 520");
-		creation_frame.add(emotionalStability, "pos "+col1a+" 546");
-		creation_frame.add(emotionalStabilityField, "pos "+col1b+" 570");
-		creation_frame.add(dominance, "pos "+col1a+" 596");
-		creation_frame.add(dominanceField, "pos "+col1b+" 620");
+		creation_frame.add(lblWarmth, "pos "+col1a+" 446");
+		creation_frame.add(warmth, "pos "+col1b+" 470");
+		creation_frame.add(lblReasoning, "pos "+col1a+" 496");
+		creation_frame.add(reasoning, "pos "+col1b+" 520");
+		creation_frame.add(lblEmotionalStability, "pos "+col1a+" 546");
+		creation_frame.add(emotionalStability, "pos "+col1b+" 570");
+		creation_frame.add(lblDominance, "pos "+col1a+" 596");
+		creation_frame.add(dominance, "pos "+col1b+" 620");
 
 		// Column 2
-		creation_frame.add(liveliness, "pos "+col2a+" 446");
-		creation_frame.add(livelinessField, "pos "+col2b+" 470");
-		creation_frame.add(ruleConsciousness, "pos "+col2a+" 496");
-		creation_frame.add(ruleConsciousnessField, "pos "+col2b+" 520");
-		creation_frame.add(socialBoldness, "pos "+col2a+" 546");
-		creation_frame.add(socialBoldnessField, "pos "+col2b+" 570");
-		creation_frame.add(sensitivity, "pos "+col2a+" 596");
-		creation_frame.add(sensitivityField, "pos "+col2b+" 620");
+		creation_frame.add(lblLiveliness, "pos "+col2a+" 446");
+		creation_frame.add(liveliness, "pos "+col2b+" 470");
+		creation_frame.add(lblRuleConsciousness, "pos "+col2a+" 496");
+		creation_frame.add(ruleConsciousness, "pos "+col2b+" 520");
+		creation_frame.add(lblSocialBoldness, "pos "+col2a+" 546");
+		creation_frame.add(socialBoldness, "pos "+col2b+" 570");
+		creation_frame.add(lblSensitivity, "pos "+col2a+" 596");
+		creation_frame.add(sensitivity, "pos "+col2b+" 620");
 		
 		// Column 3
-		creation_frame.add(vigilance, "pos "+col3a+" 446");
-		creation_frame.add(vigilanceField, "pos "+col3b+" 470");
-		creation_frame.add(abstractedness, "pos "+col3a+" 496");
-		creation_frame.add(abstractednessField, "pos "+col3b+" 520");
-		creation_frame.add(privateness, "pos "+col3a+" 546");
-		creation_frame.add(privatenessField, "pos "+col3b+" 570");
-		creation_frame.add(apprehensivness, "pos "+col3a+" 596");
-		creation_frame.add(apprehensivnessField, "pos "+col3b+" 620");
+		creation_frame.add(lblVigilance, "pos "+col3a+" 446");
+		creation_frame.add(vigilance, "pos "+col3b+" 470");
+		creation_frame.add(lblAbstractedness, "pos "+col3a+" 496");
+		creation_frame.add(abstractedness, "pos "+col3b+" 520");
+		creation_frame.add(lblPrivateness, "pos "+col3a+" 546");
+		creation_frame.add(privateness, "pos "+col3b+" 570");
+		creation_frame.add(lblApprehensivness, "pos "+col3a+" 596");
+		creation_frame.add(apprehensivness, "pos "+col3b+" 620");
 		
 		// Column 4
-		creation_frame.add(opennessToChange, "pos "+col4a+" 446");
-		creation_frame.add(opennessToChangeField, "pos "+col4b+" 470");
-		creation_frame.add(selfReliance, "pos "+col4a+" 496");
-		creation_frame.add(selfRelianceField, "pos "+col4b+" 520");
-		creation_frame.add(perfectionism, "pos "+col4a+" 546");
-		creation_frame.add(perfectionismField, "pos "+col4b+" 570");
-		creation_frame.add(tension, "pos "+col4a+" 596");
-		creation_frame.add(tensionField, "pos "+col4b+" 620");
+		creation_frame.add(lblOpennessToChange, "pos "+col4a+" 446");
+		creation_frame.add(opennessToChange, "pos "+col4b+" 470");
+		creation_frame.add(lblSelfReliance, "pos "+col4a+" 496");
+		creation_frame.add(selfReliance, "pos "+col4b+" 520");
+		creation_frame.add(lblPerfectionism, "pos "+col4a+" 546");
+		creation_frame.add(perfectionism, "pos "+col4b+" 570");
+		creation_frame.add(lblTension, "pos "+col4a+" 596");
+		creation_frame.add(tension, "pos "+col4b+" 620");
+		
+		// Buttons
+		creation_frame.add(message, "pos 6 300");
+		creation_frame.add(testBtn, "pos 6 406");
+		creation_frame.add(randomBtn, "pos 186 406");
+		creation_frame.add(clearBtn, "pos 298 406");
+		creation_frame.add(createBtn, "pos 238 340");
+		
 	}
 	
 	private void initComponents() {
@@ -241,198 +256,106 @@ public class CreationWindow {
 		// Initialize textfields for Crust first, middle, and last name
 		int n = 13;
 		
-		firstName = new JLabel("First Name");
-		firstName.setFont(font);
-		firstNameField = new JFormattedTextField();
-		firstNameField.setColumns(n);
+		lblFirstName = new JLabel("First Name");
+		lblFirstName.setFont(font);
+		firstName = new JFormattedTextField();
+		firstName.setColumns(n);
 
-		middleName = new JLabel("Middle Name");
-		middleName.setFont(font);
-		middleNameField = new JFormattedTextField();
-		middleNameField.setColumns(n);
+		lblMiddleName = new JLabel("Middle Name");
+		lblMiddleName.setFont(font);
+		middleName = new JFormattedTextField();
+		middleName.setColumns(n);
 
-		lastName = new JLabel("Last Name");
-		lastName.setFont(font);
-		lastNameField = new JFormattedTextField();
-		lastNameField.setColumns(n);
+		lblLastName = new JLabel("Last Name");
+		lblLastName.setFont(font);
+		lastName = new JFormattedTextField();
+		lastName.setColumns(n);
 		
 		
 		// textfields for month, day of birthday
-		birthdayTitle = new JLabel("Birthday");
-		birthdayTitle.setFont(font);
+		lblBirthday = new JLabel("Birthday");
+		lblBirthday.setFont(font);
 		
-		birthdayMonth = new JLabel("Month");
-		birthdayMonth.setFont(font);
-		birthdayMonthField = new JFormattedTextField();
-		birthdayMonthField.setColumns(2);
+		lblBirthdayMonth = new JLabel("Month");
+		lblBirthdayMonth.setFont(font);
+		birthdayMonth = new JFormattedTextField();
+		birthdayMonth.setColumns(2);
 		
-		birthdayDay = new JLabel("Day");
-		birthdayDay.setFont(font);
-		birthdayDayField = new JFormattedTextField();
-		birthdayDayField.setColumns(2);
+		lblBirthdayDay = new JLabel("Day");
+		lblBirthdayDay.setFont(font);
+		birthdayDay = new JFormattedTextField();
+		birthdayDay.setColumns(2);
 		
 		//Pie Type Preview
 		String path = "images/chars/color/"+pieType.filename+"1_color.png";
 		crustPreview = new JLabel(new ImageIcon(path));
 		
-		//Initialize traits
-		warmth = new JLabel("<html><br>Warmth</html>");
-		warmth.setFont(fontSmall);
-		reasoning = new JLabel("<html><br>Reasoning</html>");
-		reasoning.setFont(fontSmall);
-		emotionalStability = new JLabel("<html>Emotional<br>Stability</html>");
-		emotionalStability.setFont(fontSmall);
-		dominance = new JLabel("<html><br>Dominance</html>");
-		dominance.setFont(fontSmall);
-		liveliness = new JLabel("<html><br>Liveliness</html>");
-		liveliness.setFont(fontSmall);
-		ruleConsciousness = new JLabel("<html>Rule<br>Consciousness</html>");
-		ruleConsciousness.setFont(fontSmall);
-		socialBoldness = new JLabel("<html>Social<br>Boldness</html>");
-		socialBoldness.setFont(fontSmall);
-		sensitivity = new JLabel("<html><br>Sensitivity</html>");
-		sensitivity.setFont(fontSmall);
-		vigilance = new JLabel("<html><br>Vigilance</html>");
-		vigilance.setFont(fontSmall);
-		abstractedness = new JLabel("<html><br>Abstractedness</html>");
-		abstractedness.setFont(fontSmall);
-		privateness = new JLabel("<html><br>Privateness</html>");
-		privateness.setFont(fontSmall);
-		apprehensivness = new JLabel("<html><br>Apprehension</html>");
-		apprehensivness.setFont(fontSmall);
-		opennessToChange = new JLabel("<html>Openness<br>to Change</html>");
-		opennessToChange.setFont(fontSmall);
-		selfReliance = new JLabel("<html><br>Self Reliance</html>");
-		selfReliance.setFont(fontSmall);
-		perfectionism = new JLabel("<html><br>Perfectionism</html>");
-		perfectionism.setFont(fontSmall);
-		tension = new JLabel("<html><br>Tension</html>");
-		tension.setFont(fontSmall);
+		//Initialize traits label and fields
+		lblWarmth = new JLabel("<html><br>Warmth</html>");
+		lblWarmth.setFont(fontSmall);
+		lblReasoning = new JLabel("<html><br>Reasoning</html>");
+		lblReasoning.setFont(fontSmall);
+		lblEmotionalStability = new JLabel("<html>Emotional<br>Stability</html>");
+		lblEmotionalStability.setFont(fontSmall);
+		lblDominance = new JLabel("<html><br>Dominance</html>");
+		lblDominance.setFont(fontSmall);
+		lblLiveliness = new JLabel("<html><br>Liveliness</html>");
+		lblLiveliness.setFont(fontSmall);
+		lblRuleConsciousness = new JLabel("<html>Rule<br>Consciousness</html>");
+		lblRuleConsciousness.setFont(fontSmall);
+		lblSocialBoldness = new JLabel("<html><br>Social Boldness</html>");
+		lblSocialBoldness.setFont(fontSmall);
+		lblSensitivity = new JLabel("<html><br>Sensitivity</html>");
+		lblSensitivity.setFont(fontSmall);
+		lblVigilance = new JLabel("<html><br>Vigilance</html>");
+		lblVigilance.setFont(fontSmall);
+		lblAbstractedness = new JLabel("<html><br>Abstractedness</html>");
+		lblAbstractedness.setFont(fontSmall);
+		lblPrivateness = new JLabel("<html><br>Privateness</html>");
+		lblPrivateness.setFont(fontSmall);
+		lblApprehensivness = new JLabel("<html><br>Apprehension</html>");
+		lblApprehensivness.setFont(fontSmall);
+		lblOpennessToChange = new JLabel("<html>Openness<br>to Change</html>");
+		lblOpennessToChange.setFont(fontSmall);
+		lblSelfReliance = new JLabel("<html><br>Self Reliance</html>");
+		lblSelfReliance.setFont(fontSmall);
+		lblPerfectionism = new JLabel("<html><br>Perfectionism</html>");
+		lblPerfectionism.setFont(fontSmall);
+		lblTension = new JLabel("<html><br>Tension</html>");
+		lblTension.setFont(fontSmall);
 		
-		warmthField = new JFormattedTextField();
-		warmthField.setColumns(2);
-		reasoningField = new JFormattedTextField();
-		reasoningField.setColumns(2);
-		emotionalStabilityField = new JFormattedTextField();
-		emotionalStabilityField.setColumns(2);
-		dominanceField = new JFormattedTextField();
-		dominanceField.setColumns(2);
-		livelinessField = new JFormattedTextField();
-		livelinessField.setColumns(2);
-		ruleConsciousnessField = new JFormattedTextField();
-		ruleConsciousnessField.setColumns(2);
-		socialBoldnessField = new JFormattedTextField();
-		socialBoldnessField.setColumns(2);
-		sensitivityField = new JFormattedTextField();
-		sensitivityField.setColumns(2);
-		vigilanceField = new JFormattedTextField();
-		vigilanceField.setColumns(2);
-		abstractednessField = new JFormattedTextField();
-		abstractednessField.setColumns(2);
-		privatenessField = new JFormattedTextField();
-		privatenessField.setColumns(2);
-		apprehensivnessField = new JFormattedTextField();
-		apprehensivnessField.setColumns(2);
-		opennessToChangeField = new JFormattedTextField();
-		opennessToChangeField.setColumns(2);
-		selfRelianceField = new JFormattedTextField();
-		selfRelianceField.setColumns(2);
-		perfectionismField = new JFormattedTextField();
-		perfectionismField.setColumns(2);
-		tensionField = new JFormattedTextField();
-		tensionField.setColumns(2);
-		
-	}
-
-	/*
-	 * 		
-	
-
-		//Initialize message label for displaying input errors
-		final JLabel message = new JLabel("");
-		message.setForeground(Color.RED);
-		message.setBounds(27, 198, 414, 14);
-		panel.add(message);
-		
-		//initialize textfields for Crust first, middle, and last name
-		final JFormattedTextField firstName = new JFormattedTextField();
-		firstName.setLocation(300, 200);
-		firstName.setSize(200, 20);
-		creation_frame.add(firstName);
-		
-		final JFormattedTextField middleName = new JFormattedTextField();
-		middleName.setBounds(27, 66, 170, 20);
-		creation_frame.add(middleName);
-		
-		final JFormattedTextField lastName = new JFormattedTextField();
-		lastName.setBounds(27, 108, 170, 20);
-		panel.add(lastName);
-
-		
-		//initialize textfields for traits
-		final JFormattedTextField warmth = new JFormattedTextField();
-		warmth.setBounds(27, 274, 80, 20);
-		panel.add(warmth);
-		
-		final JFormattedTextField reasoning = new JFormattedTextField();
-		reasoning.setBounds(27, 318, 80, 20);
-		panel.add(reasoning);
-		
-		final JFormattedTextField emotionalStability = new JFormattedTextField();
-		emotionalStability.setBounds(27, 363, 80, 20);
-		panel.add(emotionalStability);
-		
-		final JFormattedTextField dominance = new JFormattedTextField();
-		dominance.setBounds(27, 410, 80, 20);
-		panel.add(dominance);
-		
-		final JFormattedTextField liveliness = new JFormattedTextField();
-		liveliness.setBounds(144, 274, 80, 20);
-		panel.add(liveliness);
-		
-		final JFormattedTextField ruleConsciousness = new JFormattedTextField();
-		ruleConsciousness.setBounds(144, 318, 80, 20);
-		panel.add(ruleConsciousness);
-		
-		final JFormattedTextField socialBoldness = new JFormattedTextField();
-		socialBoldness.setBounds(144, 363, 80, 20);
-		panel.add(socialBoldness);
-		
-		final JFormattedTextField sensitivity = new JFormattedTextField();
-		sensitivity.setBounds(144, 410, 80, 20);
-		panel.add(sensitivity);
-		
-		final JFormattedTextField vigilance = new JFormattedTextField();
-		vigilance.setBounds(251, 274, 80, 20);
-		panel.add(vigilance);
-		
-		final JFormattedTextField abstractedness = new JFormattedTextField();
-		abstractedness.setBounds(251, 318, 80, 20);
-		panel.add(abstractedness);
-		
-		final JFormattedTextField privateness = new JFormattedTextField();
-		privateness.setBounds(251, 363, 80, 20);
-		panel.add(privateness);
-		
-		final JFormattedTextField apprehensivness = new JFormattedTextField();
-		apprehensivness.setBounds(251, 410, 80, 20);
-		panel.add(apprehensivness);
-		
-		final JFormattedTextField opennessToChange = new JFormattedTextField();
-		opennessToChange.setBounds(361, 274, 80, 20);
-		panel.add(opennessToChange);
-		
-		final JFormattedTextField selfReliance = new JFormattedTextField();
-		selfReliance.setBounds(361, 318, 80, 20);
-		panel.add(selfReliance);
-		
-		final JFormattedTextField perfectionism = new JFormattedTextField();
-		perfectionism.setBounds(361, 363, 80, 20);
-		panel.add(perfectionism);
-		
-		final JFormattedTextField tension = new JFormattedTextField();
-		tension.setBounds(361, 410, 80, 20);
-		panel.add(tension);
+		warmth = new JFormattedTextField();
+		warmth.setColumns(2);
+		reasoning = new JFormattedTextField();
+		reasoning.setColumns(2);
+		emotionalStability = new JFormattedTextField();
+		emotionalStability.setColumns(2);
+		dominance = new JFormattedTextField();
+		dominance.setColumns(2);
+		liveliness = new JFormattedTextField();
+		liveliness.setColumns(2);
+		ruleConsciousness = new JFormattedTextField();
+		ruleConsciousness.setColumns(2);
+		socialBoldness = new JFormattedTextField();
+		socialBoldness.setColumns(2);
+		sensitivity = new JFormattedTextField();
+		sensitivity.setColumns(2);
+		vigilance = new JFormattedTextField();
+		vigilance.setColumns(2);
+		abstractedness = new JFormattedTextField();
+		abstractedness.setColumns(2);
+		privateness = new JFormattedTextField();
+		privateness.setColumns(2);
+		apprehensivness = new JFormattedTextField();
+		apprehensivness.setColumns(2);
+		opennessToChange = new JFormattedTextField();
+		opennessToChange.setColumns(2);
+		selfReliance = new JFormattedTextField();
+		selfReliance.setColumns(2);
+		perfectionism = new JFormattedTextField();
+		perfectionism.setColumns(2);
+		tension = new JFormattedTextField();
+		tension.setColumns(2);
 		
 		//set values of txt fields given newCrust object
 		warmth.setText(newCrust.get("warmth"));
@@ -452,10 +375,28 @@ public class CreationWindow {
 		perfectionism.setText(newCrust.get("perfectionism"));
 		tension.setText(newCrust.get("tension"));
 		
+		//Initialize message label for displaying input errors
+		message = new JLabel("");
+		message.setForeground(Color.RED);
+		message.setBounds(27, 198, 414, 14);
+		
+		//Button opens new personality test window
+		testBtn = new JButton("Take Personality Test");
+		testBtn.setToolTipText("Take a personality test to determine base trait values");
+		testBtn.setForeground(Color.BLACK);
+		testBtn.setBackground(Color.RED);
+		testBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				creation_frame.setVisible(false);
+				new PersonalityTestWindow();
+			}
+		});
+		testBtn.setBounds(333, 195, 108, 23);
+		
 		//Button for clearing trait values from text boxes
-		JButton clearBtn = new JButton("Clear");
+		clearBtn = new JButton("Clear");
 		clearBtn.setToolTipText("Clear personality trait values");
-		clearBtn.setForeground(Color.WHITE);
+		clearBtn.setForeground(Color.BLACK);
 		clearBtn.setBackground(Color.RED);
 		clearBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -483,12 +424,11 @@ public class CreationWindow {
 			}
 		});
 		clearBtn.setBounds(333, 227, 108, 23);
-		panel.add(clearBtn);
 		
 		//button for giving traits random values in text boxes
-		JButton randomBtn = new JButton("Randomize");
+		randomBtn = new JButton("Randomize");
 		randomBtn.setToolTipText("Set personality trait values randomly");
-		randomBtn.setForeground(Color.WHITE);
+		randomBtn.setForeground(Color.BLACK);
 		randomBtn.setBackground(Color.RED);
 		randomBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -516,27 +456,12 @@ public class CreationWindow {
 			}
 		});
 		randomBtn.setBounds(28, 227, 108, 23);
-		panel.add(randomBtn);
-		
-		//Button opens new personality test window
-		JButton testBtn = new JButton("Take PF Test");
-		testBtn.setToolTipText("Take a personality test to determine base trait values");
-		testBtn.setForeground(Color.WHITE);
-		testBtn.setBackground(Color.RED);
-		testBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				creation_frame.setVisible(false);
-				new PersonalityTestWindow();
-			}
-		});
-		testBtn.setBounds(333, 195, 108, 23);
-		panel.add(testBtn);
-		
 		
 		//Button to create crust with given traits
-		JButton createBtn = new JButton("Create Crust");
+		createBtn = new JButton("Create Crust");
+		createBtn.setFont(font);
 		createBtn.setToolTipText("Create a new Crust with given traits");
-		createBtn.setForeground(Color.WHITE);
+		createBtn.setForeground(Color.BLACK);
 		createBtn.setBackground(Color.RED);
 		createBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -555,12 +480,12 @@ public class CreationWindow {
 					return;
 				}
 				
-				if(bdaymonth.getText().equals("") || birthday.getText().equals("")){
+				if(birthdayMonth.getText().equals("") || birthdayDay.getText().equals("")){
 					message.setText("Must set birthday.");
 					return;
 				}
 				
-				if(!goodDate(bdaymonth.getText(),birthday.getText())){
+				if(!goodDate(birthdayMonth.getText(),birthdayDay.getText())){
 					message.setText("Invalid date");
 					return;
 				}
@@ -590,7 +515,7 @@ public class CreationWindow {
 				}else{
 					//otherwise input is valid, so create crust and pass it to main window
 					Crust newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
-							Integer.parseInt(bdaymonth.getText()),Integer.parseInt(birthday.getText()),Integer.parseInt(warmth.getText()),
+							Integer.parseInt(birthdayMonth.getText()),Integer.parseInt(birthdayDay.getText()),Integer.parseInt(warmth.getText()),
 							Integer.parseInt(reasoning.getText()), Integer.parseInt(emotionalStability.getText()),Integer.parseInt(dominance.getText()),
 							Integer.parseInt(liveliness.getText()), Integer.parseInt(ruleConsciousness.getText()), Integer.parseInt(socialBoldness.getText()),
 							Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),
@@ -607,150 +532,9 @@ public class CreationWindow {
 				}
 			}
 		});
-		createBtn.setBounds(323, 24, 118, 43);
-		panel.add(createBtn);
-		
-		
-		//initialize labels
-		JLabel lblFirstName = new JLabel("First Name");
-		lblFirstName.setForeground(Color.BLACK);
-		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblFirstName.setBounds(27, 11, 80, 14);
-		panel.add(lblFirstName);
-		
-		JLabel lblMiddleName = new JLabel("Middle Name");
-		lblMiddleName.setForeground(Color.BLACK);
-		lblMiddleName.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblMiddleName.setBounds(27, 53, 80, 14);
-		panel.add(lblMiddleName);
-		
-		JLabel lblLastName = new JLabel("Last Name");
-		lblLastName.setForeground(Color.BLACK);
-		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblLastName.setBounds(27, 97, 80, 8);
-		panel.add(lblLastName);
-		
-		JLabel lblBday = new JLabel("Birthday");
-		lblBday.setForeground(Color.BLACK);
-		lblBday.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblBday.setBounds(27, 141, 80, 14);
-		panel.add(lblBday);
-		
-		JLabel lblmonth = new JLabel("Month:");
-		lblmonth.setForeground(Color.BLACK);
-		lblmonth.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblmonth.setBounds(27, 152, 30, 14);
-		panel.add(lblmonth);
-		
-		JLabel lblday = new JLabel("Day:");
-		lblday.setForeground(Color.BLACK);
-		lblday.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblday.setBounds(107, 152, 30, 14);
-		panel.add(lblday);		
-		
-		JLabel lblNewLabel = new JLabel("Personality Traits");
-		lblNewLabel.setForeground(Color.BLACK);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBounds(174, 229, 170, 14);
-		panel.add(lblNewLabel);
-		
-		JLabel lblWarmth = new JLabel("Warmth");
-		lblWarmth.setForeground(Color.BLACK);
-		lblWarmth.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblWarmth.setBounds(27, 260, 109, 14);
-		panel.add(lblWarmth);
-		
-		JLabel lblReasoning = new JLabel("Reasoning");
-		lblReasoning.setForeground(Color.BLACK);
-		lblReasoning.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblReasoning.setBounds(27, 305, 118, 14);
-		panel.add(lblReasoning);
-		
-		JLabel lblEmotionalStability = new JLabel("Emotional Stability");
-		lblEmotionalStability.setForeground(Color.BLACK);
-		lblEmotionalStability.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblEmotionalStability.setBounds(27, 349, 118, 14);
-		panel.add(lblEmotionalStability);
-		
-		JLabel lblDominance = new JLabel("Dominance");
-		lblDominance.setForeground(Color.BLACK);
-		lblDominance.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblDominance.setBounds(27, 394, 80, 14);
-		panel.add(lblDominance);
-		
-		JLabel lblLiveliness = new JLabel("Liveliness");
-		lblLiveliness.setForeground(Color.BLACK);
-		lblLiveliness.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblLiveliness.setBounds(144, 260, 46, 14);
-		panel.add(lblLiveliness);
-		
-		JLabel lblRuleConsciousness = new JLabel("Rule Consciousness");
-		lblRuleConsciousness.setForeground(Color.BLACK);
-		lblRuleConsciousness.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblRuleConsciousness.setBounds(144, 305, 111, 14);
-		panel.add(lblRuleConsciousness);
-		
-		JLabel lblSocialBoldness = new JLabel("Social Boldness");
-		lblSocialBoldness.setForeground(Color.BLACK);
-		lblSocialBoldness.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblSocialBoldness.setBounds(144, 349, 109, 14);
-		panel.add(lblSocialBoldness);
-		
-		JLabel lblSensitivity = new JLabel("Sensitivity");
-		lblSensitivity.setForeground(Color.BLACK);
-		lblSensitivity.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblSensitivity.setBounds(144, 394, 80, 14);
-		panel.add(lblSensitivity);
-		
-		JLabel lblVigilance = new JLabel("Vigilance");
-		lblVigilance.setForeground(Color.BLACK);
-		lblVigilance.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblVigilance.setBounds(251, 260, 46, 14);
-		panel.add(lblVigilance);
-		
-		JLabel lblAbstractedness = new JLabel("Abstractedness");
-		lblAbstractedness.setForeground(Color.BLACK);
-		lblAbstractedness.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblAbstractedness.setBounds(251, 305, 93, 14);
-		panel.add(lblAbstractedness);
-		
-		JLabel lblPrivateness = new JLabel("Privateness");
-		lblPrivateness.setForeground(Color.BLACK);
-		lblPrivateness.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblPrivateness.setBounds(251, 349, 136, 14);
-		panel.add(lblPrivateness);
-		
-		JLabel lblApprehension = new JLabel("Apprehension");
-		lblApprehension.setForeground(Color.BLACK);
-		lblApprehension.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblApprehension.setBounds(251, 394, 80, 14);
-		panel.add(lblApprehension);
-		
-		JLabel lblOpennessToChange = new JLabel("Openness to Change");
-		lblOpennessToChange.setForeground(Color.BLACK);
-		lblOpennessToChange.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblOpennessToChange.setBounds(361, 260, 123, 14);
-		panel.add(lblOpennessToChange);
-		
-		JLabel lblSelfReliance = new JLabel("Self Reliance");
-		lblSelfReliance.setForeground(Color.BLACK);
-		lblSelfReliance.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblSelfReliance.setBounds(361, 305, 80, 14);
-		panel.add(lblSelfReliance);
-		
-		JLabel lblPerfectionism = new JLabel("Perfectionism");
-		lblPerfectionism.setForeground(Color.BLACK);
-		lblPerfectionism.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblPerfectionism.setBounds(361, 349, 80, 14);
-		panel.add(lblPerfectionism);
-		
-		JLabel lblTension = new JLabel("Tension");
-		lblTension.setForeground(Color.BLACK);
-		lblTension.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lblTension.setBounds(361, 394, 46, 14);
-		panel.add(lblTension);
-	 * 
-	 */
+		createBtn.setBounds(323, 24, 118, 63);
+	}
+	
 	//Function to get random bell curve value between -100 and 100
 	public int getRandomTraitValue(){
 		
