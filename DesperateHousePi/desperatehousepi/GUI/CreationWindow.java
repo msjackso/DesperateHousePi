@@ -58,6 +58,39 @@ public class CreationWindow {
 	
 	private JLabel crustPreview;
 	
+	private JLabel warmth;
+	private JLabel reasoning;
+	private JLabel emotionalStability;
+	private JLabel dominance;
+	private JLabel liveliness;
+	private JLabel ruleConsciousness;
+	private JLabel socialBoldness;
+	private JLabel sensitivity;
+	private JLabel vigilance;
+	private JLabel abstractedness;
+	private JLabel privateness;
+	private JLabel apprehensivness;
+	private JLabel opennessToChange;
+	private JLabel selfReliance;
+	private JLabel perfectionism;
+	private JLabel tension;
+	private JFormattedTextField warmthField;
+	private JFormattedTextField reasoningField;
+	private JFormattedTextField emotionalStabilityField;
+	private JFormattedTextField dominanceField;
+	private JFormattedTextField livelinessField;
+	private JFormattedTextField ruleConsciousnessField;
+	private JFormattedTextField socialBoldnessField;
+	private JFormattedTextField sensitivityField;
+	private JFormattedTextField vigilanceField;
+	private JFormattedTextField abstractednessField;
+	private JFormattedTextField privatenessField;
+	private JFormattedTextField apprehensivnessField;
+	private JFormattedTextField opennessToChangeField;
+	private JFormattedTextField selfRelianceField;
+	private JFormattedTextField perfectionismField;
+	private JFormattedTextField tensionField;
+	
 	/**
 	 * Open window to create new Crust
 	 * @wbp.parser.constructor 
@@ -124,6 +157,51 @@ public class CreationWindow {
 		creation_frame.add(birthdayDayField, "pos 153 168");
 		
 		creation_frame.add(crustPreview, "pos 170 270");
+		
+		String col1a = "20";  String col1b = "20";
+		String col2a = "120"; String col2b = "120";
+		String col3a = "220"; String col3b = "220";
+		String col4a = "320"; String col4b = "320";
+		
+		// Column 1
+		creation_frame.add(warmth, "pos "+col1a+" 446");
+		creation_frame.add(warmthField, "pos "+col1b+" 470");
+		creation_frame.add(reasoning, "pos "+col1a+" 496");
+		creation_frame.add(reasoningField, "pos "+col1b+" 520");
+		creation_frame.add(emotionalStability, "pos "+col1a+" 546");
+		creation_frame.add(emotionalStabilityField, "pos "+col1b+" 570");
+		creation_frame.add(dominance, "pos "+col1a+" 596");
+		creation_frame.add(dominanceField, "pos "+col1b+" 620");
+
+		// Column 2
+		creation_frame.add(liveliness, "pos "+col2a+" 446");
+		creation_frame.add(livelinessField, "pos "+col2b+" 470");
+		creation_frame.add(ruleConsciousness, "pos "+col2a+" 496");
+		creation_frame.add(ruleConsciousnessField, "pos "+col2b+" 520");
+		creation_frame.add(socialBoldness, "pos "+col2a+" 546");
+		creation_frame.add(socialBoldnessField, "pos "+col2b+" 570");
+		creation_frame.add(sensitivity, "pos "+col2a+" 596");
+		creation_frame.add(sensitivityField, "pos "+col2b+" 620");
+		
+		// Column 3
+		creation_frame.add(vigilance, "pos "+col3a+" 446");
+		creation_frame.add(vigilanceField, "pos "+col3b+" 470");
+		creation_frame.add(abstractedness, "pos "+col3a+" 496");
+		creation_frame.add(abstractednessField, "pos "+col3b+" 520");
+		creation_frame.add(privateness, "pos "+col3a+" 546");
+		creation_frame.add(privatenessField, "pos "+col3b+" 570");
+		creation_frame.add(apprehensivness, "pos "+col3a+" 596");
+		creation_frame.add(apprehensivnessField, "pos "+col3b+" 620");
+		
+		// Column 4
+		creation_frame.add(opennessToChange, "pos "+col4a+" 446");
+		creation_frame.add(opennessToChangeField, "pos "+col4b+" 470");
+		creation_frame.add(selfReliance, "pos "+col4a+" 496");
+		creation_frame.add(selfRelianceField, "pos "+col4b+" 520");
+		creation_frame.add(perfectionism, "pos "+col4a+" 546");
+		creation_frame.add(perfectionismField, "pos "+col4b+" 570");
+		creation_frame.add(tension, "pos "+col4a+" 596");
+		creation_frame.add(tensionField, "pos "+col4b+" 620");
 	}
 	
 	private void initComponents() {
@@ -132,10 +210,26 @@ public class CreationWindow {
 		Font font = null;
 		try {
             //create the font to use. Specify the size!
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/CaviarDreams.ttf")).deriveFont(16f);
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Caviar-Dreams/CaviarDreams.ttf")).deriveFont(16f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/CaviarDreams.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Caviar-Dreams/CaviarDreams.ttf")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch(FontFormatException e)
+        {
+            e.printStackTrace();
+        }
+		
+		// Load the custom font
+		Font fontSmall = null;
+		try {
+            //create the font to use. Specify the size!
+            fontSmall = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Bitstream-Vera-Sans-Mono/VeraMono.ttf")).deriveFont(10f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Bitstream-Vera-Sans-Mono/VeraMono.ttf")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,8 +271,76 @@ public class CreationWindow {
 		birthdayDayField = new JFormattedTextField();
 		birthdayDayField.setColumns(2);
 		
+		//Pie Type Preview
 		String path = "images/chars/color/"+pieType.filename+"1_color.png";
 		crustPreview = new JLabel(new ImageIcon(path));
+		
+		//Initialize traits
+		warmth = new JLabel("<html><br>Warmth</html>");
+		warmth.setFont(fontSmall);
+		reasoning = new JLabel("<html><br>Reasoning</html>");
+		reasoning.setFont(fontSmall);
+		emotionalStability = new JLabel("<html>Emotional<br>Stability</html>");
+		emotionalStability.setFont(fontSmall);
+		dominance = new JLabel("<html><br>Dominance</html>");
+		dominance.setFont(fontSmall);
+		liveliness = new JLabel("<html><br>Liveliness</html>");
+		liveliness.setFont(fontSmall);
+		ruleConsciousness = new JLabel("<html>Rule<br>Consciousness</html>");
+		ruleConsciousness.setFont(fontSmall);
+		socialBoldness = new JLabel("<html>Social<br>Boldness</html>");
+		socialBoldness.setFont(fontSmall);
+		sensitivity = new JLabel("<html><br>Sensitivity</html>");
+		sensitivity.setFont(fontSmall);
+		vigilance = new JLabel("<html><br>Vigilance</html>");
+		vigilance.setFont(fontSmall);
+		abstractedness = new JLabel("<html><br>Abstractedness</html>");
+		abstractedness.setFont(fontSmall);
+		privateness = new JLabel("<html><br>Privateness</html>");
+		privateness.setFont(fontSmall);
+		apprehensivness = new JLabel("<html><br>Apprehension</html>");
+		apprehensivness.setFont(fontSmall);
+		opennessToChange = new JLabel("<html>Openness<br>to Change</html>");
+		opennessToChange.setFont(fontSmall);
+		selfReliance = new JLabel("<html><br>Self Reliance</html>");
+		selfReliance.setFont(fontSmall);
+		perfectionism = new JLabel("<html><br>Perfectionism</html>");
+		perfectionism.setFont(fontSmall);
+		tension = new JLabel("<html><br>Tension</html>");
+		tension.setFont(fontSmall);
+		
+		warmthField = new JFormattedTextField();
+		warmthField.setColumns(2);
+		reasoningField = new JFormattedTextField();
+		reasoningField.setColumns(2);
+		emotionalStabilityField = new JFormattedTextField();
+		emotionalStabilityField.setColumns(2);
+		dominanceField = new JFormattedTextField();
+		dominanceField.setColumns(2);
+		livelinessField = new JFormattedTextField();
+		livelinessField.setColumns(2);
+		ruleConsciousnessField = new JFormattedTextField();
+		ruleConsciousnessField.setColumns(2);
+		socialBoldnessField = new JFormattedTextField();
+		socialBoldnessField.setColumns(2);
+		sensitivityField = new JFormattedTextField();
+		sensitivityField.setColumns(2);
+		vigilanceField = new JFormattedTextField();
+		vigilanceField.setColumns(2);
+		abstractednessField = new JFormattedTextField();
+		abstractednessField.setColumns(2);
+		privatenessField = new JFormattedTextField();
+		privatenessField.setColumns(2);
+		apprehensivnessField = new JFormattedTextField();
+		apprehensivnessField.setColumns(2);
+		opennessToChangeField = new JFormattedTextField();
+		opennessToChangeField.setColumns(2);
+		selfRelianceField = new JFormattedTextField();
+		selfRelianceField.setColumns(2);
+		perfectionismField = new JFormattedTextField();
+		perfectionismField.setColumns(2);
+		tensionField = new JFormattedTextField();
+		tensionField.setColumns(2);
 		
 	}
 
