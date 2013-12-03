@@ -1,7 +1,9 @@
 package desperatehousepi.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -14,10 +16,12 @@ import java.awt.Font;
 
 import desperatehousepi.Crust.Crust;
 
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PersonalityTestWindow {
 
@@ -30,6 +34,17 @@ public class PersonalityTestWindow {
 	String[] tArray;
 	String[] qArray;
 
+	private JButton minusFiveBtn;
+	private JButton minusFourBtn;
+	private JButton minusThreeBtn;
+	private JButton minusTwoBtn;
+	private JButton minusOneBtn;
+	private JButton zeroBtn;
+	private JButton plusOneBtn;
+	private JButton plusTwoBtn;
+	private JButton plusThreeBtn;
+	private JButton plusFourBtn;
+	private JButton plusFiveBtn;
 
 	/**
 	 * Opens up personality test window
@@ -49,21 +64,32 @@ public class PersonalityTestWindow {
 	 * Initialize the contents of the Personality Test Window
 	 */
 	private void initialize() {
-		
-		//initialize frame
+		//initialize the window with given size, title, and layout
 		PTest_frame = new JFrame();
-		PTest_frame.setForeground(Color.RED);
-		PTest_frame.setBackground(Color.RED);
-		PTest_frame.setTitle("Personality Test");
-		PTest_frame.setBounds(100, 100, 700, 400);
-		PTest_frame.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
+		PTest_frame.setTitle("Ancient Pie");
+		
+		//(x, y, w, h)
+		PTest_frame.setBounds(200, 100, 680, 425);
 		PTest_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//initialize panel
+		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.GREEN);
-		PTest_frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
+		PTest_frame.getContentPane().add(panel);
+		
+		//Set background image
+		try {
+			PTest_frame.setContentPane(new JPanel() {
+			    BufferedImage background = ImageIO.read(new File("images/backgrounds/personalityTest_color.png"));
+			    public void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        g.drawImage(background, 0, 0, 680, 425, this);
+			    }
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		PTest_frame.setLayout(null);
 		
 		//Initialize tArray to hold the String name for the 16 traits
         tArray = new String[16];
@@ -103,6 +129,33 @@ public class PersonalityTestWindow {
         qArray[13] = "Traffic doesn't bother me (-5) \nOR I get frustrated in traffic (5) \n";
         qArray[14] = "People are generally good (-5) \nOR People are generally bad (5) \n";
         qArray[15] = "I am reserved (-5) \nOR I am outgoing (5) \n";
+        	
+        initComponents();
+        
+
+		PTest_frame.add(minusFiveBtn);
+		PTest_frame.add(minusFourBtn);
+		PTest_frame.add(minusThreeBtn);
+		PTest_frame.add(minusTwoBtn);
+		PTest_frame.add(minusOneBtn);
+		PTest_frame.add(zeroBtn);
+		PTest_frame.add(plusOneBtn);
+		PTest_frame.add(plusTwoBtn);
+		PTest_frame.add(plusThreeBtn);
+		PTest_frame.add(plusFourBtn);
+		PTest_frame.add(plusFiveBtn);
+		PTest_frame.add(heading);
+		PTest_frame.add(question);
+		
+
+		heading.setBounds(150, 50, 300, 57);
+		PTest_frame.add(heading);
+		question.setBounds(150, 110, 420, 200);
+		PTest_frame.add(question);
+		
+	}
+	
+	private void initComponents() {
 		
 		/**********************************************
 		 * Initialize buttons for answering questions
@@ -110,11 +163,11 @@ public class PersonalityTestWindow {
 		 * set button value to newCrust, check if test is done,
 		 * and update heading and question if not.
 		 **********************************************/
-		
+        
 		//-5 button
-		JButton minusFiveBtn = new JButton("-5");
+		minusFiveBtn = new JButton("-5");
 		minusFiveBtn.setBackground(Color.RED);
-		minusFiveBtn.setForeground(Color.WHITE);
+		minusFiveBtn.setForeground(Color.BLACK);
 		minusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		minusFiveBtn.setBounds(10, 307, 60, 43);
 		minusFiveBtn.addActionListener(new ActionListener() {
@@ -126,12 +179,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(minusFiveBtn);
 		
 		//-4 button
-		JButton minusFourBtn = new JButton("-4");
+		minusFourBtn = new JButton("-4");
 		minusFourBtn.setBackground(Color.RED);
-		minusFourBtn.setForeground(Color.WHITE);
+		minusFourBtn.setForeground(Color.BLACK);
 		minusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		minusFourBtn.setBounds(70, 307, 60, 43);
 		minusFourBtn.addActionListener(new ActionListener() {
@@ -143,12 +195,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(minusFourBtn);
 		
 		//-3 button
-		JButton minusThreeBtn = new JButton("-3");
+		minusThreeBtn = new JButton("-3");
 		minusThreeBtn.setBackground(Color.RED);
-		minusThreeBtn.setForeground(Color.WHITE);
+		minusThreeBtn.setForeground(Color.BLACK);
 		minusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		minusThreeBtn.setBounds(130, 307, 60, 43);
 		minusThreeBtn.addActionListener(new ActionListener() {
@@ -160,12 +211,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(minusThreeBtn);
 		
 		//-2 button
-		JButton minusTwoBtn = new JButton("-2");
+		minusTwoBtn = new JButton("-2");
 		minusTwoBtn.setBackground(Color.RED);
-		minusTwoBtn.setForeground(Color.WHITE);
+		minusTwoBtn.setForeground(Color.BLACK);
 		minusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		minusTwoBtn.setBounds(190, 307, 60, 43);
 		minusTwoBtn.addActionListener(new ActionListener() {
@@ -177,12 +227,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(minusTwoBtn);
 		
 		//-1 button
-		JButton minusOneBtn = new JButton("-1");
+		minusOneBtn = new JButton("-1");
 		minusOneBtn.setBackground(Color.RED);
-		minusOneBtn.setForeground(Color.WHITE);
+		minusOneBtn.setForeground(Color.BLACK);
 		minusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		minusOneBtn.setBounds(250, 307, 60, 43);
 		minusOneBtn.addActionListener(new ActionListener() {
@@ -194,12 +243,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(minusOneBtn);
 		
 		//zero button
-		JButton zeroBtn = new JButton("0");
+		zeroBtn = new JButton("0");
 		zeroBtn.setBackground(Color.RED);
-		zeroBtn.setForeground(Color.WHITE);
+		zeroBtn.setForeground(Color.BLACK);
 		zeroBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		zeroBtn.setBounds(310, 307, 60, 43);
 		zeroBtn.addActionListener(new ActionListener() {
@@ -211,12 +259,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(zeroBtn);
 		
 		//1 button
-		JButton plusOneBtn = new JButton("1");
+		plusOneBtn = new JButton("1");
 		plusOneBtn.setBackground(Color.RED);
-		plusOneBtn.setForeground(Color.WHITE);
+		plusOneBtn.setForeground(Color.BLACK);
 		plusOneBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		plusOneBtn.setBounds(370, 307, 60, 43);
 		plusOneBtn.addActionListener(new ActionListener() {
@@ -228,12 +275,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(plusOneBtn);
 		
 		//two button
-		JButton plusTwoBtn = new JButton("2");
+		plusTwoBtn = new JButton("2");
 		plusTwoBtn.setBackground(Color.RED);
-		plusTwoBtn.setForeground(Color.WHITE);
+		plusTwoBtn.setForeground(Color.BLACK);
 		plusTwoBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		plusTwoBtn.setBounds(430, 307, 60, 43);
 		plusTwoBtn.addActionListener(new ActionListener() {
@@ -245,12 +291,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(plusTwoBtn);
 		
 		//three button
-		JButton plusThreeBtn = new JButton("3");
+		plusThreeBtn = new JButton("3");
 		plusThreeBtn.setBackground(Color.RED);
-		plusThreeBtn.setForeground(Color.WHITE);
+		plusThreeBtn.setForeground(Color.BLACK);
 		plusThreeBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		plusThreeBtn.setBounds(490, 307, 60, 43);
 		plusThreeBtn.addActionListener(new ActionListener() {
@@ -262,12 +307,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(plusThreeBtn);
 		
 		//four button
-		JButton plusFourBtn = new JButton("4");
+		plusFourBtn = new JButton("4");
 		plusFourBtn.setBackground(Color.RED);
-		plusFourBtn.setForeground(Color.WHITE);
+		plusFourBtn.setForeground(Color.BLACK);
 		plusFourBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		plusFourBtn.setBounds(550, 307, 60, 43);
 		plusFourBtn.addActionListener(new ActionListener() {
@@ -279,12 +323,11 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(plusFourBtn);
 		
 		//five button
-		JButton plusFiveBtn = new JButton("5");
+		plusFiveBtn = new JButton("5");
 		plusFiveBtn.setBackground(Color.RED);
-		plusFiveBtn.setForeground(Color.WHITE);
+		plusFiveBtn.setForeground(Color.BLACK);
 		plusFiveBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		plusFiveBtn.setBounds(610, 307, 60, 43);
 		plusFiveBtn.addActionListener(new ActionListener() {
@@ -296,24 +339,15 @@ public class PersonalityTestWindow {
 				heading.setText("Question #" + String.valueOf(currentTrait+1));
 			}
 		});
-		panel.add(plusFiveBtn);
-		
 		//initialize question heading
 		heading = new JTextArea("Question #" + String.valueOf(currentTrait+1));
 		heading.setLineWrap(true);
 		heading.setFont(new Font("Tahoma", Font.PLAIN, 32));
-		heading.setBackground(Color.GREEN);
-		heading.setBounds(10, 14, 318, 57);
-		panel.add(heading);
-		
 		//initialize question text area
 		question = new JTextArea(qArray[currentTrait]);
 		question.setLineWrap(true);
-		question.setBackground(Color.GREEN);
 		question.setFont(new Font("Tahoma", Font.PLAIN, 32));
-		question.setBounds(10, 107, 660, 198);
-		panel.add(question);	
-		
+
 	}
 	//set trait value according to answer
 	public void setFromTest(Crust c, String t, int v){

@@ -324,8 +324,9 @@ public class CreationWindow {
 				newCrust.set("firstName", firstName.getText());
 				newCrust.set("middleName", middleName.getText());
 				newCrust.set("lastName", lastName.getText());
-				newCrust.setbdaymonth(Integer.parseInt(birthdayMonth.getText()));
-				newCrust.setbirthday(Integer.parseInt(birthdayDay.getText()));
+				//TODO: unresolved issue, these methods break personality test
+				//newCrust.setbdaymonth(Integer.parseInt(birthdayMonth.getText()));
+				//newCrust.setbirthday(Integer.parseInt(birthdayDay.getText()));
 				newCrust.set("warmth", warmth.getText());
 				newCrust.set("reasoning", reasoning.getText());
 				newCrust.set("emotionalStability", emotionalStability.getText());
