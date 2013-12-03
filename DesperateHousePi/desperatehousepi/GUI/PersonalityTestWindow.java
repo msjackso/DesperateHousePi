@@ -25,7 +25,7 @@ public class PersonalityTestWindow {
 	JTextArea question;
 	JTextArea heading;
 	
-	Crust newCrust = new Crust();
+	Crust newCrust;
 	int currentTrait = 0;
 	String[] tArray;
 	String[] qArray;
@@ -33,8 +33,14 @@ public class PersonalityTestWindow {
 
 	/**
 	 * Opens up personality test window
+	 * 
+	 * @param c - Crust object to pass in
+	 * 
+	 * @author Tony 12/01/13:
+	 * Made it pass Crust so other name/birthday/flavor are saved upon return
 	 */
-	public PersonalityTestWindow() {
+	public PersonalityTestWindow(Crust c) {
+		newCrust = c;
 		initialize();
 		PTest_frame.setVisible(true);
 	}
@@ -58,9 +64,6 @@ public class PersonalityTestWindow {
 		panel.setBackground(Color.GREEN);
 		PTest_frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		
-		//initialize Crust object
-		newCrust = new Crust();
 		
 		//Initialize tArray to hold the String name for the 16 traits
         tArray = new String[16];
@@ -100,15 +103,6 @@ public class PersonalityTestWindow {
         qArray[13] = "Traffic doesn't bother me (-5) \nOR I get frustrated in traffic (5) \n";
         qArray[14] = "People are generally good (-5) \nOR People are generally bad (5) \n";
         qArray[15] = "I am reserved (-5) \nOR I am outgoing (5) \n";
-		
-        //initialize button for displaying Test instructions
-        JButton instructionsBtn = new JButton("Instructions");
-        instructionsBtn.setToolTipText("Display Personality Test Instructions");
-		instructionsBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		instructionsBtn.setBackground(Color.RED);
-		instructionsBtn.setForeground(Color.WHITE);
-		instructionsBtn.setBounds(531, 11, 143, 62);
-		panel.add(instructionsBtn);
 		
 		/**********************************************
 		 * Initialize buttons for answering questions
@@ -317,7 +311,7 @@ public class PersonalityTestWindow {
 		question.setLineWrap(true);
 		question.setBackground(Color.GREEN);
 		question.setFont(new Font("Tahoma", Font.PLAIN, 32));
-		question.setBounds(10, 98, 660, 198);
+		question.setBounds(10, 107, 660, 198);
 		panel.add(question);	
 		
 	}

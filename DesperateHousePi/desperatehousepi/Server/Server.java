@@ -298,7 +298,7 @@ public class Server implements Runnable{
 		
 		Random rand = new Random();
 		
-		double interactionResult = rand.nextInt(101);
+		int interactionResult = rand.nextInt(101);
 		interactionResult*=factor.odds;
 		interactionResult-=Factors.ODDS_BALANCE;
 		interactionResult/=1000.0;

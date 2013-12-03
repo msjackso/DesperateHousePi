@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -103,6 +101,7 @@ public class Crust {
 	public CrustAI crustAI;
 	public QuestForGrowth destiny = new QuestForGrowth();
 	public CrustType typeOfPie;
+	public String flavor;
 	Server server;
 	
 	/******************************
@@ -132,6 +131,7 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		flavor = generateFlavor();
 	}
 	
 	/* Returns month of birthday
@@ -157,7 +157,24 @@ public class Crust {
 	 * Output: None
 	 */
 	public void setbirthday(int d){ birthday = d; }
-
+	
+	/******************************
+	 * Returns 1 of the 4 flavors available.
+	 * @author Mark
+	 ******************************/
+	private String generateFlavor() {
+		Random generator = new Random();
+		int randomNum = generator.nextInt(4);
+		
+		switch (randomNum) {
+			case 0: return "blue";
+			case 1: return "cherry"; 
+			case 2: return "choc"; 
+			case 3: return "pecan"; 
+			default: return "error, in generateFlavor()";
+		}
+	}
+	
 	/******************************
 	 * This constructor will generate a personality randomly. Each trait is determined
 	 * using the setRandomTrait() function from the PTrait object. This will create the
@@ -171,20 +188,13 @@ public class Crust {
 			traits[x].setRandomTrait();
 		}
 		
-		//Edited 11/23/13 by Luke
-		//Creates the person's age
-		new Timer(millSecsInDay, increase_age).start();
-		//Creates the person's needs
-		Needs.add(new Need("Hunger", hungerDecreaseRate));
-		Needs.add(new Need("Energy", energyDecreaseRate));
-		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
-		
 		crustAI = new CrustAI(this);
 		createServer(serverNum);
 		
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		flavor = generateFlavor();
 	}
 	
 	/******************************
@@ -219,6 +229,7 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		flavor = generateFlavor();
 	}
 	
 	/******************************
@@ -255,6 +266,7 @@ public class Crust {
 		for(int x = 0; x<5; x++){
 			addInterest(Interests.RANDOM_VAL);
 		}
+		flavor = generateFlavor();
 	}
 	
 	/******************************
@@ -266,10 +278,13 @@ public class Crust {
 	 * This constructor is for creating an entire crust sans relationships.
 	 * @author Michael
 	 * 
+	 * @author Honloong:
 	 * Added month,day integer for birthday
-	 * @author Honloong
+	 * 
+	 * @author Tony 12/01/13:
+	 * Added param for passing crust flavor
 	 ******************************/
-	public Crust(String firstName, String middleName, String lastName,int month,int day, int... trait_val){
+	public Crust(String firstName, String middleName, String lastName,int month,int day, String flav, int... trait_val){
 		
 		//Set names
 		first_name = firstName;
@@ -279,6 +294,9 @@ public class Crust {
 		//Set birthday
 		bdaymonth = month;
 		birthday = day;
+		
+		//Set flavor
+		flavor = flav;
 		
 		//Get the length of the amount of values passed in
 		int length = (trait_val.length>16) ? 16:trait_val.length;
@@ -416,6 +434,10 @@ public class Crust {
 		 * Edited 11/5/13 by Luke
 		 *********************************/
 		content+=getFormattedNeeds();
+		/*********************************
+		 * Edited 12/1/13 by Tony
+		 *********************************/
+		content+=flavor;
 		
 		bw.write(content);
 		bw.close();
@@ -445,12 +467,10 @@ public class Crust {
 		FileWriter rfw = new FileWriter(relSaveFile.getAbsoluteFile());
 		BufferedWriter rbw = new BufferedWriter(rfw);
 		
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		
 		for(Relationship r:relationships){
 			
 			String content = "";
-			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+df.format(r.getFirstMet())+" ||| "+df.format(r.getLastMeeting());
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.getFirstMet()+" ||| "+r.getLastMeeting();
 			rbw.write(content);
 			rbw.newLine();
 		}
@@ -671,6 +691,7 @@ public class Crust {
 		
 	}
 	
+	
 	/******************************
 	 * Increases the need level of the person
 	 * Input: the number that the need will be incremented by
@@ -730,6 +751,10 @@ public class Crust {
 		for (Need n : Needs){
 			n.setNeed(Integer.parseInt(tkn.nextToken()));
 		}
+		/*********************************
+		 * Edited 12/1/13 by Tony
+		 *********************************/
+		flavor = tkn.nextToken();
 	}
 	
 	/******************************
@@ -844,9 +869,8 @@ public class Crust {
 	public int call(String contactName, int socketNum){
 		
 		for(Relationship r : relationships){
-			if(r.getContactName().equals(contactName)){
+			if(r.getContactName()==contactName){
 				
-				history.logAction("Contacting "+contactName+"...");
 				server.interact(r, socketNum);
 				return OK;
 			}
@@ -867,27 +891,12 @@ public class Crust {
 	
 	/******************************
 	 * Adds a relationship to the crust's list of relationships
-	 * @param contactName - The name of the crust that this crust will have a relationship with
-	 * @param address - The ip address of the machine this crust will reside on
+	 * @param other - The crust that this crust will have a relationship with
 	 * @param value - The initial value of that relationship
 	 * @author Michael
 	 ******************************/
-	public void addRelationship(String contactName, String address, double value){
+	public void addRelationship(String contactName, String address, int value){
 		relationships.add(new Relationship(get("fullName").replace(" ", "_"), contactName, address, value));
-	}
-	
-	/******************************
-	 * Removes a relationship to the crust's list of relationships
-	 * @param contactName - The name of the crust that this crust will have their relationship removed from
-	 * @author Michael
-	 ******************************/
-	public void removeRelationship(String contactName){
-		
-		for(Relationship r: relationships){
-			if(r.getContactName().equals(contactName))
-				relationships.remove(r);
-		}
-		
 	}
 	
 	/******************************
@@ -920,12 +929,15 @@ public class Crust {
 		//If the crust has too many interests return
 		if(interests.size()>MAX_NUM_OF_INTERESTS) return -1;
 		
-		//Check that the crust doesn't have that interest already, if it does then return -1
-		if(value!=-1 && Interests.containsValue(interests, value)!=null) return -1;
+		//If the crust is trying to add a static interest that it already has return
+		if(value!=-1 && interests.contains(Interests.getInterest(value))) return -1;
 		
-		//Add an interest that isn't already made
-		while(Interests.containsValue(interests, value)!=null && value==-1)
-			value = new Random().nextInt(Interests.RANDOM_VAL)+1;
+		//Generate that potential interest
+		Interest potInterests= Interests.getInterest(value);
+		
+		//Check that the crust doesn't have that interest already, if it does then generate a new one
+		while(interests.contains(potInterests))
+			potInterests= Interests.getInterest(value);
 		
 		//Add it to the list of interests
 		interests.add(Interests.getInterest(value));
@@ -1001,6 +1013,7 @@ public class Crust {
 	}
 	
 	/******************************
+<<<<<<< HEAD
 	 * Returns the enumerated type of pie
 	 * @param c - the Crust object to be passed in
 	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
@@ -1013,6 +1026,8 @@ public class Crust {
 	}
 	
 	/******************************
+=======
+>>>>>>> S3User-Story-5.Graphics-Tony-finishing
 	 * Returns the value of the selected trait in string form
 	 * @param trait - The trait to have it's value returned
 	 * @return The value parsed into string form.
@@ -1031,6 +1046,8 @@ public class Crust {
 				return first_name+" "+middle_name+" "+last_name;
 			case "age":
 				return String.valueOf(age);
+			case "flavor":
+				return flavor;
 			default:
 				try{
 					return String.valueOf(traits[traitName.valueOf(trait).index].getValue());

@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
@@ -41,7 +39,7 @@ public class CreationWindow {
 	private CrustType pieType = setRandomPieType();
 
 	private JLabel empty;
-	
+	private String newFlavor;
 
 	private JLabel lblFirstName;
 	private JFormattedTextField firstName;
@@ -104,6 +102,7 @@ public class CreationWindow {
 	 */
 	public CreationWindow() {
 		newCrust = new Crust();
+		newFlavor = newCrust.get("flavor");
 		initialize();
 		creation_frame.setVisible(true);
 	}
@@ -114,6 +113,7 @@ public class CreationWindow {
 	 **************************************/
 	public CreationWindow(Crust c){
 		newCrust = c;
+		newFlavor = newCrust.get("flavor");
 		initialize();
 		creation_frame.setVisible(true);	
 	}
@@ -388,7 +388,30 @@ public class CreationWindow {
 		testBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				creation_frame.setVisible(false);
-				new PersonalityTestWindow();
+				
+				newCrust.set("firstName", firstName.getText());
+				newCrust.set("middleName", middleName.getText());
+				newCrust.set("lastName", lastName.getText());
+				newCrust.setbdaymonth(Integer.parseInt(birthdayMonth.getText()));
+				newCrust.setbirthday(Integer.parseInt(birthdayDay.getText()));
+				newCrust.set("warmth", warmth.getText());
+				newCrust.set("reasoning", reasoning.getText());
+				newCrust.set("emotionalStability", emotionalStability.getText());
+				newCrust.set("dominance", dominance.getText());
+				newCrust.set("liveliness", liveliness.getText());
+				newCrust.set("ruleConsciousness", ruleConsciousness.getText());
+				newCrust.set("socialBoldness", socialBoldness.getText());
+				newCrust.set("sensitivity", sensitivity.getText());
+				newCrust.set("vigilance", vigilance.getText());
+				newCrust.set("abstractedness", abstractedness.getText());
+				newCrust.set("privateness", privateness.getText());
+				newCrust.set("apprehensivness", apprehensivness.getText());
+				newCrust.set("oppenessToChange", opennessToChange.getText());
+				newCrust.set("selfReliance", selfReliance.getText());
+				newCrust.set("prefectionism", perfectionism.getText());
+				newCrust.set("tension", tension.getText());
+				
+				new PersonalityTestWindow(newCrust);
 			}
 		});
 		testBtn.setBounds(333, 195, 108, 23);
@@ -539,7 +562,6 @@ public class CreationWindow {
 					//edited 12/2/2013 1:02AM by Mark
 					newCrust.typeOfPie = pieType;
 					//
-					
 					creation_frame.setVisible(false);
 					try { new MainWindow(newCrust); } catch (FileNotFoundException e) { }							
 					return;

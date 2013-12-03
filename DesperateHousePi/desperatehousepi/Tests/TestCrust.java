@@ -101,7 +101,7 @@ public class TestCrust {
 	
 	@Test
 	public void testTime(){
-		Crust tCrust = new Crust("John","Jacob","Smith",10,20);
+		Crust tCrust = new Crust("John","Jacob","Smith",10,20, "blue");
 		assertNotNull(tCrust);
 		assertTrue(tCrust.getbdaymonth()==10);
 		assertTrue(tCrust.getbirthday()==20);
