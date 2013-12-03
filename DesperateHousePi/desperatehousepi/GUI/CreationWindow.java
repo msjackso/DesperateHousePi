@@ -514,13 +514,27 @@ public class CreationWindow {
 					return;
 				}else{
 					//otherwise input is valid, so create crust and pass it to main window
-					Crust newCrust = new Crust(firstName.getText(), middleName.getText(), lastName.getText(), 
-							Integer.parseInt(birthdayMonth.getText()),Integer.parseInt(birthdayDay.getText()),Integer.parseInt(warmth.getText()),
-							Integer.parseInt(reasoning.getText()), Integer.parseInt(emotionalStability.getText()),Integer.parseInt(dominance.getText()),
-							Integer.parseInt(liveliness.getText()), Integer.parseInt(ruleConsciousness.getText()), Integer.parseInt(socialBoldness.getText()),
-							Integer.parseInt(sensitivity.getText()), Integer.parseInt(vigilance.getText()), Integer.parseInt(abstractedness.getText()),
-							Integer.parseInt(privateness.getText()), Integer.parseInt(apprehensivness.getText()), Integer.parseInt(opennessToChange.getText()),
-							Integer.parseInt(selfReliance.getText()), Integer.parseInt(perfectionism.getText()), Integer.parseInt(tension.getText()));
+					newCrust.set("firstName", firstName.getText());
+					newCrust.set("middleName", middleName.getText());
+					newCrust.set("lastName", lastName.getText());
+					newCrust.setbdaymonth(Integer.parseInt(birthdayMonth.getText()));
+					newCrust.setbirthday(Integer.parseInt(birthdayDay.getText()));
+					newCrust.set("warmth", warmth.getText());
+					newCrust.set("reasoning", reasoning.getText());
+					newCrust.set("emotionalStability", emotionalStability.getText());
+					newCrust.set("dominance", dominance.getText());
+					newCrust.set("liveliness", liveliness.getText());
+					newCrust.set("ruleConsciousness", ruleConsciousness.getText());
+					newCrust.set("socialBoldness", socialBoldness.getText());
+					newCrust.set("sensitivity", sensitivity.getText());
+					newCrust.set("vigilance", vigilance.getText());
+					newCrust.set("abstractedness", abstractedness.getText());
+					newCrust.set("privateness", privateness.getText());
+					newCrust.set("apprehensivness", apprehensivness.getText());
+					newCrust.set("oppenessToChange", opennessToChange.getText());
+					newCrust.set("selfReliance", selfReliance.getText());
+					newCrust.set("prefectionism", perfectionism.getText());
+					newCrust.set("tension", tension.getText());
 					
 					//edited 12/2/2013 1:02AM by Mark
 					newCrust.typeOfPie = pieType;

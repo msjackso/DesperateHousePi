@@ -145,6 +145,18 @@ public class Crust {
 	 * Output: day of month of birthday
 	 */
 	public int getbirthday(){ return birthday; }
+	
+	/* Sets month of birthday
+	 * Input: integer concerning month
+	 * Output: None
+	 */
+	public void setbdaymonth(int m){ bdaymonth = m; }
+	
+	/* Sets day of month of birthday
+	 * Input: integer concerning day
+	 * Output: None
+	 */
+	public void setbirthday(int d){ birthday = d; }
 
 	/******************************
 	 * This constructor will generate a personality randomly. Each trait is determined
