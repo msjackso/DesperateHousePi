@@ -6,7 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class Relationship {
+public class Relationship implements java.io.Serializable{
+	
+	/**
+	 * ID for purposes of serialization
+	 */
+	private static final long serialVersionUID = 6579038217676447863L;
 	
 	String owner;
 	String nameOfContact;
@@ -15,7 +20,7 @@ public class Relationship {
 	Date lastMeeting;
 	public LinkedList<String> log;
 	
-	int chemistry;
+	double chemistry;
 	
 	/******************************
 	 * A relationship is a set of contacts that the owner has
@@ -25,13 +30,14 @@ public class Relationship {
 	 * @param new_value - The inital value of the relationship
 	 * @author Michael
 	 ******************************/
-	public Relationship(String new_owner, String contactName, String address, int new_value){
+	public Relationship(String new_owner, String contactName, String address, double new_value){
 		owner = new_owner;
 		nameOfContact = contactName;
 		addressOfContact = address;
 		chemistry = new_value;
 		firstMet = new Date();
 		lastMeeting = new Date();
+		log = new LinkedList<String>();
 	}
 	
 	/******************************
@@ -41,6 +47,7 @@ public class Relationship {
 	public Relationship(){
 		owner = null;
 		chemistry = 0;
+		log = new LinkedList<String>();
 	}
 	
 	/*****************************
@@ -48,14 +55,14 @@ public class Relationship {
 	 * @return The value of this relationship
 	 * @author Michael
 	 */
-	public int getChemistry(){ return chemistry; }
+	public double getChemistry(){ return chemistry; }
 	
 	/*****************************
 	 * Sets the value of the relationship, this is bounded by 100 and -100
 	 * @author Brad and Michael
 	 * @Edited 11/24/13
 	 *****************************/
-	public void setChemistry(int c){
+	public void setChemistry(double c){
 		if(c>100)
 			chemistry = 100;
 		else if(c<-100)
@@ -103,7 +110,7 @@ public class Relationship {
 	 */
 	public void setFirstMet(String s){
 		
-		DateFormat df = new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		
 		try {
 			firstMet = df.parse(s);
@@ -126,7 +133,7 @@ public class Relationship {
 	 */
 	public void setLastMeeting(String s){
 
-		DateFormat df = new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		
 		try {
 			lastMeeting = df.parse(s);

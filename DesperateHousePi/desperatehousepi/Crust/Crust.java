@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -156,6 +158,14 @@ public class Crust {
 			traits[x] = new PTrait(0);
 			traits[x].setRandomTrait();
 		}
+		
+		//Edited 11/23/13 by Luke
+		//Creates the person's age
+		new Timer(millSecsInDay, increase_age).start();
+		//Creates the person's needs
+		Needs.add(new Need("Hunger", hungerDecreaseRate));
+		Needs.add(new Need("Energy", energyDecreaseRate));
+		Needs.add(new Need("Entertainment", entertainmentDecreateRate));
 		
 		crustAI = new CrustAI(this);
 		createServer(serverNum);
@@ -423,10 +433,12 @@ public class Crust {
 		FileWriter rfw = new FileWriter(relSaveFile.getAbsoluteFile());
 		BufferedWriter rbw = new BufferedWriter(rfw);
 		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		
 		for(Relationship r:relationships){
 			
 			String content = "";
-			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+r.getFirstMet()+" ||| "+r.getLastMeeting();
+			content+=r.getContactName().replace(" ", "_")+" "+r.getContactAddress()+" "+r.getChemistry()+" ||| "+df.format(r.getFirstMet())+" ||| "+df.format(r.getLastMeeting());
 			rbw.write(content);
 			rbw.newLine();
 		}
@@ -647,7 +659,6 @@ public class Crust {
 		
 	}
 	
-	
 	/******************************
 	 * Increases the need level of the person
 	 * Input: the number that the need will be incremented by
@@ -821,8 +832,9 @@ public class Crust {
 	public int call(String contactName, int socketNum){
 		
 		for(Relationship r : relationships){
-			if(r.getContactName()==contactName){
+			if(r.getContactName().equals(contactName)){
 				
+				history.logAction("Contacting "+contactName+"...");
 				server.interact(r, socketNum);
 				return OK;
 			}
@@ -843,12 +855,27 @@ public class Crust {
 	
 	/******************************
 	 * Adds a relationship to the crust's list of relationships
-	 * @param other - The crust that this crust will have a relationship with
+	 * @param contactName - The name of the crust that this crust will have a relationship with
+	 * @param address - The ip address of the machine this crust will reside on
 	 * @param value - The initial value of that relationship
 	 * @author Michael
 	 ******************************/
-	public void addRelationship(String contactName, String address, int value){
+	public void addRelationship(String contactName, String address, double value){
 		relationships.add(new Relationship(get("fullName").replace(" ", "_"), contactName, address, value));
+	}
+	
+	/******************************
+	 * Removes a relationship to the crust's list of relationships
+	 * @param contactName - The name of the crust that this crust will have their relationship removed from
+	 * @author Michael
+	 ******************************/
+	public void removeRelationship(String contactName){
+		
+		for(Relationship r: relationships){
+			if(r.getContactName().equals(contactName))
+				relationships.remove(r);
+		}
+		
 	}
 	
 	/******************************
@@ -881,15 +908,12 @@ public class Crust {
 		//If the crust has too many interests return
 		if(interests.size()>MAX_NUM_OF_INTERESTS) return -1;
 		
-		//If the crust is trying to add a static interest that it already has return
-		if(value!=-1 && interests.contains(Interests.getInterest(value))) return -1;
+		//Check that the crust doesn't have that interest already, if it does then return -1
+		if(value!=-1 && Interests.containsValue(interests, value)!=null) return -1;
 		
-		//Generate that potential interest
-		Interest potInterests= Interests.getInterest(value);
-		
-		//Check that the crust doesn't have that interest already, if it does then generate a new one
-		while(interests.contains(potInterests))
-			potInterests= Interests.getInterest(value);
+		//Add an interest that isn't already made
+		while(Interests.containsValue(interests, value)!=null && value==-1)
+			value = new Random().nextInt(Interests.RANDOM_VAL)+1;
 		
 		//Add it to the list of interests
 		interests.add(Interests.getInterest(value));

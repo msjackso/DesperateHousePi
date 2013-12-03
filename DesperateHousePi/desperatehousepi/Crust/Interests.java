@@ -55,7 +55,7 @@ public class Interests{
 		
 		if(val == RANDOM_VAL){
 			Random rand = new Random();
-			val = rand.nextInt(NUM_OF_INTERESTS);
+			val = rand.nextInt(NUM_OF_INTERESTS)+1;
 		}
 		
 		Interests i = new Interests();

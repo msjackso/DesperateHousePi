@@ -34,6 +34,7 @@ public class Package implements java.io.Serializable{
 	public void setInterests(LinkedList<Interest> ints){
 		
 		interests = new LinkedList<Integer>();
+		interestLevel = new LinkedList<Integer>();
 		
 		for(Interest i : ints){
 			interests.add(Interests.getInterestVal(i.getName()));
