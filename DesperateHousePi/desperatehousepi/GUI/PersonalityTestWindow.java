@@ -354,7 +354,7 @@ public class PersonalityTestWindow {
 	}
 	
 	//check to see if test is done, if it is exit this window and pass the trait values via newCrust
-	public void isFinished(int c){
+	private void isFinished(int c){
 		if(c == 16){
 			PTest_frame.setVisible(false);
 			new CreationWindow(newCrust);

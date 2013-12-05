@@ -1004,7 +1004,6 @@ public class Crust {
 	
 	/******************************
 	 * Returns the enumerated type of pie
-	 * @param c - the Crust object to be passed in
 	 * @return CrustType - enumeration of either BLUEBERRYPIE, CHERRYPIE,
 	 * CHOCOLATEPIE, or PECANPIE
 	 * @author Tony
