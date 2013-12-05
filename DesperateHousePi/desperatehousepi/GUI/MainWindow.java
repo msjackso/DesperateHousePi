@@ -394,7 +394,7 @@ public class MainWindow {
 		frameMain.getContentPane().setBackground(Color.GREEN);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/com/sun/java/swing/plaf/motif/icons/DesktopIcon.gif")));
 		frameMain.setTitle("Main");
-		frameMain.setBounds(100, 100, 870, 669);
+		frameMain.setBounds(100, 100, 876, 718);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.getContentPane().setLayout(null);
 		
@@ -402,7 +402,7 @@ public class MainWindow {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setForeground(Color.BLACK);
 		tabbedPane.setBackground(Color.GREEN);
-		tabbedPane.setBounds(0, 455, 854, 176);
+		tabbedPane.setBounds(0, 406, 860, 249);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
 		
@@ -456,7 +456,7 @@ public class MainWindow {
 				crust.give(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnGive.setBounds(728, 256, 89, 20);
+		btnGive.setBounds(728, 256, 116, 20);
 		frameMain.getContentPane().add(btnGive);
 		
 		//Create the give button
@@ -466,7 +466,7 @@ public class MainWindow {
 				crust.use(comboBox.getSelectedItem().toString());
 			}
 		});
-		btnUse.setBounds(728, 287, 89, 20);
+		btnUse.setBounds(728, 287, 116, 20);
 		frameMain.getContentPane().add(btnUse);
 		
 		//Create the Ancient button
@@ -477,7 +477,7 @@ public class MainWindow {
 				try { new AncientPie(crust); } catch (FileNotFoundException e2) { }
 			}
 		});
-		btnAncient.setBounds(728, 318, 89, 20);
+		btnAncient.setBounds(728, 318, 116, 20);
 		frameMain.getContentPane().add(btnAncient);
 
 		
@@ -753,19 +753,19 @@ public class MainWindow {
 		enemiesScrollPane.setViewportView(enemiesList);
 		
 		contactNameInput = new JTextField();
-		contactNameInput.setBounds(529, 48, 187, 20);
+		contactNameInput.setBounds(601, 46, 187, 20);
 		relationshipPanel.add(contactNameInput);
 		contactNameInput.setColumns(10);
 		
 		contactAddressInput = new JTextField();
-		contactAddressInput.setBounds(529, 79, 187, 20);
+		contactAddressInput.setBounds(601, 77, 187, 20);
 		relationshipPanel.add(contactAddressInput);
 		contactAddressInput.setColumns(10);
 		
 		//Create the controllers for adding new relationships to the list
 		JLabel lblAddNewRelationship = new JLabel("Add New Relationship:");
 		lblAddNewRelationship.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAddNewRelationship.setBounds(529, 24, 187, 14);
+		lblAddNewRelationship.setBounds(601, 22, 187, 14);
 		relationshipPanel.add(lblAddNewRelationship);
 		
 		//Set error label
@@ -790,8 +790,18 @@ public class MainWindow {
 				errorLabel.setText("");
 			}
 		});
-		btnAddRel.setBounds(529, 110, 187, 23);
+		btnAddRel.setBounds(601, 108, 187, 23);
 		relationshipPanel.add(btnAddRel);
+		
+		JLabel lblName_1 = new JLabel("Name:");
+		lblName_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblName_1.setBounds(545, 49, 46, 14);
+		relationshipPanel.add(lblName_1);
+		
+		JLabel lblIpAddress = new JLabel("IP Address:");
+		lblIpAddress.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblIpAddress.setBounds(498, 80, 93, 14);
+		relationshipPanel.add(lblIpAddress);
 		
 		//Add listeners for making the crusts call one another
 		acquaintancesList.addMouseListener(new MouseAdapter() {

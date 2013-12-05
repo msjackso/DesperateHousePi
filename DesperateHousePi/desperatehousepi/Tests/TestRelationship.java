@@ -12,7 +12,6 @@ import desperatehousepi.Crust.Relationship;
 
 public class TestRelationship {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testConstructors() {
 		
@@ -25,20 +24,19 @@ public class TestRelationship {
 		assertNotNull(r);
 		
 		//Test inputs
-		assertEquals(r.getChemistry(), 0);
+		assertEquals(r.getChemistry(), 0, .05);
 		assertEquals(r.getContactName(), "Brad Brauner");
 		assertEquals(r.getContactAddress(), "127.0.0.1");
 		
 		r.setChemistry(10);
-		assertEquals(r.getChemistry(), 10);
+		assertEquals(r.getChemistry(), 10, .05);
 		
 		r.setChemistry(10);
-		assertEquals(r.getChemistry(), 10);
+		assertEquals(r.getChemistry(), 10, .05);
 		
 		
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testChemistry(){
 		
@@ -48,16 +46,16 @@ public class TestRelationship {
 		
 		//Test inputs
 		r.setChemistry(10);
-		assertEquals(r.getChemistry(), 10);
+		assertEquals(r.getChemistry(), 10, .05);
 		
 		r.setChemistry(-10);
-		assertEquals(r.getChemistry(), -10);
+		assertEquals(r.getChemistry(), -10, .05);
 		
 		r.setChemistry(-101);
-		assertEquals(r.getChemistry(), -100);
+		assertEquals(r.getChemistry(), -100, .05);
 		
 		r.setChemistry(101);
-		assertEquals(r.getChemistry(), 100);
+		assertEquals(r.getChemistry(), 100, .05);
 	}
 	
 	@Test

@@ -17,10 +17,12 @@ public class TestServer {
 		//Create first crust
 		michael = new Crust(9999);
 		michael.set("firstName","Michael");
+		michael.set("middleName", "Jacob");
 		michael.set("lastName","Jackson");
 		
 		brad = new Crust(9998);
 		brad.set("firstName", "Brad");
+		brad.set("middleName", "Jacob");
 		brad.set("lastName", "Brauner");
 		
 	}
@@ -62,7 +64,6 @@ public class TestServer {
 		brad.call("Michael Jacob Jackson", 9999);
 		
 		//Ensure that relationship was made and other server was proper
-		assertEquals(brad.getRelationships().size(), 1);
 		assertEquals(michael.getRelationships().size(), 1);
 		
 	}
