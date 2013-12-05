@@ -332,6 +332,9 @@ public class Server implements Runnable{
 		
 		try{
 			myServer = new ServerSocket(mySocket);
+		}catch(BindException e){
+			myCrust.serverRunning = false;
+			return;
 		}catch (IOException e){
 			System.out.println(e);
 		}
@@ -367,8 +370,7 @@ public class Server implements Runnable{
 					
 				}
 			}
-		}
-		catch (IOException e){
+		}catch (IOException e){
 			System.out.println(e);
 			
 		}
