@@ -18,7 +18,7 @@ public class Need {
 	 * @author Luke
 	 *********************************/
 	public Need(String name, int decrease_rate){
-		needName  = name;
+		needName = name;
 		new Timer(decrease_rate, decrease_level).start();
 	}
 	

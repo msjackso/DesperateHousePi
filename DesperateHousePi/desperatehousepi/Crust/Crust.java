@@ -657,7 +657,7 @@ public class Crust {
 	 ******************************/
 	public int getNeed(String need_name){ 
 		
-		//Finds the need in the list of needs, then increments it.
+		//Finds the need in the list of needs, and returns it
 		for(Need n : Needs) {
 			if ( n.getNeedName()==need_name ) {
 				return n.getNeedLevel();
