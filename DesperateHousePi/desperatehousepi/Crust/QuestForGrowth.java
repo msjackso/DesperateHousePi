@@ -6,11 +6,11 @@ public class QuestForGrowth {
 	 * QuestForGrowth is a module that handles all growth quest-related information
 	 * @author Mark
 	 *********************************/
-	private boolean quest1enabled;
-	private boolean quest1completed;
+	public boolean quest1enabled;
+	public boolean quest1completed;
 	
-	private boolean quest2enabled;
-	private boolean quest2completed;
+	public boolean quest2enabled;
+	public boolean quest2completed;
 	
 	//edited 11/23/13 by Luke
 	//traits that are reset every level
@@ -26,7 +26,7 @@ public class QuestForGrowth {
 			name = n;
 		}
 	}
-	private EnumMap<quest1reqs, Requirement> quest1 = 
+	public EnumMap<quest1reqs, Requirement> quest1 = 
 			new EnumMap<quest1reqs, Requirement>(quest1reqs.class);
 
 	public static enum quest2reqs{
@@ -41,7 +41,7 @@ public class QuestForGrowth {
 			name = n;
 		}
 	}
-	private EnumMap<quest2reqs, Requirement> quest2 = 
+	public EnumMap<quest2reqs, Requirement> quest2 = 
 			new EnumMap<quest2reqs, Requirement>(quest2reqs.class);
 	
 	QuestForGrowth() {
@@ -79,7 +79,7 @@ public class QuestForGrowth {
 		private String name;
 		private int qty;
 		private int qtyReq;
-		boolean completed = false;	//Completed?
+		public boolean completed = false;	//Completed?
 		
 		//Constructor
 		Requirement( String s, int req ){
@@ -106,16 +106,6 @@ public class QuestForGrowth {
 			return quest2.get(quest2reqs.valueOf(name));
 		else if (quest1enabled)
 			return quest1.get(quest1reqs.valueOf(name));
-		else
-			return null;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public EnumMap getCurrentStatus(){
-		if (quest2enabled)
-			return quest2;
-		else if (quest1enabled)
-			return quest1;
 		else
 			return null;
 	}
