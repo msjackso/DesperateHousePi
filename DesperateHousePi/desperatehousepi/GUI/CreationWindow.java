@@ -127,7 +127,7 @@ public class CreationWindow {
 		creation_frame.setTitle("Create a new Crust");
 		
 		//(x, y, w, h)
-		creation_frame.setBounds(200, 100, 425, 680);
+		creation_frame.setBounds(200, 100, 439, 709);
 		creation_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -577,51 +577,51 @@ public class CreationWindow {
 	}
 	
 	private void refreshComponents() {
-		creation_frame.setLayout(null);
+		creation_frame.getContentPane().setLayout(null);
 		
 		int colXa = 6; int colXb = 24; int colY = 24; 
 		int size1 = 150; int size2 = 35; int height = 26;
 		lblFirstName.setBounds(colXa, 6+(0*colY), size1, height);
-		creation_frame.add(lblFirstName);
+		creation_frame.getContentPane().add(lblFirstName);
 		firstName.setBounds(colXb, 6+(1*colY), size1, height);
-		creation_frame.add(firstName);
+		creation_frame.getContentPane().add(firstName);
 		
 		lblMiddleName.setBounds(colXa, 6+(2*colY), size1, height);
-		creation_frame.add(lblMiddleName);
+		creation_frame.getContentPane().add(lblMiddleName);
 		middleName.setBounds(colXb, 6+(3*colY), size1, height);
-		creation_frame.add(middleName);
+		creation_frame.getContentPane().add(middleName);
 		
 		lblLastName.setBounds(colXa, 6+(4*colY), size1, height);
-		creation_frame.add(lblLastName);
+		creation_frame.getContentPane().add(lblLastName);
 		lastName.setBounds(colXb, 6+(5*colY), size1, height);
-		creation_frame.add(lastName);
+		creation_frame.getContentPane().add(lastName);
 		
 		
 		lblBirthday.setBounds(colXa, 6+(6*colY), size1, height);
-		creation_frame.add(lblBirthday);
+		creation_frame.getContentPane().add(lblBirthday);
 		
 		lblBirthdayMonth.setBounds(colXb+4, 6+(7*colY), size2+50, height);
-		creation_frame.add(lblBirthdayMonth);
+		creation_frame.getContentPane().add(lblBirthdayMonth);
 		birthdayMonth.setBounds(colXb+48, 6+(7*colY), size2, height);
-		creation_frame.add(birthdayMonth);
+		creation_frame.getContentPane().add(birthdayMonth);
 
 		lblBirthdayDay.setBounds(colXb+88, 6+(7*colY), size2, height);
-		creation_frame.add(lblBirthdayDay);
+		creation_frame.getContentPane().add(lblBirthdayDay);
 		birthdayDay.setBounds(colXb+115, 6+(7*colY), size2, height);
-		creation_frame.add(birthdayDay);
+		creation_frame.getContentPane().add(birthdayDay);
 		
 		
 		testBtn.setBounds(6, 380, size1+20, height);
-		creation_frame.add(testBtn);
+		creation_frame.getContentPane().add(testBtn);
 		randomBtn.setBounds(174, 380, size1, height);
-		creation_frame.add(randomBtn);
+		creation_frame.getContentPane().add(randomBtn);
 		clearBtn.setBounds(321, 380, size1-50, height);
-		creation_frame.add(clearBtn);
-		createBtn.setBounds(300, 200, 118, 63);
-		creation_frame.add(createBtn);
+		creation_frame.getContentPane().add(clearBtn);
+		createBtn.setBounds(267, 200, 140, 63);
+		creation_frame.getContentPane().add(createBtn);
 		
 		crustPreview.setBounds(150, 250, 118, 63);
-		creation_frame.add(crustPreview);
+		creation_frame.getContentPane().add(crustPreview);
 
 		
 		int base = 420; int delta = 60;
@@ -632,78 +632,78 @@ public class CreationWindow {
 		
 		// Column 1
 		lblWarmth.setBounds(col1a, base, size1, height);
-		creation_frame.add(lblWarmth);
+		creation_frame.getContentPane().add(lblWarmth);
 		warmth.setBounds(col1b, base+height, size2, height);
-		creation_frame.add(warmth);
+		creation_frame.getContentPane().add(warmth);
 		lblReasoning.setBounds(col1a, base+(1*delta), size1, height);
-		creation_frame.add(lblReasoning);
+		creation_frame.getContentPane().add(lblReasoning);
 		reasoning.setBounds(col1b, base+height+(1*delta), size2, height);
-		creation_frame.add(reasoning);
+		creation_frame.getContentPane().add(reasoning);
 		lblEmotionalStability.setBounds(col1a, base+(2*delta), size1, height);
-		creation_frame.add(lblEmotionalStability);
+		creation_frame.getContentPane().add(lblEmotionalStability);
 		emotionalStability.setBounds(col1b, base+height+(2*delta), size2, height);
-		creation_frame.add(emotionalStability);
+		creation_frame.getContentPane().add(emotionalStability);
 		lblDominance.setBounds(col1a, base+(3*delta), size1, height);
-		creation_frame.add(lblDominance);
+		creation_frame.getContentPane().add(lblDominance);
 		dominance.setBounds(col1b, base+height+(3*delta), size2, height);
-		creation_frame.add(dominance);
+		creation_frame.getContentPane().add(dominance);
 
 		// Column 2
 		lblLiveliness.setBounds(col2a, base, size1, height);
-		creation_frame.add(lblLiveliness);
+		creation_frame.getContentPane().add(lblLiveliness);
 		liveliness.setBounds(col2b, base+height, size2, height);
-		creation_frame.add(liveliness);
+		creation_frame.getContentPane().add(liveliness);
 		lblRuleConsciousness.setBounds(col2a, base+(1*delta), size1, height);
-		creation_frame.add(lblRuleConsciousness);
+		creation_frame.getContentPane().add(lblRuleConsciousness);
 		ruleConsciousness.setBounds(col2b, base+height+(1*delta), size2, height);
-		creation_frame.add(ruleConsciousness);
+		creation_frame.getContentPane().add(ruleConsciousness);
 		lblSocialBoldness.setBounds(col2a, base+(2*delta), size1, height);
-		creation_frame.add(lblSocialBoldness);
+		creation_frame.getContentPane().add(lblSocialBoldness);
 		socialBoldness.setBounds(col2b, base+height+(2*delta), size2, height);
-		creation_frame.add(socialBoldness);
+		creation_frame.getContentPane().add(socialBoldness);
 		lblSensitivity.setBounds(col2a, base+(3*delta), size1, height);
-		creation_frame.add(lblSensitivity);
+		creation_frame.getContentPane().add(lblSensitivity);
 		sensitivity.setBounds(col2b, base+height+(3*delta), size2, height);
-		creation_frame.add(sensitivity);
+		creation_frame.getContentPane().add(sensitivity);
 		
 		// Column 3
 		lblVigilance.setBounds(col3a, base, size1, height);
-		creation_frame.add(lblVigilance);
+		creation_frame.getContentPane().add(lblVigilance);
 		vigilance.setBounds(col3b, base+height, size2, height);
-		creation_frame.add(vigilance);
+		creation_frame.getContentPane().add(vigilance);
 		lblAbstractedness.setBounds(col3a, base+(1*delta), size1, height);
-		creation_frame.add(lblAbstractedness);
+		creation_frame.getContentPane().add(lblAbstractedness);
 		abstractedness.setBounds(col3b, base+height+(1*delta), size2, height);
-		creation_frame.add(abstractedness);
+		creation_frame.getContentPane().add(abstractedness);
 		lblPrivateness.setBounds(col3a, base+(2*delta), size1, height);
-		creation_frame.add(lblPrivateness);
+		creation_frame.getContentPane().add(lblPrivateness);
 		privateness.setBounds(col3b, base+height+(2*delta), size2, height);
-		creation_frame.add(privateness);
+		creation_frame.getContentPane().add(privateness);
 		lblApprehensivness.setBounds(col3a, base+(3*delta), size1, height);
-		creation_frame.add(lblApprehensivness);
+		creation_frame.getContentPane().add(lblApprehensivness);
 		apprehensivness.setBounds(col3b, base+height+(3*delta), size2, height);
-		creation_frame.add(apprehensivness);
+		creation_frame.getContentPane().add(apprehensivness);
 		
 		// Column 4
 		lblOpennessToChange.setBounds(col4a, base, size1, height);
-		creation_frame.add(lblOpennessToChange);
+		creation_frame.getContentPane().add(lblOpennessToChange);
 		opennessToChange.setBounds(col4b, base+height, size2, height);
-		creation_frame.add(opennessToChange);
+		creation_frame.getContentPane().add(opennessToChange);
 		lblSelfReliance.setBounds(col4a, base+(1*delta), size1, height);
-		creation_frame.add(lblSelfReliance);
+		creation_frame.getContentPane().add(lblSelfReliance);
 		selfReliance.setBounds(col4b, base+height+(1*delta), size2, height);
-		creation_frame.add(selfReliance);
+		creation_frame.getContentPane().add(selfReliance);
 		lblPerfectionism.setBounds(col4a, base+(2*delta), size1, height);
-		creation_frame.add(lblPerfectionism);
+		creation_frame.getContentPane().add(lblPerfectionism);
 		perfectionism.setBounds(col4b, base+height+(2*delta), size2, height);
-		creation_frame.add(perfectionism);
+		creation_frame.getContentPane().add(perfectionism);
 		lblTension.setBounds(col4a, base+(3*delta), size1, height);
-		creation_frame.add(lblTension);
+		creation_frame.getContentPane().add(lblTension);
 		tension.setBounds(col4b, base+height+(3*delta), size2, height);
-		creation_frame.add(tension);
+		creation_frame.getContentPane().add(tension);
 		
 		message.setBounds(27, 349, 414, 14);
-		creation_frame.add(message);
+		creation_frame.getContentPane().add(message);
 	}
 }
 

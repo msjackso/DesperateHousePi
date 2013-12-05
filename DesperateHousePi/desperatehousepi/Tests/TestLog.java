@@ -21,7 +21,7 @@ public class TestLog {
               assertNotNull(c);
         
               ActionLog hist = new ActionLog(c);
-              asertNotNull(hist);
+              assertNotNull(hist);
               
               hist.logAction("this is an action");
               
