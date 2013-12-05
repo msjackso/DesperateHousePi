@@ -43,6 +43,8 @@ public class Relationship {
 		chemistry = 0;
 	}
 	
+	public void setOwner(String s){ owner = s; }
+	
 	/*****************************
 	 * Returns the value of the relationship
 	 * @return The value of this relationship
@@ -103,7 +105,7 @@ public class Relationship {
 	 */
 	public void setFirstMet(String s){
 		
-		DateFormat df = new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		
 		try {
 			firstMet = df.parse(s);
@@ -126,7 +128,7 @@ public class Relationship {
 	 */
 	public void setLastMeeting(String s){
 
-		DateFormat df = new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		
 		try {
 			lastMeeting = df.parse(s);

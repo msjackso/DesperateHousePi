@@ -157,6 +157,7 @@ public class MainWindow {
 		JLabel lbldate;
 		JLabel lbltime;
 		JProgressBar hungerBar;
+		JLabel lblServerStatus;
 	JCheckBox chckbxCrustAi;
 	
 	public static void main(String[] args) throws FileNotFoundException{ new MainWindow(new Crust("Jim","Rayner")); }
@@ -231,6 +232,11 @@ public class MainWindow {
 		DateTimeFormatter fmt2 = DateTimeFormat.forPattern("hh:mm aa");
 		lbldate.setText(fmt.print(dt));
 		lbltime.setText(fmt2.print(dt));
+		
+		//Set the server message
+		if(!crust.serverRunning)
+			lblServerStatus.setText("Server was unable to bind, please exit, kill any application using port 9999 and restart.");
+		
 	}
 	private void refreshCrustStats(){
 		
@@ -424,9 +430,9 @@ public class MainWindow {
 		frameMain.getContentPane().add(crustInfo);
 		GridBagLayout gbl_crustInfo = new GridBagLayout();
 		gbl_crustInfo.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_crustInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_crustInfo.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_crustInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		crustInfo.setLayout(gbl_crustInfo);
 		createCrustInfo();
 		
@@ -866,7 +872,7 @@ public class MainWindow {
 		GridBagConstraints gbc_lblFullName = new GridBagConstraints();
 		gbc_lblFullName.anchor = GridBagConstraints.WEST;
 		gbc_lblFullName.gridwidth = 3;
-		gbc_lblFullName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblFullName.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFullName.gridx = 1;
 		gbc_lblFullName.gridy = 0;
 		crustInfo.add(lblFullName, gbc_lblFullName);
@@ -889,7 +895,7 @@ public class MainWindow {
 		GridBagConstraints gbc_lblAgeVal = new GridBagConstraints();
 		gbc_lblAgeVal.gridwidth = 3;
 		gbc_lblAgeVal.anchor = GridBagConstraints.SOUTHWEST;
-		gbc_lblAgeVal.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAgeVal.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAgeVal.gridx = 1;
 		gbc_lblAgeVal.gridy = 1;
 		crustInfo.add(lblAgeVal, gbc_lblAgeVal);
@@ -911,7 +917,7 @@ public class MainWindow {
 		GridBagConstraints gbc_lblStageVal = new GridBagConstraints();
 		gbc_lblStageVal.anchor = GridBagConstraints.WEST;
 		gbc_lblStageVal.gridwidth = 3;
-		gbc_lblStageVal.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStageVal.insets = new Insets(0, 0, 5, 0);
 		gbc_lblStageVal.gridx = 1;
 		gbc_lblStageVal.gridy = 2;
 		crustInfo.add(lblStageVal, gbc_lblStageVal);
@@ -962,7 +968,7 @@ public class MainWindow {
 		lblHunger.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblHunger = new GridBagConstraints();
 		gbc_lblHunger.anchor = GridBagConstraints.EAST;
-		gbc_lblHunger.insets = new Insets(0, 0, 0, 5);
+		gbc_lblHunger.insets = new Insets(0, 0, 5, 5);
 		gbc_lblHunger.gridx = 0;
 		gbc_lblHunger.gridy = 5;
 		crustInfo.add(lblHunger, gbc_lblHunger);
@@ -970,6 +976,7 @@ public class MainWindow {
 		//Create the bar showing the hunger level
 		hungerBar = new JProgressBar();
 		GridBagConstraints gbc_hungerBar = new GridBagConstraints();
+		gbc_hungerBar.insets = new Insets(0, 0, 5, 0);
 		gbc_hungerBar.gridwidth = 3;
 		gbc_hungerBar.gridx = 1;
 		gbc_hungerBar.gridy = 5;
@@ -981,7 +988,7 @@ public class MainWindow {
 		lbldate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lbldate = new GridBagConstraints();
 		gbc_lbldate.anchor = GridBagConstraints.EAST;
-		gbc_lbldate.insets = new Insets(0, 0, 0, 5);
+		gbc_lbldate.insets = new Insets(0, 0, 5, 5);
 		gbc_lbldate.gridx = 0;
 		gbc_lbldate.gridy = 6;
 		crustInfo.add(lbldate, gbc_lbldate);
@@ -992,10 +999,17 @@ public class MainWindow {
 		lbltime.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lbltime = new GridBagConstraints();
 		gbc_lbltime.anchor = GridBagConstraints.EAST;
-		gbc_lbltime.insets = new Insets(0, 0, 0, 5);
+		gbc_lbltime.insets = new Insets(0, 0, 5, 5);
 		gbc_lbltime.gridx = 0;
 		gbc_lbltime.gridy = 7;
 		crustInfo.add(lbltime, gbc_lbltime);
+		
+		lblServerStatus = new JLabel("");
+		lblServerStatus.setForeground(Color.RED);
+		GridBagConstraints gbc_lblServerStatus = new GridBagConstraints();
+		gbc_lblServerStatus.gridx = 3;
+		gbc_lblServerStatus.gridy = 8;
+		crustInfo.add(lblServerStatus, gbc_lblServerStatus);
 	}
 	
 	//Set appropriate crust icon given stage and type

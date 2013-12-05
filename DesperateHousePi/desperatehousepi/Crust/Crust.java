@@ -104,6 +104,7 @@ public class Crust {
 	public QuestForGrowth destiny = new QuestForGrowth();
 	public CrustType typeOfPie;
 	Server server;
+	public boolean serverRunning = true;
 	
 	/******************************
 	 * This empty constructor will generate a personality randomly. Each trait is determined
@@ -280,15 +281,16 @@ public class Crust {
 		bdaymonth = month;
 		birthday = day;
 		
-		//Get the length of the amount of values passed in
-		int length = (trait_val.length>16) ? 16:trait_val.length;
-		
 		//Set all of the traits in the order that they were given if not -1000
-		for(int x = 0; x<length; x++)
-			if(trait_val[x]!=UNKNOWN){
-				traits[x] = new PTrait(0);
-				traits[x].setBase(trait_val[x]);
-			}
+		for(int x = 0; x<trait_val.length; x++){
+			traits[x] = new PTrait(0);
+			traits[x].setBase(trait_val[x]);
+		}
+		for(int x = trait_val.length; x<16; x++){
+			traits[x] = new PTrait(0);
+			traits[x].setRandomTrait();
+		}
+		
 		
 		//Edited 11/23/13 by Luke
 		//Creates the person's age
@@ -411,7 +413,9 @@ public class Crust {
 		//Generate content
 		String content = "";
 		content+=first_name+" "+middle_name+" "+last_name+" ";
+		
 		content+=getFormattedTraits();
+
 		/*********************************
 		 * Edited 11/5/13 by Luke
 		 *********************************/
@@ -465,7 +469,7 @@ public class Crust {
 			
 			String content = "";
 			
-			content+=i.name.replace(" ", "_")+" "+i.importance;
+			content+=Interests.getInterestVal(i.name)+" "+i.importance;
 			
 			ibw.write(content);
 			ibw.newLine();
@@ -495,11 +499,20 @@ public class Crust {
 		int loadVal = loadCrust(crustLoadFile);
 		if(loadVal != OK) return loadVal;
 		
-		loadVal = loadRel(relLoadFile);
-		if(loadVal != OK) return loadVal;
+		//TODO remove
+		System.out.println("Crust loadVal: "+loadVal);
 		
 		loadVal = loadInt(intLoadFile);
 		if(loadVal != OK) return loadVal;
+		
+		//TODO remove
+		System.out.println("Interest loadVal: "+loadVal);
+
+		loadVal = loadRel(relLoadFile);
+		if(loadVal != OK) return loadVal;
+		
+		//TODO remove
+		System.out.println("Relationship loadVal: "+loadVal);
 		
 		return OK;
 	}
@@ -555,15 +568,18 @@ public class Crust {
 		FileReader fr = new FileReader(loadFile.getAbsolutePath());
 		BufferedReader br = new BufferedReader(fr);
 		
+		//Clear whatever the current list of interests might be
+		interests.clear();
+		
 		for(String line = br.readLine();line!=null;line=br.readLine()){
 			
 			StringTokenizer tkn = new StringTokenizer(line);
 			
 			if(!tkn.hasMoreTokens()){
 				br.close();
-				return FILE_BAD_FORMAT;
+				return OK;
 			}
-			addInterest(Interests.getInterestVal(tkn.nextToken().replace("_", " ")));
+			addInterest(Integer.parseInt(tkn.nextToken()));
 			
 			if(!tkn.hasMoreTokens()){
 				br.close();
@@ -585,7 +601,10 @@ public class Crust {
 	 * @return int: 0 success; 1 file not found; 2 bad file format
 	 ******************************/
 	public int loadRel(File loadFile) throws IOException{
-
+		
+		//TODO remove
+		System.out.println("In loadRel");
+		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
 		if(!loadFile.exists())
@@ -595,22 +614,49 @@ public class Crust {
 		FileReader fr = new FileReader(loadFile.getAbsolutePath());
 		BufferedReader br = new BufferedReader(fr);
 		
+		//TODO remove
+		System.out.println("Writers made");
+		
 		for(String line = br.readLine();line!=null;line=br.readLine()){
 			
-			String[] parsedLine = line.split("|||");
-			StringTokenizer tkn = new StringTokenizer(parsedLine[0]);
+			//TODO remove
+			System.out.println("Line: "+line);
 			
-			if(tkn.countTokens()<3){
+			StringTokenizer tkn = new StringTokenizer(line);
+			
+			if(tkn.countTokens()<9){
 				br.close();
 				return FILE_BAD_FORMAT;
 			}
 			
+			//Set name address and chemistry
 			Relationship r = new Relationship();
-			r.setContactName(tkn.nextToken());
+			r.setOwner(get("fullName").replace(" ", "_"));
+			r.setContactName(tkn.nextToken().replace("_", " "));
 			r.setContactAddress(tkn.nextToken());
-			r.setChemistry(Integer.parseInt(tkn.nextToken()));
-			r.setFirstMet(parsedLine[1]);
-			r.setLastMeeting(parsedLine[2]);
+			r.setChemistry(Double.parseDouble(tkn.nextToken()));
+			
+			//Drop the |||
+			tkn.nextToken();
+			
+			//Set first met
+			String firstMet = tkn.nextToken()+" "+tkn.nextToken();
+			
+			//TODO remove
+			System.out.println("First Met: "+firstMet);
+			
+			r.setFirstMet(firstMet);
+			
+			//Drop the |||
+			tkn.nextToken();
+			
+			//Set last met
+			String lastMet = tkn.nextToken()+" "+tkn.nextToken();
+			
+			//TODO remove
+			System.out.println("Last Met: "+lastMet);
+			
+			r.setLastMeeting(lastMet);
 			relationships.add(r);
 		}
 		
@@ -627,8 +673,9 @@ public class Crust {
 		
 		String allTraits = "";
 		
-		for(PTrait tr : traits){
-			allTraits+=tr.getBase()+" "+tr.getMod()+" "+tr.getAdj()+" ";
+		for(int x = 0; x<16 ; x++){
+			
+			allTraits+=traits[x].getBase()+" "+traits[x].getMod()+" "+traits[x].getAdj()+" ";
 		}
 		
 		return allTraits;
@@ -926,8 +973,10 @@ public class Crust {
 		if(value!=-1 && Interests.containsValue(interests, value)!=null) return -1;
 		
 		//Add an interest that isn't already made
-		while(Interests.containsValue(interests, value)!=null && value==-1)
+		while(Interests.containsValue(interests, value)!=null && value==-1){
+			System.out.println("Shouldn't happen.");
 			value = new Random().nextInt(Interests.RANDOM_VAL)+1;
+		}
 		
 		//Add it to the list of interests
 		interests.add(Interests.getInterest(value));
