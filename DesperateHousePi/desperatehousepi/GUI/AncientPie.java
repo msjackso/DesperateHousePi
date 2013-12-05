@@ -43,6 +43,7 @@ public class AncientPie {
 		initialize();
 		new Timer(refreshTime*5, refreshMeAll).start();
 		//Action Listeners
+		@SuppressWarnings("unused")
 		ActionListener refreshMeAll = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -89,7 +90,8 @@ public class AncientPie {
 		//Set background image
 		try {
 			ancientPieFrame.setContentPane(new JPanel() {
-			    BufferedImage background = ImageIO.read(new File("images/backgrounds/ancientPieSpeech_color.png"));
+				private static final long serialVersionUID = 1L;
+				BufferedImage background = ImageIO.read(new File("images/backgrounds/ancientPieSpeech_color.png"));
 			    public void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        g.drawImage(background, 0, 0, 425, 680, this);

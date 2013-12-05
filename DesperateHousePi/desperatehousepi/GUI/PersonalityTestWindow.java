@@ -1,14 +1,11 @@
 package desperatehousepi.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
-import java.awt.GridLayout;
 
 import javax.swing.JButton;
 
@@ -78,7 +75,8 @@ public class PersonalityTestWindow {
 		//Set background image
 		try {
 			PTest_frame.setContentPane(new JPanel() {
-			    BufferedImage background = ImageIO.read(new File("images/backgrounds/personalityTest_color.png"));
+				private static final long serialVersionUID = 1L;
+				BufferedImage background = ImageIO.read(new File("images/backgrounds/personalityTest_color.png"));
 			    public void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        g.drawImage(background, 0, 0, 680, 425, this);

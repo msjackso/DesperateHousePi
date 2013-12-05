@@ -6,22 +6,13 @@ import java.awt.Graphics;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-
-import java.awt.Toolkit;
-
 import javax.swing.JButton;
-
-import java.awt.BorderLayout;
-
 import javax.swing.JPanel;
 
 import java.awt.Color;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import desperatehousepi.Crust.Crust;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -45,7 +36,7 @@ public class Intro {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Intro window = new Intro();
+					new Intro();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -90,7 +81,8 @@ public class Intro {
 		//Background Image
 		try {
 			intro_frame.setContentPane(new JPanel() {
-			    BufferedImage background = ImageIO.read(new File("images/backgrounds/welcomeScreen.png"));
+				private static final long serialVersionUID = 1L;
+				BufferedImage background = ImageIO.read(new File("images/backgrounds/welcomeScreen.png"));
 			    public void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        g.drawImage(background, 0, 0, 425, 680, this);

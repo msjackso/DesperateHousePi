@@ -36,7 +36,9 @@ public class CreationWindow {
 	//edited 12/2 1:02AM by Mark
 	private CrustType pieType = setRandomPieType();
 
+	@SuppressWarnings("unused")
 	private JLabel empty;
+	@SuppressWarnings("unused")
 	private String newFlavor;
 
 	private JLabel lblFirstName;
@@ -173,7 +175,8 @@ public class CreationWindow {
 		//Set background image
 		try {
 			creation_frame.setContentPane(new JPanel() {
-			    BufferedImage background = ImageIO.read(new File("images/backgrounds/creationMap_color.png"));
+				private static final long serialVersionUID = 1L;
+				BufferedImage background = ImageIO.read(new File("images/backgrounds/creationMap_color.png"));
 			    public void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        g.drawImage(background, 0, 0, 425, 680, this);
