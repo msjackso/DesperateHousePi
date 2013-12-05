@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import desperatehousepi.Crust.Crust;
 
-public class TestServer {
-	
+public class TestServerBlocking {
+
 	Crust michael, brad;
 	
 	@Before
@@ -26,17 +26,23 @@ public class TestServer {
 	}
 	
 	@Test
-	public void testServer() {
+	public void testBlocking(){
 		
 		//TODO remove
-		System.out.println("Clear realationships");
+		System.out.println("Clear relationships");
 		
-		//Re-establish relationships to blank
-		michael.getRelationships().clear();
+		//Re-set relationships
 		brad.getRelationships().clear();
+		michael.getRelationships().clear();
 		
 		//TODO remove
-		System.out.println("Add brad to relationships");
+		System.out.println("Block relationships");
+		
+		//Set brad to block any incoming calls
+		brad.stopServer();
+		
+		//TODO remove
+		System.out.println("Add brad to relatiobships");
 		
 		//Add relationships
 		michael.addRelationship("Brad Jacob Brauner", "127.0.0.1", 0);
@@ -47,24 +53,24 @@ public class TestServer {
 		//Call relationship
 		michael.call("Brad Jacob Brauner", 9998);
 		
-		//TODO remove
-		System.out.println("Brad's relationships");
-		
-		brad.printRelationships();
-		
 		//Ensure that relationship was made and other server was proper
-		assertEquals(brad.getRelationships().size(), 1);
+		assertEquals(brad.getRelationships().size(), 0);
 		
 		//TODO remove
-		System.out.println("Call michael");
+		System.out.println("Re-start server");
+		
+		//Re-start the server
+		brad.startServer();
+		
+		//TODO remove
+		System.out.println("Re-call brad");
 		
 		//Call relationship
-		brad.call("Michael Jacob Jackson", 9999);
+		michael.call("Brad Jacob Brauner", 9998);
 		
 		//Ensure that relationship was made and other server was proper
 		assertEquals(brad.getRelationships().size(), 1);
-		assertEquals(michael.getRelationships().size(), 1);
 		
 	}
-	
+
 }

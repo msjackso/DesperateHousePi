@@ -42,6 +42,9 @@ public class Server implements Runnable{
 	
 	public void interact(Relationship rel, int socketNum){
 		
+		//TODO remove
+		System.out.println("Client -> Generate send package");
+		
 		Package sendPackage = new Package(myCrust.get("fullName"));
 		sendPackage.setInterests(myCrust.getInterests());
 		sendPackage.setTraits(myCrust.getTraits());
@@ -50,15 +53,26 @@ public class Server implements Runnable{
 		
 		Package receivePackage = null;
 		
+		//TODO remove
+		System.out.println("Client -> Creating socket");
+		
 		//Create the socket
 		try {
 			interactSocket = new Socket(InetAddress.getByName(rel.getContactAddress()), socketNum);
+			interactSocket.setSoTimeout(10000);
+		} catch (SocketTimeoutException e){ return;
 		} catch (Exception e){ e.printStackTrace(); }
+		
+		//TODO remove
+		System.out.println("Client -> Create output");
 		
 		//Create the output stream to write to server
 		try {
 			intOutStream = new ObjectOutputStream(interactSocket.getOutputStream());
 		} catch (IOException e) { e.printStackTrace(); }
+		
+		//TODO remove
+		System.out.println("Client -> Write output");
 		
 		//Write the object to the server
 		try {
@@ -66,11 +80,18 @@ public class Server implements Runnable{
 			intOutStream.writeObject(sendPackage);
 		} catch (IOException e) { e.printStackTrace(); }
 		
+		//TODO remove
+		System.out.println("Client -> Create input");
+		
 		//Create the input stream to read from the server
 		try {
 			intInStream = new ObjectInputStream(interactSocket.getInputStream());
+		} catch (SocketTimeoutException e) { return;
 		} catch (IOException e) { e.printStackTrace(); }
 		
+		
+		//TODO remove
+		System.out.println("Client -> Read input, call conversate, get contacted");
 		//Read from the server
 		try {
 			receivePackage = (Package) intInStream.readObject();
@@ -78,6 +99,9 @@ public class Server implements Runnable{
 			conversate(receivePackage, InetAddress.getByName(rel.getContactAddress()));
 			getContacts(receivePackage, rel.getContactAddress());
 		} catch (Exception e){ e.printStackTrace(); }
+		
+		//TODO remove
+		System.out.println("Client -> Close streams");
 		
 		//Close all of the streams
 		try {
