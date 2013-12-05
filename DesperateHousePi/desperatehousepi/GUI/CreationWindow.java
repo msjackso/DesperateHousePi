@@ -529,7 +529,7 @@ public class CreationWindow {
 		
 	}
 	
-	boolean goodDate(String str_month,String str_day){
+	public boolean goodDate(String str_month,String str_day){
 		int month,day;
 		try{
 			month = Integer.parseInt(str_month);
@@ -542,7 +542,7 @@ public class CreationWindow {
 
 		switch(month){
 			case 2:
-				if(day < 1 || day > 29) return false;
+				if(day > 29) return false;
 				else return true;
 			case 1:
 			case 3:
