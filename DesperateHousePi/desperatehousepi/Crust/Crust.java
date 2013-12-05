@@ -325,16 +325,18 @@ public class Crust {
 	 * Stops the server from receiving any calls
 	 * @author Brad and Michael
 	 *******************************/
+	@SuppressWarnings("deprecation")
 	public void stopServer(){
-		server.setListening(false);
+		serverThread.suspend();
 	}
 	
 	/*******************************
 	 * Start receiving calls on the server
 	 * @author Brad and Michael
 	 *******************************/
+	@SuppressWarnings("deprecation")
 	public void startServer(){
-		server.setListening(true);
+		serverThread.resume();
 	}
 	
 	/*******************************
@@ -499,20 +501,11 @@ public class Crust {
 		int loadVal = loadCrust(crustLoadFile);
 		if(loadVal != OK) return loadVal;
 		
-		//TODO remove
-		System.out.println("Crust loadVal: "+loadVal);
-		
 		loadVal = loadInt(intLoadFile);
 		if(loadVal != OK) return loadVal;
-		
-		//TODO remove
-		System.out.println("Interest loadVal: "+loadVal);
 
 		loadVal = loadRel(relLoadFile);
 		if(loadVal != OK) return loadVal;
-		
-		//TODO remove
-		System.out.println("Relationship loadVal: "+loadVal);
 		
 		return OK;
 	}
@@ -602,9 +595,6 @@ public class Crust {
 	 ******************************/
 	public int loadRel(File loadFile) throws IOException{
 		
-		//TODO remove
-		System.out.println("In loadRel");
-		
 		//Check to see if file to be loaded exists, if it doesn't, return 1 to signify
 		//'file not found'
 		if(!loadFile.exists())
@@ -614,13 +604,7 @@ public class Crust {
 		FileReader fr = new FileReader(loadFile.getAbsolutePath());
 		BufferedReader br = new BufferedReader(fr);
 		
-		//TODO remove
-		System.out.println("Writers made");
-		
 		for(String line = br.readLine();line!=null;line=br.readLine()){
-			
-			//TODO remove
-			System.out.println("Line: "+line);
 			
 			StringTokenizer tkn = new StringTokenizer(line);
 			
@@ -642,9 +626,6 @@ public class Crust {
 			//Set first met
 			String firstMet = tkn.nextToken()+" "+tkn.nextToken();
 			
-			//TODO remove
-			System.out.println("First Met: "+firstMet);
-			
 			r.setFirstMet(firstMet);
 			
 			//Drop the |||
@@ -652,9 +633,6 @@ public class Crust {
 			
 			//Set last met
 			String lastMet = tkn.nextToken()+" "+tkn.nextToken();
-			
-			//TODO remove
-			System.out.println("Last Met: "+lastMet);
 			
 			r.setLastMeeting(lastMet);
 			relationships.add(r);

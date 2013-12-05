@@ -6,8 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class Relationship {
+public class Relationship implements java.io.Serializable{
 	
+	/**
+	 * ID for purposes of serialization
+	 */
+	private static final long serialVersionUID = -2250117320520854955L;
 	String owner;
 	String nameOfContact;
 	String addressOfContact;
@@ -32,6 +36,7 @@ public class Relationship {
 		chemistry = new_value;
 		firstMet = new Date();
 		lastMeeting = new Date();
+		log = new LinkedList<String>();
 	}
 	
 	/******************************
@@ -41,6 +46,7 @@ public class Relationship {
 	public Relationship(){
 		owner = null;
 		chemistry = 0;
+		log = new LinkedList<String>();
 	}
 	
 	public void setOwner(String s){ owner = s; }
