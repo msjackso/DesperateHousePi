@@ -52,7 +52,10 @@ public class TestNeed {
 	 * 						5. Amount is a negative number
 	 */
 	@Test
-	public void incrementNeed(int amount) {
+	public void incrementNeed() {
+		
+		Need TestNeed = new Need("Test", 1);
+		
 		TestNeed.setNeed(50);
 		TestNeed.incrementNeed(25);
 		assertEquals(TestNeed.getNeedLevel(), 75); //E.C., 1, 4
@@ -61,7 +64,7 @@ public class TestNeed {
 		assertEquals(TestNeed.getNeedLevel(), 100); //E.C., 2, 4
 		TestNeed.setNeed(50);
 		TestNeed.incrementNeed(-100);
-		assertEquals(TestNeed.getNeedLevel(), 75); //E.C., 3, 5
+		assertEquals(TestNeed.getNeedLevel(), -50); //E.C., 3, 5
 	}
 
 	/*

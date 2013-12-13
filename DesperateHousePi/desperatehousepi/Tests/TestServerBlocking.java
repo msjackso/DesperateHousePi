@@ -67,6 +67,7 @@ public class TestServerBlocking {
 		
 		//Call relationship
 		michael.call("Brad Jacob Brauner", 9998);
+		brad.call("Michael Jacob Jackson", 9999);
 		
 		//Ensure that relationship was made and other server was proper
 		assertEquals(brad.getRelationships().size(), 1);

@@ -33,17 +33,17 @@ public class Need {
 	////////////////////////Access Functions\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	
 	//Returns the need level of the person
-	String getNeedName(){ return needName; }
+	public String getNeedName(){ return needName; }
 	
 	//Returns the need level of the person
-	int getNeedLevel(){ return needLevel; }
+	public int getNeedLevel(){ return needLevel; }
 	
 	///////////////////////Manipulation Functions\\\\\\\\\\\\\\\\\\\\\\\
 	
 	/* Increases the need level of the person
 	 * Input: the number that the need will be incremented by
 	 */
-	void incrementNeed(int amount) {
+	public void incrementNeed(int amount) {
 		if (needLevel + amount > 100) 
 			needLevel = 100;
 		else 
@@ -53,7 +53,7 @@ public class Need {
 	/* Increases the need level of the person
 	 * Input: the (POSITIVE) number that the need will be decremented by
 	 */
-	void decrementNeed(int amount) {
+	public void decrementNeed(int amount) {
 		if (needLevel - amount < 0) 
 			needLevel = 0;
 		else 
@@ -63,7 +63,7 @@ public class Need {
 	/* Sets the need level of the person (for loading from file)
 	 * Input: the number to set the need equal to
 	 */
-	void setNeed(int amount) {
+	public void setNeed(int amount) {
 		needLevel = amount;
 	}
 }

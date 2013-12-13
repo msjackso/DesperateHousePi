@@ -402,7 +402,7 @@ public class MainWindow {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setForeground(Color.BLACK);
 		tabbedPane.setBackground(Color.GREEN);
-		tabbedPane.setBounds(0, 406, 860, 249);
+		tabbedPane.setBounds(0, 406, 860, 350);
 		frameMain.getContentPane().add(tabbedPane);
 		createTabs();
 		
